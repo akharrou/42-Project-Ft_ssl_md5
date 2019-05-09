@@ -5,7 +5,7 @@ In this project we are introduced to cryptographic hashing algorithms and a coup
   * `SHA-256, 1, 512`
   * `whirlpool`
 
-Then we are asked to rewrite part of the `OpenSSL` program functionality.
+Then we were asked to rewrite part of the `OpenSSL` program functionality.
 
 ## Implemented Functionality
 <table>
