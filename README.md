@@ -7,9 +7,8 @@ In this project we are introduced to cryptographic hashing algorithms and a coup
   * `SHA-512`
   * `whirlpool`
 
-Then we are asked to rewrite them.
+Then we are asked to rewrite part of the `OpenSSL` program functionality. It includes the implementation of the following cryptographic hashing algorithms:
 
-## Implementations
 <table>
   <tr>
     <th text-align=right>Algorithm</th>
