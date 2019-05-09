@@ -1,8 +1,9 @@
 # 42-Project-Ft_SSL_MD5
 An introduction to cryptographic hashing algorithms.
 
-In this project we are introduced to a couple cryptographic hashing algorithms: MD5, SHA-256, SHA-1, SHA-512.
-Then we are asked to recreate them.
+In this project we are introduced to a couple cryptographic hashing algorithms: `MD5`, `SHA-256`, `SHA-1`, `SHA-512`, `whirlpool`.
+
+Then we are asked to rewrite them.
 
 ## Implemented Cryptographic Hashing Algorithms
 <table>
@@ -56,4 +57,34 @@ Then we are asked to recreate them.
   </tr>
 </table>
 
-SHA-224 is a variant of SHA-256, and SHA-384 is a variant of SHA-512. (Made to run on little-endian machines)
+SHA-224 is a variant of SHA-256, and SHA-384 is a variant of SHA-512.
+PS: the functions are made to run on little-endian machines.
+
+## Installation
+```bash
+git clone https://github.com/akharrou/42-Project-Ft_SSL_MD5.git Ft_SSL && cd Ft_SSL
+```
+
+```bash
+make && make clean
+```
+
+## Usage
+
+```
+usage: ft_ssl [md5 | sha[224 | 256 | 384 | 512]] [-pqr] [-s string] [files ...]
+```
+
+Outputs are identical to the real ones.
+
+## Examples
+
+```bash
+./ft_ssl md5 -s "example"
+MD5 ("example") = 1a79a4d60de6718e8e5b326e338ae533
+```
+```bash
+./ft_ssl sha256 -s "example"
+SHA256 ("example") = 50d858e0985ecc7f60418aaf0cc5ab587f42c2570a884095a9e8ccacd0f6545c
+```
+
