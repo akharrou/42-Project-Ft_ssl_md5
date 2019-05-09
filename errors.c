@@ -6,26 +6,26 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 09:07:16 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/09 10:36:29 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/09 10:54:40 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ssl.h"
 
-char *standard_commands[] = {
+const char *standard_commands[] = {
 	"",
 	\
 	NULL
 };
 
-char *msg_digest_commands[] = {
+const char *msg_digest_commands[] = {
 	"md5",
 	"sha256",
 	\
 	NULL
 };
 
-char *cipher_commands[] = {
+const char *cipher_commands[] = {
 	"",
 	\
 	NULL

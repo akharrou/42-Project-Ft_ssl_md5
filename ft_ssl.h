@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 08:31:14 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/09 10:36:32 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/09 10:54:32 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 */
 
-extern char *standard_commands[];
-extern char *msg_digest_commands[];
-extern char *cipher_commands[];
+extern const char *standard_commands[];
+extern const char *msg_digest_commands[];
+extern const char *cipher_commands[];
 
 enum e_flags
 {

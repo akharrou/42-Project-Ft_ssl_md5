@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 08:30:29 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/09 10:40:47 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/09 10:54:46 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int		main(int ac, char *av[])
 	int8_t	flags;
 	char	*msg;
 
-	if (!av[1] || !ft_is_one_of(msg_digest_commands, av[1]))
+	if (!av[1] || !ft_isstrset(av[1], msg_digest_commands))
 		EXIT(usage());
 	flags = parse_flags(av + 2);
 
