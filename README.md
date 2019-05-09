@@ -7,7 +7,7 @@ In this project we are introduced to cryptographic hashing algorithms and a coup
 
 Then we were asked to rewrite part of the `OpenSSL` program functionality.
 
-## Implemented Functionality
+## Implemented Functionalities
 <table>
   <tr>
     <th text-align=right>Algorithm</th>
