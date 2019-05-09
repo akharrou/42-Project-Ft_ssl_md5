@@ -1,6 +1,6 @@
 # Ft_ssl_md5
 
-In this project we are introduced to cryptographic hashing algorithms and a couple known and widely used ones:
+In this project we are introduced to cryptographic hashing algorithms and a couple of known and widely used ones:
   * `MD5`
   * `SHA-256`
   * `SHA-1`
