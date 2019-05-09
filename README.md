@@ -5,7 +5,7 @@ In this project we are introduced to cryptographic hashing algorithms and a coup
   * `SHA-256, 1, 512`
   * `whirlpool`
 
-Then we were asked to rewrite part of the `OpenSSL` and rewrite a couple of the cryptographic hashing algorithms it supports and incorporating one into the other.
+Then we were asked to rewrite part of the `openssl` command and rewrite a couple of the cryptographic hashing algorithms it supports and incorporating one into the other.
 
 ## Implemented Functionalities
 <table>
