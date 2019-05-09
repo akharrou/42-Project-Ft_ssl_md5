@@ -1,4 +1,4 @@
-# 42-Project-Ft_SSL_MD5
+# Ft_ssl_md5
 
 In this project we are introduced to cryptographic hashing algorithms and a couple known and widely used ones:
   * `MD5`
