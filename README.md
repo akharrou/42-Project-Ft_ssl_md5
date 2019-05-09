@@ -62,7 +62,8 @@ Then we are asked to rewrite them.
 </table>
 
 SHA-224 is a variant of SHA-256, and SHA-384 is a variant of SHA-512.
-PS: the functions are made to run on little-endian machines.
+
+>PS: the functions are made to run on little-endian machines.
 
 ## Installation
 ```bash
