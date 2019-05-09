@@ -9,7 +9,7 @@ In this project we are introduced to a couple cryptographic hashing algorithms:
 
 Then we are asked to rewrite them.
 
-## Implemented Cryptographic Hashing Algorithms
+## Implementations
 <table>
   <tr>
     <th text-align=right>Algorithm</th>
