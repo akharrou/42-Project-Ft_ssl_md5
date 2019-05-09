@@ -2,13 +2,12 @@
 
 In this project we are introduced to cryptographic hashing algorithms and a couple of known and widely used ones:
   * `MD5`
-  * `SHA-256`
-  * `SHA-1`
-  * `SHA-512`
+  * `SHA-256, 1, 512`
   * `whirlpool`
 
-Then we are asked to rewrite part of the `OpenSSL` program functionality. It includes the implementation of the following cryptographic hashing algorithms:
+Then we are asked to rewrite part of the `OpenSSL` program functionality.
 
+## Implemented Functionality
 <table>
   <tr>
     <th text-align=right>Algorithm</th>
