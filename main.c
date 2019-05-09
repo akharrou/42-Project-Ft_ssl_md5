@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 08:30:29 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/09 10:54:46 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/09 14:06:21 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,27 +31,24 @@ OpenSSL.
 
 	MSG="" ; echo $MSG','$(openssl sha256 <<< "$MSG") >> msg_digests.txt
 
-	MSG="hello world" ; echo $MSG','$(openssl sha256 <<< "$MSG") >> msg_digests.txt && \
-	MSG="transcend" ; echo $MSG','$(openssl sha256 <<< "$MSG") >> msg_digests.txt && \
-	MSG="california" ; echo $MSG','$(openssl sha256 <<< "$MSG") >> msg_digests.txt && \
-	MSG="new york" ; echo $MSG','$(openssl sha256 <<< "$MSG") >> msg_digests.txt && \
-	MSG="philidelphia" ; echo $MSG','$(openssl sha256 <<< "$MSG") >> msg_digests.txt && \
-	MSG="washington" ; echo $MSG','$(openssl sha256 <<< "$MSG") >> msg_digests.txt && \
-	MSG="Washington" ; echo $MSG','$(openssl sha256 <<< "$MSG") >> msg_digests.txt && \
-	MSG="Boston" ; echo $MSG','$(openssl sha256 <<< "$MSG") >> msg_digests.txt && \
-	MSG="texas" ; echo $MSG','$(openssl sha256 <<< "$MSG") >> msg_digests.txt && \
-	MSG="boston" ; echo $MSG','$(openssl sha256 <<< "$MSG") >> msg_digests.txt
-
  */
 
-int		main(int ac, char *av[])
+
+int				main(int ac, const char *av[])
 {
-	int8_t	flags;
-	char	*msg;
+	const char	**digest;
+	t_input		input;
 
-	if (!av[1] || !ft_isstrset(av[1], msg_digest_commands))
+	if (ac < 2)
 		EXIT(usage());
-	flags = parse_flags(av + 2);
-
+	input.command = av[1];
+	if (!valid_command(input.command))
+		EXIT(invalid_command(input.command));
+	input.options = parse_options(av + 2);
+	if (input.options & UNKNOWN_OPTION)
+		EXIT(unknown_option(av + 2));
+	input.messages = get_messages(input.options);
+	digest = get_digest(input.command, input.messages, input.options);
+	ft_ssl_formatted_output(input.options, digest);
 	return (0);
 }
