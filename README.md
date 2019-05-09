@@ -1,5 +1,4 @@
 # 42-Project-Ft_SSL_MD5
-An introduction to cryptographic hashing algorithms.
 
 In this project we are introduced to a couple cryptographic hashing algorithms:
   * `MD5`
