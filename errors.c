@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 09:07:16 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/09 13:49:40 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/10 06:47:30 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,18 @@ void		invalid_command(const char *invalid_command)
 	ft_printf("\n");
 	ft_printf("Standard commands:\n");
 	i = 0;
-	while (standard_commands[i])
-		ft_printf("%s\n", standard_commands[i++]);
+	while (g_standard_commands[i])
+		ft_printf("%s\n", g_standard_commands[i++]);
 	ft_printf("\n");
 	ft_printf("Message Digest commands:\n");
 	i = 0;
-	while (msg_digest_commands[i])
-		ft_printf("%s\n", msg_digest_commands[i++]);
+	while (g_msg_digest_commands[i])
+		ft_printf("%s\n", g_msg_digest_commands[i++]);
 	ft_printf("\n");
 	ft_printf("Cipher commands:\n");
 	i = 0;
-	while (cipher_commands[i])
-		ft_printf("%s\n", cipher_commands[i++]);
+	while (g_cipher_commands[i])
+		ft_printf("%s\n", g_cipher_commands[i++]);
 	return ;
 }
 
@@ -54,8 +54,8 @@ void		unknown_options(const char **argv)
 		{
 			unknown = true;
 			i = -1;
-			while (option[++i].name && unknown)
-				if (ft_strcmp(option[i].name, *argv) == 0)
+			while (g_option[++i].name && unknown)
+				if (ft_strcmp(g_option[i].name, *argv) == 0)
 					unknown = false;
 		}
 		++argv;
@@ -64,7 +64,7 @@ void		unknown_options(const char **argv)
 	ft_printf("options are\n");
 	width = LONGEST_OPTION;
 	i = -1;
-	while (option[++i].name)
-		ft_printf("-%*s %s\n", width, option[i].name, option[i].descripton);
+	while (g_option[++i].name)
+		ft_printf("-%-*s %s\n", width, g_option[i].name, g_option[i].descripton);
 	return ;
 }
