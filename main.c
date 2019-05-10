@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 08:30:29 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/10 07:09:41 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/10 13:04:16 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,34 +49,43 @@
 **      }				t_option;
 */
 
-#include <stdarg.h>
-
-char 	**ft_strtabnew(int size, ...)
+char	*ft_strcat(char *s1, const char *s2)
 {
-	char		**strtab;
-	va_list		args;
-	int32_t		i;
+	size_t	i;
+	size_t	j;
 
-	strtab = NULL;
-	if (size > 0)
+	if (s2)
 	{
-		strtab = (char **)malloc(sizeof(char *) * (size + 1));
-		if (strtab)
-		{
-			va_start(args, size);
-			i = -1;
-			while (++i < size)
-				strtab[i] = ft_strdup(va_arg(args, char *));
-			strtab[i] = NULL;
-			va_end(args);
-		}
+		i = ft_strlen(s1);
+		j = 0;
+		while (s2[j])
+			s1[i++] = s2[j++];
+		s1[i] = '\0';
 	}
-	return (strtab);
+	return (s1);
 }
 
-char 	**ft_strtabdup(const char **strtab)
+char	**ft_strtabcat(const char **dst, const char **src)
 {
 
+}
+
+char	**ft_strtabjoin(const char **strtab, char *str)
+{
+	char **new_strtab;
+
+	if (strtab || str)
+	{
+		if (!str)
+			return (ft_strtabdup(strtab));
+		if (!strtab)
+			return (ft_strtab(1, str));
+		new_strtab = ft_strtabnew(ft_strtablen(strtab) + 1);
+		if (!new_strtab)
+			return (NULL);
+		return (ft_strtabcat(ft_strtabcat(new_strtab, s1), s2));
+	}
+	return (NULL);
 }
 
 char	**ft_strtabjoin(const char **strtab, int strings, ...)
