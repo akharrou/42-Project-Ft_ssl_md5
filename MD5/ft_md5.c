@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 12:14:48 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/11 12:41:21 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/11 14:51:48 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,14 @@ static void		get_32bit_words(const char *_512bit_string,
 					uint32_t (*_32bit_word)[SUBDIVISIONS])
 {
 	uint32_t	i;
-	uint32_t	word_count;
 
 	if (_512bit_string)
 	{
-		word_count = 0;
 		i = 0;
 		while (i < SUBDIVISIONS)
 		{
-			ft_strncpy((char *)_512bit_string + (i * 32), (*_32bit_word)[i], 32);
+			(*_32bit_word)[i] = *((uint32_t *)&_512bit_string[i * 4]);
+			++i;
 		}
 	}
 	return ;
@@ -70,22 +69,22 @@ static void		md5_operation(t_md5 state, uint32_t i, uint32_t *f, uint32_t *g)
 {
 	if (ROUND_1)
 	{
-		(*f) = (state.b & state.c) | ((~state.b) & state.d);
+		(*f) = F(state.b, state.c, state.d);
 		(*g) = i;
 	}
 	else if (ROUND_2)
 	{
-		(*f) = (state.d & state.b) | ((~state.d) & state.c);
+		(*f) = G(state.b, state.c, state.d);
 		(*g) = (5 * i + 1) % 16;
 	}
 	else if (ROUND_3)
 	{
-		(*f) = state.b ^ state.c ^ state.d;
+		(*f) = H(state.b, state.c, state.d);
 		(*g) = (3 * i + 5) % 16;
 	}
 	else if (ROUND_4)
 	{
-		(*f) = state.c ^ (state.b | (~state.d));
+		(*f) = I(state.b, state.c, state.d);
 		(*g) = (7 * i) % 16;
 	}
 	return ;
@@ -114,7 +113,7 @@ static t_md5	md5_process(t_md5 state, uint32_t m[SUBDIVISIONS])
 		state_prime.a = state_prime.d;
 		state_prime.d = state_prime.c;
 		state_prime.c = state_prime.b;
-		state_prime.b = state_prime.b + (f << g_s[i]);
+		state_prime.b = state_prime.b + ROTATE_LEFT(f, g_s[i]);
 		++i;
 	}
 	state.a += state_prime.a;
@@ -195,3 +194,71 @@ char			*ft_md5(void *message, size_t size)
 	*(digest + (sizeof(uint32_t) * 4)) = '\0';
 	return ((char *)(&(*digest)));
 }
+
+
+
+
+
+// #include "ft_md5.h"
+// #include "ft_md5.c"
+
+# include <stdint.h>
+# include <string.h>
+# include <stdio.h>
+# include <stdlib.h>
+
+#define _512_BITS 64
+#define _64_BITS 8
+#define _INT_BITS _64_BITS
+
+char	*md5_preprocess(char *message, size_t size)
+{
+	char	*result;
+	int		offset;
+	int		append;
+
+	//if statement checks to see if there is enough room for a 64 bit integer at the end of
+	//a 512 bit chunk.
+	//If there is we only need append to reach the first 512 chunk.
+	//If there isn't then we need to append to reach the remaining of the first and a second.
+	if (size % _512_BITS <= _512_BITS - _64_BITS)
+		offset = _512_BITS;
+	else
+		offset = _512_BITS + _512_BITS;
+
+	//Offset minus how far into the chunk we were is the amount that we need to append by.
+	append = offset - (size % _512_BITS);
+
+	result = malloc(sizeof(*result) * (size + append));
+
+	// memset(result, '.', size + append); // Uncomment this one and the next one below on to see what is being appended
+	strcpy(result, message);
+	// result[size] = '.';
+
+
+	//Go to the address 64 bits before the end of result and store the original size there.
+	*(u_int64_t *)&(result[size + append - _INT_BITS]) = size;
+
+	printf("SIZE %d\n", *(int *)&result[size + append - 8]);
+	printf("%s\n", result);
+	return (result);
+}
+
+int		main(void)
+{
+	// char *msg = strdup("123456789 123456789 123456789 123456789 1233456789 12345");
+	char *msg = strdup("123456789_123456789_123456789_123456789_123456789_1234567");
+	// printf("%s\n", msg);
+	md5_preprocess(msg, strlen(msg));
+
+	return (0);
+}
+
+// .... ....  .... ....
+// .... ....  .... ....
+// .... ....  .... ....
+// .... ....  .... ....
+
+// 123456789_123456789_123456789_123456789_123456789_123456789_1234
+// 56789_123456789_123456789_123456789_123456789_123456789_1.......
+// ........................................................________

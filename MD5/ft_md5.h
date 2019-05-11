@@ -6,9 +6,13 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 18:16:15 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/11 12:20:05 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/11 14:54:43 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+**  'ft_md5.h' - header file for 'ft_md5.c'
+*/
 
 #ifndef FT_MD5_H
 # define FT_MD5_H
@@ -36,8 +40,21 @@
 # define ROUND_3                 (32 <= i && i <= 47)
 # define ROUND_4                 (48 <= i && i <= 63)
 
+# define F(b, c, d)               (((b) & (c)) | ((~b) & (d)))
+# define G(b, c, d)               (((b) & (d)) | ((c) & (~d)))
+# define H(b, c, d)               ((b) ^ (c) ^ (d))
+# define I(b, c, d)               ((c) ^ ((b) | (~d)))
+
+/*
+**  ROTATE_LEFT rotates x left n bits.
+*/
+# define ROTATE_LEFT(x, n)        (((x) << (n)) | ((x) >> (32-(n))))
+
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
+**
+**  MD5 Context Structure.
+**
 */
 
 typedef struct	s_md5_state
