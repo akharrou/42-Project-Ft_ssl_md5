@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 18:16:15 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/11 12:11:59 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/11 12:20:05 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,18 @@
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 */
 
-# define TOTAL_OPERATIONS  (64)
-# define SUBDIVISIONS      (16)
+# define TOTAL_OPERATIONS        (64)
+# define SUBDIVISIONS            (16)
 
-# define INITIALIZER_CONSTANT_A     (0x67452301)
-# define INITIALIZER_CONSTANT_B     (0xefcdab89)
-# define INITIALIZER_CONSTANT_C     (0x98badcfe)
-# define INITIALIZER_CONSTANT_D     (0x10325476)
+# define INITIALIZER_CONSTANT_A  (0x67452301)
+# define INITIALIZER_CONSTANT_B  (0xefcdab89)
+# define INITIALIZER_CONSTANT_C  (0x98badcfe)
+# define INITIALIZER_CONSTANT_D  (0x10325476)
+
+# define ROUND_1                 (0 <= i && i <= 15)
+# define ROUND_2                 (16 <= i && i <= 31)
+# define ROUND_3                 (32 <= i && i <= 47)
+# define ROUND_4                 (48 <= i && i <= 63)
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
@@ -47,8 +52,8 @@ typedef struct	s_md5_state
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 */
 
-extern uint32_t g_s[64];
-extern uint32_t g_k[64];
+extern uint32_t	g_s[64];
+extern uint32_t	g_k[64];
 
 uint32_t g_s[64] =
 {
@@ -82,11 +87,7 @@ uint32_t g_k[64] =
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 */
 
-char	*ft_md5(void *message, size_t size);
-
-char	**md5_preprocess(char *message, size_t size);
-t_md5	md5_process(uint32_t m[16], t_md5 state);
-void	md5_operation(t_md5 state, uint32_t i, uint32_t *f, uint32_t *g);
+char			*ft_md5(void *message, size_t size);
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **

@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 12:14:48 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/11 12:13:53 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/11 12:41:21 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,50 +54,36 @@ static void		get_32bit_words(const char *_512bit_string,
 	{
 		word_count = 0;
 		i = 0;
-		while ()
+		while (i < SUBDIVISIONS)
+		{
+			ft_strncpy((char *)_512bit_string + (i * 32), (*_32bit_word)[i], 32);
+		}
 	}
 	return ;
-}
-
-char			**md5_preprocess(char *message, size_t size)
-{
-/*
-**	    Pre-processing: adding a single 1 bit
-**
-**	    	append "1" bit to message
-**
-**	    	Notice: the input bytes are considered as bits strings,
-**	    	where the first bit is the most significant bit of the byte.[49]
-**
-**	    Pre-processing: padding with zeros
-**
-**	    	append "0" bit until message length in bits ≡ 448 (mod 512)
-**	    	append original length in bits mod 264 to message
-*/
 }
 
 /*
 **    DESCRIPTION
 **         Denotes one operation.
 */
-void			md5_operation(t_md5 state, uint32_t i, uint32_t *f, uint32_t *g)
+static void		md5_operation(t_md5 state, uint32_t i, uint32_t *f, uint32_t *g)
 {
-	if (0 <= i && i <= 15)
+	if (ROUND_1)
 	{
 		(*f) = (state.b & state.c) | ((~state.b) & state.d);
 		(*g) = i;
 	}
-	else if (16 <= i && i <= 31)
+	else if (ROUND_2)
 	{
 		(*f) = (state.d & state.b) | ((~state.d) & state.c);
 		(*g) = (5 * i + 1) % 16;
 	}
-	else if (32 <= i && i <= 47)
+	else if (ROUND_3)
 	{
 		(*f) = state.b ^ state.c ^ state.d;
 		(*g) = (3 * i + 5) % 16;
 	}
-	else if (48 <= i && i <= 63)
+	else if (ROUND_4)
 	{
 		(*f) = state.c ^ (state.b | (~state.d));
 		(*g) = (7 * i) % 16;
@@ -107,9 +93,9 @@ void			md5_operation(t_md5 state, uint32_t i, uint32_t *f, uint32_t *g)
 
 /*
 **    DESCRIPTION
-**         Denotes the process that each message chunk goes through.
+**         Denotes the entire process that each message chunk goes through.
 */
-t_md5			md5_process(uint32_t m[SUBDIVISIONS], t_md5 state)
+static t_md5	md5_process(t_md5 state, uint32_t m[SUBDIVISIONS])
 {
 	t_md5		state_prime;
 	uint32_t	i;
@@ -136,6 +122,25 @@ t_md5			md5_process(uint32_t m[SUBDIVISIONS], t_md5 state)
 	state.c += state_prime.c;
 	state.b += state_prime.b;
 	return (state);
+}
+
+static char		**md5_preprocess(char *message, size_t size)
+{
+/*
+**      Chunkanize message in 512 bit chunks.
+**
+**	    Pre-processing: adding a single 1 bit
+**
+**	    	append "1" bit to message
+**
+**	    	Notice: the input bytes are considered as bits strings,
+**	    	where the first bit is the most significant bit of the byte.[49]
+**
+**	    Pre-processing: padding with zeros
+**
+**	    	append "0" bit until message length in bits ≡ 448 (mod 512)
+**	    	append original length in bits mod 264 to message
+*/
 }
 
 /*
@@ -179,7 +184,7 @@ char			*ft_md5(void *message, size_t size)
 	while (chunk[++i] != NULL)
 	{
 		get_32bit_words(chunk[i], &m);
-		state = md5_process((uint32_t *)m, state);
+		state = md5_process(state, (uint32_t *)m);
 	}
 	if (!(digest = (uint32_t *)malloc((sizeof(uint32_t) * 4) + 1)))
 		return (NULL);
