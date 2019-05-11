@@ -1,6 +1,6 @@
 # Ft_ssl_md5
 
-In this project we were introduced to cryptographic hashing algorithms and were asked to rewrite part of the `openssl` command such that it supports at least the `md5` & `sha256` cryptographic hash functions; any other functionality we added would be considered bonus.
+In this project we were introduced to cryptographic hashing algorithms and were asked to rewrite part of the `openssl` command such that it supported at least the `md5` & `sha256` cryptographic hash functions; any other functionality we added would be considered bonus.
 
 ## Implemented Functionalities
 <table>
