@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 18:16:15 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/10 18:37:22 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/11 12:11:59 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,19 @@
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 */
 
-#include "../Libft/Includes/libft.h"
+# include "../Libft/Includes/libft.h"
+
+/*
+** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
+*/
+
+# define TOTAL_OPERATIONS  (64)
+# define SUBDIVISIONS      (16)
+
+# define INITIALIZER_CONSTANT_A     (0x67452301)
+# define INITIALIZER_CONSTANT_B     (0xefcdab89)
+# define INITIALIZER_CONSTANT_C     (0x98badcfe)
+# define INITIALIZER_CONSTANT_D     (0x10325476)
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
@@ -29,17 +41,10 @@ typedef struct	s_md5_state
 	uint32_t	b;
 	uint32_t	c;
 	uint32_t	d;
-	uint32_t	m[16];
 }				t_md5;
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-**
-**  Note:
-**
-**     •  All variables are unsigned 32 bit and wrap modulo 2^32 when calculating
-**     •  's' specifies the per-round shift amounts
-**     •  'k' specifies constants
 */
 
 extern uint32_t g_s[64];
@@ -80,9 +85,8 @@ uint32_t g_k[64] =
 char	*ft_md5(void *message, size_t size);
 
 char	**md5_preprocess(char *message, size_t size);
-t_md5	md5_process(const char *chunk, t_md5 state);
-
-void	get_32bit_words(const char *chunk, uint32_t (*words)[16]);
+t_md5	md5_process(uint32_t m[16], t_md5 state);
+void	md5_operation(t_md5 state, uint32_t i, uint32_t *f, uint32_t *g);
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
