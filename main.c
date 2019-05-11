@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 08:30:29 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/10 13:04:16 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/10 18:36:24 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,25 +49,42 @@
 **      }				t_option;
 */
 
-char	*ft_strcat(char *s1, const char *s2)
+char	**ft_strtabncat(const char **dst, const char **src, long n)
 {
 	size_t	i;
 	size_t	j;
 
-	if (s2)
+	if (dst && src)
 	{
-		i = ft_strlen(s1);
-		j = 0;
-		while (s2[j])
-			s1[i++] = s2[j++];
-		s1[i] = '\0';
+		i = ft_strtablen(dst);
+		if (i > 0)
+		{
+			j = 0;
+			while (n-- > 0 && src[j])
+				dst[i++] = src[j++];
+			dst[i] = NULL;
+		}
 	}
-	return (s1);
+	return ((char **)dst);
 }
 
 char	**ft_strtabcat(const char **dst, const char **src)
 {
+	size_t	i;
+	size_t	j;
 
+	if (dst && src)
+	{
+		i = ft_strtablen(dst);
+		if (i > 0)
+		{
+			j = 0;
+			while (src[j])
+				dst[i++] = src[j++];
+			dst[i] = NULL;
+		}
+	}
+	return ((char **)dst);
 }
 
 char	**ft_strtabjoin(const char **strtab, char *str)
@@ -157,20 +174,4 @@ int				main(int ac, const char *av[])
 		user_input.command, user_input.messages, user_input.options);
 	ft_ssl_formatted_output(user_input, digest);
 	return (0);
-}
-
-char	*ft_md5(void *message, size_t size)
-{
-	char	*digest;
-
-	/* TODO : implement md5 cryptographic hash function */
-	return (digest);
-}
-
-char	*ft_sha256(void *message, size_t size)
-{
-	char	*digest;
-
-	/* TODO : implement sha256 cryptographic hash function */
-	return (digest);
 }
