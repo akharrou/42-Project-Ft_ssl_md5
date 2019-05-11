@@ -1,11 +1,12 @@
 # Ft_ssl_md5
 
-In this project we are introduced to cryptographic hashing algorithms and a couple of known and widely used ones:
+In this project we were introduced to cryptographic hashing algorithms.
+We were then presented to a couple widely used ones.
   * `MD5`
   * `SHA-256, 1, 512`
   * `whirlpool`
 
-Then we were asked to rewrite part of the `openssl` command, rewrite a couple of the cryptographic hashing algorithms it supports and incorporate one into the other.
+Finally, we were asked to rewrite part of the `openssl` command such that it supported at least `md5` & `sha256` (i.e we had to recode them); any other functionality we added would be considered bonus.
 
 ## Implemented Functionalities
 <table>
