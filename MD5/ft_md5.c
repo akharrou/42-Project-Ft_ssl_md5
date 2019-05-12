@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 12:14:48 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/11 14:51:48 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/11 19:30:59 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 **     •  'm' specifies an array of 32-bit blocks that a message chunk gets
 **        sub-divided in.
 **
-**     •  'f' is a placeholder for the result of the state variables passed
+**     •  'f' is a placeholder for the padded_message of the state variables passed
 **        to a non-linear function (the function is differs every 16
 **        operations)
 **
@@ -123,23 +123,34 @@ static t_md5	md5_process(t_md5 state, uint32_t m[SUBDIVISIONS])
 	return (state);
 }
 
-static char		**md5_preprocess(char *message, size_t size)
+static char		**md5_preprocess(char *msg, size_t size)
 {
-/*
-**      Chunkanize message in 512 bit chunks.
-**
-**	    Pre-processing: adding a single 1 bit
-**
-**	    	append "1" bit to message
-**
-**	    	Notice: the input bytes are considered as bits strings,
-**	    	where the first bit is the most significant bit of the byte.[49]
-**
-**	    Pre-processing: padding with zeros
-**
-**	    	append "0" bit until message length in bits ≡ 448 (mod 512)
-**	    	append original length in bits mod 264 to message
-*/
+	char		**chunk_array;
+	int32_t		len;
+	int32_t		i;
+
+	if (!msg)
+		EXIT(ft_printf("%s{lred}", "error: missing input message"));
+	len = (size / CHUNK_SIZE) + 1;
+	if (CHUNK_SIZE - (size % CHUNK_SIZE) <= sizeof(uint64_t))
+		len += 1;
+	if (!(chunk_array = (char **)malloc(sizeof(char *) * (len + 1))))
+		EXIT(ft_printf("%s{lred}", strerror(errno)));
+	i = -1;
+	ft_printf("%s\n", msg);
+	while (++i < len)
+	{
+		chunk_array[i] = (char *)ft_malloc(CHUNK_SIZE, '\0');
+		if (!chunk_array[i])
+			EXIT(ft_printf("%s{lred}", strerror(errno)));
+		if ((uint32_t)i * CHUNK_SIZE < size)
+			ft_strncpy(chunk_array[i], msg + (i * CHUNK_SIZE), CHUNK_SIZE);
+		if (0 <= size - i * CHUNK_SIZE && size - i * CHUNK_SIZE <= 56)
+			chunk_array[i][size % CHUNK_SIZE] = (char)(1 << 7);
+	}
+	*(uint64_t *)&chunk_array[i - 1][55] = (uint64_t)size;
+	chunk_array[i] = NULL;
+	return (chunk_array);
 }
 
 /*
@@ -166,15 +177,15 @@ static char		**md5_preprocess(char *message, size_t size)
 **    RETURN VALUES
 **         Returns a (128 bit) message-digest.
 */
-char			*ft_md5(void *message, size_t size)
+char			*ft_md5(void *message)
 {
 	t_md5		state;
 	const char	**chunk;
-	uint32_t	*digest;
+	char		*digest;
 	uint32_t	m[SUBDIVISIONS];
 	int32_t		i;
 
-	chunk = (const char **)md5_preprocess((char *)message, size);
+	chunk = (const char **)md5_preprocess((char *)message, ft_strlen(message));
 	state.a = INITIALIZER_CONSTANT_A;
 	state.b = INITIALIZER_CONSTANT_B;
 	state.c = INITIALIZER_CONSTANT_C;
@@ -185,80 +196,33 @@ char			*ft_md5(void *message, size_t size)
 		get_32bit_words(chunk[i], &m);
 		state = md5_process(state, (uint32_t *)m);
 	}
-	if (!(digest = (uint32_t *)malloc((sizeof(uint32_t) * 4) + 1)))
+	if (!(digest = (char *)malloc(sizeof(uint32_t) * 4 + 1)))
 		return (NULL);
-	digest[0] = state.a;
-	digest[1] = state.b;
-	digest[2] = state.c;
-	digest[3] = state.d;
-	*(digest + (sizeof(uint32_t) * 4)) = '\0';
-	return ((char *)(&(*digest)));
+	*(uint32_t *)&digest[0 * 4] = state.a;
+	*(uint32_t *)&digest[1 * 4] = state.b;
+	*(uint32_t *)&digest[2 * 4] = state.c;
+	*(uint32_t *)&digest[3 * 4] = state.d;
+	digest[4 * 4] = '\0';
+	return (digest);
 }
 
+/*
+ *
+ * TEST MAIN
+ *
+ */
 
-
-
-
-// #include "ft_md5.h"
-// #include "ft_md5.c"
-
-# include <stdint.h>
-# include <string.h>
-# include <stdio.h>
-# include <stdlib.h>
-
-#define _512_BITS 64
-#define _64_BITS 8
-#define _INT_BITS _64_BITS
-
-char	*md5_preprocess(char *message, size_t size)
-{
-	char	*result;
-	int		offset;
-	int		append;
-
-	//if statement checks to see if there is enough room for a 64 bit integer at the end of
-	//a 512 bit chunk.
-	//If there is we only need append to reach the first 512 chunk.
-	//If there isn't then we need to append to reach the remaining of the first and a second.
-	if (size % _512_BITS <= _512_BITS - _64_BITS)
-		offset = _512_BITS;
-	else
-		offset = _512_BITS + _512_BITS;
-
-	//Offset minus how far into the chunk we were is the amount that we need to append by.
-	append = offset - (size % _512_BITS);
-
-	result = malloc(sizeof(*result) * (size + append));
-
-	// memset(result, '.', size + append); // Uncomment this one and the next one below on to see what is being appended
-	strcpy(result, message);
-	// result[size] = '.';
-
-
-	//Go to the address 64 bits before the end of result and store the original size there.
-	*(u_int64_t *)&(result[size + append - _INT_BITS]) = size;
-
-	printf("SIZE %d\n", *(int *)&result[size + append - 8]);
-	printf("%s\n", result);
-	return (result);
-}
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <math.h>
 
 int		main(void)
 {
-	// char *msg = strdup("123456789 123456789 123456789 123456789 1233456789 12345");
-	char *msg = strdup("123456789_123456789_123456789_123456789_123456789_1234567");
-	// printf("%s\n", msg);
-	md5_preprocess(msg, strlen(msg));
+
+	printf("OURS: %s\n", ft_md5("kevin"));
+	printf("REAL: %s\n", "9d5e3ecdeb4cdb7acfd63075ae046672");
 
 	return (0);
 }
-
-// .... ....  .... ....
-// .... ....  .... ....
-// .... ....  .... ....
-// .... ....  .... ....
-
-// 123456789_123456789_123456789_123456789_123456789_123456789_1234
-// 56789_123456789_123456789_123456789_123456789_123456789_1.......
-// ........................................................________

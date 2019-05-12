@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 18:16:15 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/11 14:54:43 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/11 19:02:33 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 */
 
 # include "../Libft/Includes/libft.h"
+# include <errno.h>
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
@@ -29,6 +30,7 @@
 
 # define TOTAL_OPERATIONS        (64)
 # define SUBDIVISIONS            (16)
+# define CHUNK_SIZE              (64)
 
 # define INITIALIZER_CONSTANT_A  (0x67452301)
 # define INITIALIZER_CONSTANT_B  (0xefcdab89)
@@ -104,7 +106,7 @@ uint32_t g_k[64] =
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 */
 
-char			*ft_md5(void *message, size_t size);
+char			*ft_md5(void *message);
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **

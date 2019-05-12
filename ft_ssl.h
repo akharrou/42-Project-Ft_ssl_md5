@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 08:31:14 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/10 18:39:48 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/11 16:31:09 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 */
 
 # include "Libft/Includes/libft.h"
+# include <errno.h>
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
@@ -129,11 +130,6 @@ void			ft_ssl_formatted_output();
 void			usage(void);
 void			invalid_command(const char *invalid_command);
 void			unknown_option(const char **argv);
-
-# ifdef EXIT
-#  undef EXIT
-#  define EXIT(error_function) { error_function; exit(EXIT_FAILURE); }
-# endif
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
