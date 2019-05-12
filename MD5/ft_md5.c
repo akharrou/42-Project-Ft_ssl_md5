@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 12:14:48 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/11 19:30:59 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/12 16:34:07 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@
 **     •  'k' specifies the per-operation constants (given by the MD5
 **        specification).
 **
-**     •  'm' specifies an array of 32-bit blocks that a message chunk gets
-**        sub-divided in.
+**     •  'm' specifies an array of 32-bit blocks that a message.
 **
 **     •  'f' is a placeholder for the padded_message of the state variables passed
 **        to a non-linear function (the function is differs every 16
@@ -44,21 +43,39 @@
 
 #include "ft_md5.h"
 
-static void		get_32bit_words(const char *_512bit_string,
-					uint32_t (*_32bit_word)[SUBDIVISIONS])
-{
-	uint32_t	i;
+#define FILE_   (1)
+#define BUFFER_ (2)
 
-	if (_512bit_string)
+static int		get_chunk(void **data, char *chunk, uint8_t flag)
+{
+	static bool		bit_added = false;
+	static uint64_t	len = 0;
+	ssize_t			res;
+
+	if (!data || !(*data))
+		return (-1);
+	ft_bzero(chunk, 65);
+	if (flag & FILE_)
+		res = read(*((int *)(*data)), chunk, CHUNK_SIZE);
+	if (flag & BUFFER_)
 	{
-		i = 0;
-		while (i < SUBDIVISIONS)
-		{
-			(*_32bit_word)[i] = *((uint32_t *)&_512bit_string[i * 4]);
-			++i;
-		}
+		ft_strncpy(chunk, (const char *)(*data), CHUNK_SIZE);
+		res = ft_strlen(chunk);
+		*((char **)data) += res;
 	}
-	return ;
+	if (res < 0)
+		return (-1);
+	len += res;
+	if (res == 64)
+		return (1);
+	if (res < 64 && bit_added == false)
+	{
+		chunk[res] = (char)(1 << 7);
+		bit_added = true;
+	}
+	if (res < 56)
+		*(uint64_t *)&chunk[56] = len * 8;
+	return (!bit_added || !(res < 56));
 }
 
 /*
@@ -69,22 +86,22 @@ static void		md5_operation(t_md5 state, uint32_t i, uint32_t *f, uint32_t *g)
 {
 	if (ROUND_1)
 	{
-		(*f) = F(state.b, state.c, state.d);
+		(*f) = F(B, C, D);
 		(*g) = i;
 	}
 	else if (ROUND_2)
 	{
-		(*f) = G(state.b, state.c, state.d);
+		(*f) = G(B, C, D);
 		(*g) = (5 * i + 1) % 16;
 	}
 	else if (ROUND_3)
 	{
-		(*f) = H(state.b, state.c, state.d);
+		(*f) = H(B, C, D);
 		(*g) = (3 * i + 5) % 16;
 	}
 	else if (ROUND_4)
 	{
-		(*f) = I(state.b, state.c, state.d);
+		(*f) = I(B, C, D);
 		(*g) = (7 * i) % 16;
 	}
 	return ;
@@ -94,63 +111,34 @@ static void		md5_operation(t_md5 state, uint32_t i, uint32_t *f, uint32_t *g)
 **    DESCRIPTION
 **         Denotes the entire process that each message chunk goes through.
 */
-static t_md5	md5_process(t_md5 state, uint32_t m[SUBDIVISIONS])
+
+static t_md5	md5_process(t_md5 state, char chunk[65])
 {
 	t_md5		state_prime;
 	uint32_t	i;
 	uint32_t	f;
 	uint32_t	g;
 
-	state_prime.a = state.a;
-	state_prime.d = state.d;
-	state_prime.c = state.c;
-	state_prime.b = state.b;
+	A_ = A;
+	B_ = B;
+	C_ = C;
+	D_ = D;
 	i = 0;
-	while (i < TOTAL_OPERATIONS)
+	while (i < _64_OPERATIONS)
 	{
 		md5_operation(state_prime, i, &f, &g);
-		f = f + state_prime.a + g_k[i] + m[g];
-		state_prime.a = state_prime.d;
-		state_prime.d = state_prime.c;
-		state_prime.c = state_prime.b;
-		state_prime.b = state_prime.b + ROTATE_LEFT(f, g_s[i]);
+		f = f + A_ + g_k[i] + (*(uint32_t *)&chunk[g * 4]);
+		A_ = D_;
+		D_ = C_;
+		C_ = B_;
+		B_ += ROTATE_LEFT(f, g_s[i]);
 		++i;
 	}
-	state.a += state_prime.a;
-	state.d += state_prime.d;
-	state.c += state_prime.c;
-	state.b += state_prime.b;
+	A += A_;
+	B += B_;
+	C += C_;
+	D += D_;
 	return (state);
-}
-
-static char		**md5_preprocess(char *msg, size_t size)
-{
-	char		**chunk_array;
-	int32_t		len;
-	int32_t		i;
-
-	if (!msg)
-		EXIT(ft_printf("%s{lred}", "error: missing input message"));
-	len = (size / CHUNK_SIZE) + 1;
-	if (CHUNK_SIZE - (size % CHUNK_SIZE) <= sizeof(uint64_t))
-		len += 1;
-	if (!(chunk_array = (char **)malloc(sizeof(char *) * (len + 1))))
-		EXIT(ft_printf("%s{lred}", strerror(errno)));
-	i = -1;
-	ft_printf("%s\n", msg);
-	while (++i < len)
-	{
-		chunk_array[i] = (char *)ft_malloc(CHUNK_SIZE, '\0');
-		if (!chunk_array[i])
-			EXIT(ft_printf("%s{lred}", strerror(errno)));
-		if ((uint32_t)i * CHUNK_SIZE < size)
-			ft_strncpy(chunk_array[i], msg + (i * CHUNK_SIZE), CHUNK_SIZE);
-		if (0 <= size - i * CHUNK_SIZE && size - i * CHUNK_SIZE <= 56)
-			chunk_array[i][size % CHUNK_SIZE] = (char)(1 << 7);
-	}
-	*(uint64_t *)&chunk_array[i - 1][55] = (uint64_t)size;
-	chunk_array[i] = NULL;
-	return (chunk_array);
 }
 
 /*
@@ -177,33 +165,91 @@ static char		**md5_preprocess(char *msg, size_t size)
 **    RETURN VALUES
 **         Returns a (128 bit) message-digest.
 */
-char			*ft_md5(void *message)
-{
-	t_md5		state;
-	const char	**chunk;
-	char		*digest;
-	uint32_t	m[SUBDIVISIONS];
-	int32_t		i;
 
-	chunk = (const char **)md5_preprocess((char *)message, ft_strlen(message));
-	state.a = INITIALIZER_CONSTANT_A;
-	state.b = INITIALIZER_CONSTANT_B;
-	state.c = INITIALIZER_CONSTANT_C;
-	state.d = INITIALIZER_CONSTANT_D;
-	i = -1;
-	while (chunk[++i] != NULL)
+#include <stdio.h>
+
+char	*hexdigest(const char *digest)
+{
+	char		*hexdigest;
+	char		*buf;
+	uint32_t	i;
+	uint32_t	j;
+
+	hexdigest = malloc(32 + 1);
+	buf = malloc(2);
+	i = 0;
+	j = 0;
+	while (i < 16)
 	{
-		get_32bit_words(chunk[i], &m);
-		state = md5_process(state, (uint32_t *)m);
+		buf = ft_itoa_base((uint8_t)digest[i++], "0123456789abcdef", 2);
+		hexdigest[j++] = buf[0];
+		hexdigest[j++] = buf[1];
 	}
-	if (!(digest = (char *)malloc(sizeof(uint32_t) * 4 + 1)))
-		return (NULL);
-	*(uint32_t *)&digest[0 * 4] = state.a;
-	*(uint32_t *)&digest[1 * 4] = state.b;
-	*(uint32_t *)&digest[2 * 4] = state.c;
-	*(uint32_t *)&digest[3 * 4] = state.d;
-	digest[4 * 4] = '\0';
-	return (digest);
+	hexdigest[32] = '\0';
+	return (hexdigest);
+}
+
+char		*ft_md5(void *data, int flag)
+{
+	bool	notdone;
+	char	*digest;
+	char	*chunk;
+	t_md5	state;
+
+	A = 0x67452301;
+	B = 0xefcdab89;
+	C = 0x98badcfe;
+	D = 0x10325476;
+	chunk = (char *)malloc(CHUNK_SIZE + 1);
+	if (!chunk)
+		EXIT(ft_printf("%s{lred}", strerror(errno)));
+	while (1)
+	{
+		notdone = get_chunk(&data, chunk, flag);
+		state = md5_process(state, chunk);
+		if (notdone == false)
+			break ;
+	}
+	free(chunk);
+	digest = (char *)ft_malloc(DIGEST_SIZE + 1, '\0');
+	if (!digest)
+		EXIT(ft_printf("%s{lred}", strerror(errno)));
+
+	int i = 0;
+	int j = 0;
+
+	while (i < 4)
+	{
+		digest[j++] = state._32bit_word[i] << 24 >> 24;
+		digest[j++] = state._32bit_word[i] << 16 >> 24;
+		digest[j++] = state._32bit_word[i] << 8 >> 24;
+		digest[j++] = state._32bit_word[i] << 0 >> 24;
+		++i;
+	}
+
+	// /* [0]  */   ft_printf("%.2x", A << 24 >> 24);
+	// /* [1]  */   ft_printf("%.2x", A << 16 >> 24);
+	// /* [2]  */   ft_printf("%.2x", A << 8 >> 24);
+	// /* [3]  */   ft_printf("%.2x", A << 0 >> 24);
+
+	// /* [4]  */   ft_printf("%.2x", B << 24 >> 24);
+	// /* [5]  */   ft_printf("%.2x", B << 16 >> 24);
+	// /* [6]  */   ft_printf("%.2x", B << 8 >> 24);
+	// /* [7]  */   ft_printf("%.2x", B << 0 >> 24);
+
+	// /* [8]  */   ft_printf("%.2x", C << 24 >> 24);
+	// /* [9]  */   ft_printf("%.2x", C << 16 >> 24);
+	// /* [10] */   ft_printf("%.2x", C << 8 >> 24);
+	// /* [11] */   ft_printf("%.2x", C << 0 >> 24);
+
+	// /* [12] */   ft_printf("%.2x", D << 24 >> 24);
+	// /* [13] */   ft_printf("%.2x", D << 16 >> 24);
+	// /* [14] */   ft_printf("%.2x", D << 8 >> 24);
+	// /* [15] */   ft_printf("%.2x", D << 0 >> 24);
+
+	digest[16] = '\0';
+
+	return (hexdigest(digest));
 }
 
 /*
@@ -217,12 +263,28 @@ char			*ft_md5(void *message)
 #include <string.h>
 #include <unistd.h>
 #include <math.h>
+#include <fcntl.h>
 
-int		main(void)
+int		main(int ac, char **av)
 {
 
-	printf("OURS: %s\n", ft_md5("kevin"));
-	printf("REAL: %s\n", "9d5e3ecdeb4cdb7acfd63075ae046672");
+	// printf("\nOURS: %s\n", ft_md5("kevin", BUFFER_));
+	// printf("REAL: %s\n", "9d5e3ecdeb4cdb7acfd63075ae046672");
 
+	// printf("\nOURS: %s\n", ft_md5("browskinielbvieoaisjdioqwhdqiwd9138dh239dhsoijda0983d89h", BUFFER_));
+	// printf("REAL: %s\n", "f0891b6723ceb9319ce538682db70c5b");
+
+	//  MSG="3F[.3P[F23, P2,3FIO\0N23 F98 23BFB\\02388A G o7g \\0 8v \0 fo873gfid\0bluf g \\0  83ogf28vl \0  udyg f7\\0823fl23 gf2387f" ; ./a $MSG  && md5 -q -s $MSG
+
+	// printf("%s\n", ft_md5(av[1], BUFFER_));
+
+	// int fd = open(av[1], O_RDONLY);
+	// printf("%s\n", ft_md5(&fd, FILE_));
+
+	int fd = 0;
+	printf("%s\n", ft_md5(&fd, FILE_));
+
+	(void)av;
+	(void)ac;
 	return (0);
 }

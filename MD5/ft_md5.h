@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 18:16:15 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/11 19:34:31 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/12 14:49:47 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,43 +28,39 @@
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 */
 
-# define TOTAL_OPERATIONS        (64)
-# define SUBDIVISIONS            (16)
-# define CHUNK_SIZE              (64)
+# define _64_OPERATIONS     (64)
+# define DIGEST_SIZE        (16)
+# define CHUNK_SIZE         (64)
 
-# define INITIALIZER_CONSTANT_A  (0x67452301)
-# define INITIALIZER_CONSTANT_B  (0xefcdab89)
-# define INITIALIZER_CONSTANT_C  (0x98badcfe)
-# define INITIALIZER_CONSTANT_D  (0x10325476)
+# define A                  (state._32bit_word[0])
+# define B                  (state._32bit_word[1])
+# define C                  (state._32bit_word[2])
+# define D                  (state._32bit_word[3])
 
-# define ROUND_1                 (0 <= i && i <= 15)
-# define ROUND_2                 (16 <= i && i <= 31)
-# define ROUND_3                 (32 <= i && i <= 47)
-# define ROUND_4                 (48 <= i && i <= 63)
+# define A_                 (state_prime._32bit_word[0])
+# define B_                 (state_prime._32bit_word[1])
+# define C_                 (state_prime._32bit_word[2])
+# define D_                 (state_prime._32bit_word[3])
 
-# define F(b, c, d)              (((b) & (c)) | ((~b) & (d)))
-# define G(b, c, d)              (((b) & (d)) | ((c) & (~d)))
-# define H(b, c, d)              ((b) ^ (c) ^ (d))
-# define I(b, c, d)              ((c) ^ ((b) | (~d)))
+# define F(b, c, d)         (((b) & (c)) | ((~b) & (d)))
+# define G(b, c, d)         (((b) & (d)) | ((c) & (~d)))
+# define H(b, c, d)         ((b) ^ (c) ^ (d))
+# define I(b, c, d)         ((c) ^ ((b) | (~d)))
 
-/*
-**  ROTATE_LEFT rotates x left n bits.
-*/
-# define ROTATE_LEFT(x, n)        (((x) << (n)) | ((x) >> (32-(n))))
+# define ROUND_1            (0 <= i && i <= 15)
+# define ROUND_2            (16 <= i && i <= 31)
+# define ROUND_3            (32 <= i && i <= 47)
+# define ROUND_4            (48 <= i && i <= 63)
+
+# define ROTATE_LEFT(x, n)  (((x) << (n)) | ((x) >> (32 - (n))))
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-**
-**  MD5 Context Structure.
-**
 */
 
-typedef struct	s_md5_state
+typedef struct	s_md5_context
 {
-	uint32_t	a;
-	uint32_t	b;
-	uint32_t	c;
-	uint32_t	d;
+	uint32_t	_32bit_word[4];
 }				t_md5;
 
 /*
@@ -76,10 +72,10 @@ extern uint32_t	g_k[64];
 
 uint32_t g_s[64] =
 {
-	7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,
-	5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,
-	4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,
-	6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21
+	7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,
+	5,  9, 14, 20, 5,  9, 14, 20, 5,  9, 14, 20, 5,  9, 14, 20,
+	4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23,
+	6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21
 };
 
 uint32_t g_k[64] =
@@ -106,7 +102,7 @@ uint32_t g_k[64] =
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 */
 
-char			*ft_md5(void *message);
+char		*ft_md5(void *data, int flag);
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
