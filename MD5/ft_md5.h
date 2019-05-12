@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 18:16:15 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/11 19:02:33 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/11 19:34:31 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@
 # define ROUND_3                 (32 <= i && i <= 47)
 # define ROUND_4                 (48 <= i && i <= 63)
 
-# define F(b, c, d)               (((b) & (c)) | ((~b) & (d)))
-# define G(b, c, d)               (((b) & (d)) | ((c) & (~d)))
-# define H(b, c, d)               ((b) ^ (c) ^ (d))
-# define I(b, c, d)               ((c) ^ ((b) | (~d)))
+# define F(b, c, d)              (((b) & (c)) | ((~b) & (d)))
+# define G(b, c, d)              (((b) & (d)) | ((c) & (~d)))
+# define H(b, c, d)              ((b) ^ (c) ^ (d))
+# define I(b, c, d)              ((c) ^ ((b) | (~d)))
 
 /*
 **  ROTATE_LEFT rotates x left n bits.
