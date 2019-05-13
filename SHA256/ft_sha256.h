@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 18:36:53 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/11 10:53:36 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/13 11:11:47 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 */
 
-typedef struct	s_sha256_state
+typedef struct	s_sha256_ctx
 {
 	\
 }				t_sha256;
@@ -76,9 +76,9 @@ typedef struct	s_sha256_state
 char		*ft_sha256(void *message, size_t size);
 
 char		**sha256_preprocess(char *message, size_t size);
-t_sha256	sha256_process(const char *chunk, t_sha256 state);
+t_sha256	sha256_process(const char *chunk, t_sha256 ctx);
 
-void		get_32bit_words(const char *chunk, uint32_t (*words)[16]);
+void		getwords(const char *chunk, uint32_t (*words)[16]);
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
