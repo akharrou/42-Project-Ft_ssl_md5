@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 12:14:48 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/12 18:44:10 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/12 18:47:53 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,8 @@ static void		md5_operation(t_md5 state, uint32_t i, uint32_t *f,
 
 /*
 **    DESCRIPTION
-**         Denotes the entire process that each message chunk goes through.
+**         Denotes the transformation (64 operations) that each message chunk
+**         goes through.
 */
 
 static t_md5	md5_process(t_md5 state, char chunk[65])
@@ -116,7 +117,7 @@ static t_md5	md5_process(t_md5 state, char chunk[65])
 	C_ = C;
 	D_ = D;
 	i = 0;
-	while (i < _64_OPERATIONS)
+	while (i < 64)
 	{
 		md5_operation(state_prime, i, &f, &g);
 		f = f + A_ + g_k[i] + (*(uint32_t *)&chunk[g * 4]);
@@ -186,9 +187,7 @@ char		*ft_md5(void *data, int flag)
 		state = md5_process(state, chunk);
 	}
 	free(chunk);
-	if (res < 0)
-		EXIT(ft_printf("%s{lred}", strerror(errno)));
-	if (!(digest = (char *)ft_malloc(DIGEST_SIZE + 1, '\0')))
+	if (res < 0 || !(digest = (char *)ft_malloc(DIGEST_SIZE + 1, '\0')))
 		EXIT(ft_printf("%s{lred}", strerror(errno)));
 	*(uint32_t *)&digest[0x00] = A;
 	*(uint32_t *)&digest[0x04] = B;
