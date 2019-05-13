@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 12:14:48 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/12 16:34:07 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/12 18:39:39 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,35 +29,27 @@
 **     •  'k' specifies the per-operation constants (given by the MD5
 **        specification).
 **
-**     •  'm' specifies an array of 32-bit blocks that a message.
-**
-**     •  'f' is a placeholder for the padded_message of the state variables passed
-**        to a non-linear function (the function is differs every 16
+**     •  'f' is a placeholder for the padded_message of the state variables
+**        passed to a non-linear function (the function is differs every 16
 **        operations)
 **
 **     •  'i' denotes the i'th operation we are at.
 **
-**     •  'g' serves as an index to grab a certain 32-bit block in the array
-**        'm'. 'm[g]' denotes one 32-bit block of the message input.
+**     •  'g' serves as an index to grab a certain 32-bit block in a chunk.
 */
 
 #include "ft_md5.h"
 
-#define FILE_   (1)
-#define BUFFER_ (2)
-
-static int		get_chunk(void **data, char *chunk, uint8_t flag)
+static int		get_chunk(void **data, char *chunk, int flag)
 {
 	static bool		bit_added = false;
 	static uint64_t	len = 0;
 	ssize_t			res;
 
-	if (!data || !(*data))
-		return (-1);
 	ft_bzero(chunk, 65);
-	if (flag & FILE_)
+	if (flag & O_FILE)
 		res = read(*((int *)(*data)), chunk, CHUNK_SIZE);
-	if (flag & BUFFER_)
+	if (flag & O_BUFFER)
 	{
 		ft_strncpy(chunk, (const char *)(*data), CHUNK_SIZE);
 		res = ft_strlen(chunk);
@@ -68,21 +60,21 @@ static int		get_chunk(void **data, char *chunk, uint8_t flag)
 	len += res;
 	if (res == 64)
 		return (1);
-	if (res < 64 && bit_added == false)
-	{
+	if (bit_added == false)
 		chunk[res] = (char)(1 << 7);
-		bit_added = true;
-	}
+	bit_added = true;
 	if (res < 56)
-		*(uint64_t *)&chunk[56] = len * 8;
-	return (!bit_added || !(res < 56));
+		*(uint64_t *)&chunk[56] = (len * 8);
+	return (!(res == 0 && bit_added));
 }
 
 /*
 **    DESCRIPTION
 **         Denotes one operation.
 */
-static void		md5_operation(t_md5 state, uint32_t i, uint32_t *f, uint32_t *g)
+
+static void		md5_operation(t_md5 state, uint32_t i, uint32_t *f,
+					uint32_t *g)
 {
 	if (ROUND_1)
 	{
@@ -149,107 +141,60 @@ static t_md5	md5_process(t_md5 state, char chunk[65])
 **         #include <libft.h>
 **
 **         char *
-**         ft_md5(void *message, size_t size)
+**         ft_md5(void *data, int flag)
 **
 **    PARAMETERS
 **
-**         void *message       Pointer to a message.
+**         void *data       The address of a buffer or of an integer that
+**                          represents a file descriptor.
 **
-**         size_t size         Size (in bytes) of the message.
+**         int flag         The 'flag' argument indicates to what the
+**                          'data' pointer points to. The avaible flags
+**                          are:
+**
+**                              O_BUFFER   'data' points to a buffer
+**                              O_FILE     'data' points to a filedescriptor
+**
+**                          Anything else is undefined behavior.
 **
 **    DESCRIPTION
-**         The md5 utility takes as input a message of arbitrary length
-**         and produces as output a 'fingerprint' or 'message digest'
-**         of the input.
+**         The md5 utility takes as input a some data of arbitrary
+**         length and produces as output a 'fingerprint' or 'message
+**         digest' of the input.
 **
 **    RETURN VALUES
-**         Returns a (128 bit) message-digest.
+**         Returns a (128 bit) message-digest (non-hex) string.
 */
-
-#include <stdio.h>
-
-char	*hexdigest(const char *digest)
-{
-	char		*hexdigest;
-	char		*buf;
-	uint32_t	i;
-	uint32_t	j;
-
-	hexdigest = malloc(32 + 1);
-	buf = malloc(2);
-	i = 0;
-	j = 0;
-	while (i < 16)
-	{
-		buf = ft_itoa_base((uint8_t)digest[i++], "0123456789abcdef", 2);
-		hexdigest[j++] = buf[0];
-		hexdigest[j++] = buf[1];
-	}
-	hexdigest[32] = '\0';
-	return (hexdigest);
-}
 
 char		*ft_md5(void *data, int flag)
 {
-	bool	notdone;
+	t_md5	state;
 	char	*digest;
 	char	*chunk;
-	t_md5	state;
+	int		res;
 
 	A = 0x67452301;
 	B = 0xefcdab89;
 	C = 0x98badcfe;
 	D = 0x10325476;
-	chunk = (char *)malloc(CHUNK_SIZE + 1);
-	if (!chunk)
+	if (!(chunk = (char *)malloc(CHUNK_SIZE + 1)))
 		EXIT(ft_printf("%s{lred}", strerror(errno)));
-	while (1)
+	res = 1;
+	while (res)
 	{
-		notdone = get_chunk(&data, chunk, flag);
+		res = get_chunk(&data, chunk, flag);
 		state = md5_process(state, chunk);
-		if (notdone == false)
-			break ;
 	}
 	free(chunk);
-	digest = (char *)ft_malloc(DIGEST_SIZE + 1, '\0');
-	if (!digest)
+	if (res < 0)
 		EXIT(ft_printf("%s{lred}", strerror(errno)));
-
-	int i = 0;
-	int j = 0;
-
-	while (i < 4)
-	{
-		digest[j++] = state._32bit_word[i] << 24 >> 24;
-		digest[j++] = state._32bit_word[i] << 16 >> 24;
-		digest[j++] = state._32bit_word[i] << 8 >> 24;
-		digest[j++] = state._32bit_word[i] << 0 >> 24;
-		++i;
-	}
-
-	// /* [0]  */   ft_printf("%.2x", A << 24 >> 24);
-	// /* [1]  */   ft_printf("%.2x", A << 16 >> 24);
-	// /* [2]  */   ft_printf("%.2x", A << 8 >> 24);
-	// /* [3]  */   ft_printf("%.2x", A << 0 >> 24);
-
-	// /* [4]  */   ft_printf("%.2x", B << 24 >> 24);
-	// /* [5]  */   ft_printf("%.2x", B << 16 >> 24);
-	// /* [6]  */   ft_printf("%.2x", B << 8 >> 24);
-	// /* [7]  */   ft_printf("%.2x", B << 0 >> 24);
-
-	// /* [8]  */   ft_printf("%.2x", C << 24 >> 24);
-	// /* [9]  */   ft_printf("%.2x", C << 16 >> 24);
-	// /* [10] */   ft_printf("%.2x", C << 8 >> 24);
-	// /* [11] */   ft_printf("%.2x", C << 0 >> 24);
-
-	// /* [12] */   ft_printf("%.2x", D << 24 >> 24);
-	// /* [13] */   ft_printf("%.2x", D << 16 >> 24);
-	// /* [14] */   ft_printf("%.2x", D << 8 >> 24);
-	// /* [15] */   ft_printf("%.2x", D << 0 >> 24);
-
-	digest[16] = '\0';
-
-	return (hexdigest(digest));
+	if (!(digest = (char *)ft_malloc(DIGEST_SIZE + 1, '\0')))
+		EXIT(ft_printf("%s{lred}", strerror(errno)));
+	*(uint32_t *)&digest[0x00] = A;
+	*(uint32_t *)&digest[0x04] = B;
+	*(uint32_t *)&digest[0x08] = C;
+	*(uint32_t *)&digest[0x0c] = D;
+	return (digest);
 }
 
 /*
@@ -282,7 +227,7 @@ int		main(int ac, char **av)
 	// printf("%s\n", ft_md5(&fd, FILE_));
 
 	int fd = 0;
-	printf("%s\n", ft_md5(&fd, FILE_));
+	printf("%s\n", ft_md5("some string data", BUFFER_));
 
 	(void)av;
 	(void)ac;

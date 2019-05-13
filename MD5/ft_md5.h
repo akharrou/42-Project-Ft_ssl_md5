@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 18:16:15 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/12 14:49:47 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/12 18:28:00 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,21 @@
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
+**
+**  MD5 second argument flags.
+**
+*/
+
+# define O_FILE              (1)
+# define O_BUFFER            (2)
+
+/*
+** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 */
 
 # define _64_OPERATIONS     (64)
-# define DIGEST_SIZE        (16)
 # define CHUNK_SIZE         (64)
+# define DIGEST_SIZE        (128 / 8)
 
 # define A                  (state._32bit_word[0])
 # define B                  (state._32bit_word[1])
