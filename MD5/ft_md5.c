@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 12:14:48 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/12 18:47:53 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/12 19:57:18 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,34 +39,6 @@
 */
 
 #include "ft_md5.h"
-
-static int		get_chunk(void **data, char *chunk, int flag)
-{
-	static bool		bit_added = false;
-	static uint64_t	len = 0;
-	ssize_t			res;
-
-	ft_bzero(chunk, 65);
-	if (flag & O_FILE)
-		res = read(*((int *)(*data)), chunk, CHUNK_SIZE);
-	if (flag & O_BUFFER)
-	{
-		ft_strncpy(chunk, (const char *)(*data), CHUNK_SIZE);
-		res = ft_strlen(chunk);
-		*((char **)data) += res;
-	}
-	if (res < 0)
-		return (-1);
-	len += res;
-	if (res == 64)
-		return (1);
-	if (bit_added == false)
-		chunk[res] = (char)(1 << 7);
-	bit_added = true;
-	if (res < 56)
-		*(uint64_t *)&chunk[56] = (len * 8);
-	return (!(res < 56) || !bit_added);
-}
 
 /*
 **    DESCRIPTION
@@ -153,19 +125,53 @@ static t_md5	md5_process(t_md5 state, char chunk[65])
 **                          'data' pointer points to. The avaible flags
 **                          are:
 **
-**                              O_BUFFER   'data' points to a buffer
-**                              O_FILE     'data' points to a filedescriptor
+**                             O_BUF   'data' points to a buffer
+**                             O_FD    'data' points to a file descriptor
 **
 **                          Anything else is undefined behavior.
 **
 **    DESCRIPTION
-**         The md5 utility takes as input a some data of arbitrary
-**         length and produces as output a 'fingerprint' or 'message
-**         digest' of the input.
+**         The md5 utility takes as input some data of arbitrary length and
+**         produces as output a 'fingerprint' or 'message digest' of the
+**         input.
 **
 **    RETURN VALUES
 **         Returns a (128 bit) message-digest (non-hex) string.
 */
+
+static int		get_chunk(void **data, char *chunk, int flag)
+{
+	static bool			bit_added;
+	static uint64_t		len;
+	ssize_t				res;
+
+	ft_bzero(chunk, 65);
+	if (flag & O_FD)
+		res = read(*((int *)(*data)), chunk, CHUNK_SIZE);
+	if (flag & O_BUF)
+	{
+		ft_strncpy(chunk, (const char *)(*data), CHUNK_SIZE);
+		res = ft_strlen(chunk);
+		*((char **)data) += res;
+	}
+	if (res == -1)
+		return (-1);
+	len += res;
+	if (res == 64)
+		return (1);
+	if (bit_added == false)
+		chunk[res] = (char)(1 << 7);
+	bit_added = true;
+	if (res < 56)
+	{
+		*(uint64_t *)&chunk[56] = (len * 8);
+		len = 0;
+		bit_added = false;
+		return (0);
+	}
+	return (!(res < 56) || !bit_added);
+	/* TODO : NORM THIS ! */
+}
 
 char		*ft_md5(void *data, int flag)
 {
@@ -179,16 +185,16 @@ char		*ft_md5(void *data, int flag)
 	C = 0x98badcfe;
 	D = 0x10325476;
 	if (!(chunk = (char *)malloc(CHUNK_SIZE + 1)))
-		EXIT(ft_printf("%s{lred}", strerror(errno)));
+		EXIT(ft_printf("Error: %s{underlined}", strerror(errno)));
 	res = 1;
-	while (res)
+	while (res > 0)
 	{
 		res = get_chunk(&data, chunk, flag);
 		state = md5_process(state, chunk);
 	}
 	free(chunk);
-	if (res < 0 || !(digest = (char *)ft_malloc(DIGEST_SIZE + 1, '\0')))
-		EXIT(ft_printf("%s{lred}", strerror(errno)));
+	if (res == -1 || !(digest = (char *)ft_malloc(DIGEST_SIZE + 1, '\0')))
+		EXIT(ft_printf("Error: %s{underlined}", strerror(errno)));
 	*(uint32_t *)&digest[0x00] = A;
 	*(uint32_t *)&digest[0x04] = B;
 	*(uint32_t *)&digest[0x08] = C;
@@ -211,22 +217,24 @@ char		*ft_md5(void *data, int flag)
 
 int		main(int ac, char **av)
 {
-
-	// printf("\nOURS: %s\n", ft_md5("kevin", BUFFER_));
-	// printf("REAL: %s\n", "9d5e3ecdeb4cdb7acfd63075ae046672");
-
-	// printf("\nOURS: %s\n", ft_md5("browskinielbvieoaisjdioqwhdqiwd9138dh239dhsoijda0983d89h", BUFFER_));
-	// printf("REAL: %s\n", "f0891b6723ceb9319ce538682db70c5b");
-
+	/* NULL IN STRING TEST */
 	//  MSG="3F[.3P[F23, P2,3FIO\0N23 F98 23BFB\\02388A G o7g \\0 8v \0 fo873gfid\0bluf g \\0  83ogf28vl \0  udyg f7\\0823fl23 gf2387f" ; ./a $MSG  && md5 -q -s $MSG
 
-	// printf("%s\n", ft_md5(av[1], BUFFER_));
+	/* STRING TESTS */
+	// printf("%s\n", ft_strhex(ft_md5(av[1], O_BUF)));
 
-	// int fd = open(av[1], O_RDONLY);
-	// printf("%s\n", ft_md5(&fd, FILE_));
+	/* STANDARD INPUT TESTS */
+	// int fd = 0;
+	// printf("%s\n", ft_strhex(ft_md5(&fd, O_FD)));
 
-	int fd = 0;
-	printf("%s\n", ft_md5("some string data", BUFFER_));
+	/* FILE INPUT TESTS TESTS */
+	// int fd;
+	// int i = 1;
+	// while (i < ac)
+	// {
+	// 	fd = open(av[i++], O_RDONLY);
+	// 	printf("%s\n", ft_strhex(ft_md5(&fd, O_FD)));
+	// }
 
 	(void)av;
 	(void)ac;
