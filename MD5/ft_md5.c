@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 12:14:48 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/12 18:39:39 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/12 18:44:10 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static int		get_chunk(void **data, char *chunk, int flag)
 	bit_added = true;
 	if (res < 56)
 		*(uint64_t *)&chunk[56] = (len * 8);
-	return (!(res == 0 && bit_added));
+	return (!(res < 56) || !bit_added);
 }
 
 /*
