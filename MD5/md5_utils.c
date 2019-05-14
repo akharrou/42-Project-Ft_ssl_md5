@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   md5_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 10:49:59 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/13 15:34:11 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/14 11:16:35 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,12 +199,14 @@ void			md5_transform(t_md5ctx *ctx)
 **         construct the final digest.
 */
 
-void			md5_final(t_md5ctx *ctx, char *digest)
+void			md5_final(t_md5ctx *ctx, char **digest)
 {
-	*(uint32_t *)&digest[0] = A;
-	*(uint32_t *)&digest[4] = B;
-	*(uint32_t *)&digest[8] = C;
-	*(uint32_t *)&digest[12] = D;
-	digest[16] = '\0';
+	if (!((*digest) = (char *)ft_malloc(MD5_DIGEST_LENGTH + 1, '\0')))
+		EXIT(ft_printf("Error: %s{underlined}", strerror(errno)));
+	*(uint32_t *)&(*digest)[0] = A;
+	*(uint32_t *)&(*digest)[4] = B;
+	*(uint32_t *)&(*digest)[8] = C;
+	*(uint32_t *)&(*digest)[12] = D;
+	(*digest)[16] = '\0';
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 18:16:15 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/13 15:35:38 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/14 11:09:54 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,8 @@
 **  The macros/aliases are for more readability.
 */
 
-# define _64_OPERATIONS     (64)
-# define CHUNK_LENGTH       (64)
-# define DIGEST_LENGTH      (16)
+# define MD5_CHUNK_LENGTH   (64)
+# define MD5_DIGEST_LENGTH  (16)
 
 # define A                  (ctx->word[0])
 # define B                  (ctx->word[1])
@@ -94,7 +93,7 @@ char		*ft_md5(void *data, int flag);
 void		md5_init(t_md5ctx *ctx);
 ssize_t		md5_update(t_md5ctx *ctx, void **data, int flag);
 void		md5_transform(t_md5ctx *ctx);
-void		md5_final(t_md5ctx *ctx, char *digest);
+void		md5_final(t_md5ctx *ctx, char **digest);
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **

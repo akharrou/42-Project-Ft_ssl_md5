@@ -15,29 +15,47 @@
 
 int		main(int ac, char **av)
 {
-	/* NULL IN STRING TEST */
-	//  MSG="3F[.3P[F23, P2,3FIO\0N23 F98 23BFB\\02388A G o7g \\0 8v \0 fo873gfid\0bluf g \\0  83ogf28vl \0  udyg f7\\0823fl23 gf2387f" ; ./a $MSG  && md5 -q -s $MSG
+	char	*hexstr;
+	int		fd;
+	int		i;
 
-	/* STRING TESTS */
-	// printf("%s\n", ft_strhex(ft_md5(av[1], O_BUF)));
-
-	/* STANDARD INPUT TESTS */
-	// int fd = 0;
-	// printf("%s\n", ft_strhex(ft_md5(&fd, O_FD)));
-
-	/* FILE INPUT TESTS TESTS */
-	int fd;
-	int i = 1;
-	// char *hexstr;
-	while (i < ac)
+	/* STRING TESTS                            -- FLAG: '-s' */
+	if (ft_strcmp(av[1], "-s") == 0)
 	{
-		fd = open(av[i++], O_RDONLY);
-		printf("%s\n", ft_strhex(ft_md5(&fd, O_FD), 16));
-		// hexstr = ft_strhex(ft_md5(&fd, O_FD), 16);
-		// printf("[FILE #%.3i] %50s -- %-s\n", i - 1, av[i - 1], hexstr);
+		hexstr = ft_md5(av[2], O_BUF);
+		if (hexstr != NULL)
+		{
+			printf("%s\n", ft_strhex(hexstr, 16));
+			free(hexstr);
+		}
 	}
 
-	(void)av;
-	(void)ac;
+	/* STANDARD INPUT TESTS                    -- FLAG: '-i' */
+	else if (ft_strcmp(av[1], "-i") == 0)
+	{
+		fd = 0;
+		hexstr = ft_md5(&fd, O_FD);
+		if (hexstr != NULL)
+		{
+			printf("%s\n", ft_strhex(hexstr, 16));
+			free(hexstr);
+		}
+	}
+
+	/* FILE INPUT TESTS TESTS                  -- FLAG: '' */
+	else
+	{
+		i = 1;
+		while (i < ac)
+		{
+			fd = open(av[i++], O_RDONLY);
+			hexstr = ft_md5(&fd, O_FD);
+			if (hexstr != NULL)
+			{
+				printf("%s\n", ft_strhex(hexstr, 16));
+				free(hexstr);
+			}
+		}
+	}
 	return (0);
 }
