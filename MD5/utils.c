@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 10:49:59 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/13 12:42:44 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/13 15:34:11 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@
 **     •  'k' specifies the per-operation constants (given by the MD5
 **        specification).
 **
+**     •  'm' specifies an array of 32-bit blocks that a message chunk gets
+**        sub-divided in.
+**
 **     •  'f' is a placeholder for the padded_message of the ctx variables
 **        passed to a non-linear function (the function is differs every 16
 **        operations)
@@ -42,6 +45,7 @@
 **     •  'i' denotes the i'th operation we are at.
 **
 **     •  'g' serves as an index to grab a certain 32-bit block in a chunk.
+**        'm'. 'm[g]' denotes one 32-bit block of the message input.
 */
 
 #include "ft_md5.h"
@@ -49,7 +53,7 @@
 uint32_t g_s[64] =
 {
 	7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,
-	5,  9, 14, 20, 5,  9, 14, 20, 5,  9, 14, 20, 5,  9, 14, 20,
+	5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20,
 	4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23,
 	6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21
 };
@@ -76,7 +80,7 @@ uint32_t g_k[64] =
 
 /*
 **    DESCRIPTION
-**         Denotes one MD5 operation.
+**         Denotes one MD5 transformation operation.
 */
 
 static void		md5_op(t_md5ctx *ctx, uint32_t i, uint32_t *f, uint32_t *g)
@@ -106,7 +110,7 @@ static void		md5_op(t_md5ctx *ctx, uint32_t i, uint32_t *f, uint32_t *g)
 
 /*
 **    DESCRIPTION
-**         Initialization of the 32 bit words denoted as A, B, C, D.
+**         Initialization of the 32 bit words denoted A, B, C & D.
 */
 
 void			md5_init(t_md5ctx *ctx)
@@ -120,7 +124,9 @@ void			md5_init(t_md5ctx *ctx)
 
 /*
 **    DESCRIPTION
-**         We update the context buffer.
+**         Updates the context buffer & the pointer of where we
+**         are in the string/file ; also keeps track of the total
+**         length of the buffer/file.
 */
 
 ssize_t			md5_update(t_md5ctx *ctx, void **data, int flag)
@@ -189,8 +195,8 @@ void			md5_transform(t_md5ctx *ctx)
 
 /*
 **    DESCRIPTION
-**         Appends the 32 bit words (denoted as A, B, C, D) to construct
-**         the digest.
+**         Appends the 32 bit words to each other (denoted as A, B, C, D) to
+**         construct the final digest.
 */
 
 void			md5_final(t_md5ctx *ctx, char *digest)

@@ -28,10 +28,13 @@ int		main(int ac, char **av)
 	/* FILE INPUT TESTS TESTS */
 	int fd;
 	int i = 1;
+	// char *hexstr;
 	while (i < ac)
 	{
 		fd = open(av[i++], O_RDONLY);
-		printf("%s\n", ft_strhex(ft_md5(&fd, O_FD)));
+		printf("%s\n", ft_strhex(ft_md5(&fd, O_FD), 16));
+		// hexstr = ft_strhex(ft_md5(&fd, O_FD), 16);
+		// printf("[FILE #%.3i] %50s -- %-s\n", i - 1, av[i - 1], hexstr);
 	}
 
 	(void)av;
