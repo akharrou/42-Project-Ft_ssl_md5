@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 10:25:53 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/14 11:08:34 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/14 18:14:15 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,26 +39,27 @@ const uint32_t g_k[64] =
 	0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
 };
 
-void	sha256_init(t_sha256ctx *ctx)
+/*
+**    DESCRIPTION
+**         Denotes one SHA256 transformation operation.
+*/
+
+static void		    sha256_schedule(t_sha256ctx *ctx)
 {
-	ctx->state[0] = 0x6a09e667;
-	ctx->state[1] = 0xbb67ae85;
-	ctx->state[2] = 0x3c6ef372;
-	ctx->state[3] = 0xa54ff53a;
-	ctx->state[4] = 0x510e527f;
-	ctx->state[5] = 0x9b05688c;
-	ctx->state[6] = 0x1f83d9ab;
-	ctx->state[7] = 0x5be0cd19;
-	return ;
+    (void)ctx;
+    return;
 }
 
+/*
+**    DESCRIPTION
+**         Initialization of the 32 bit words denoted A, B, C, D, E, F, G, .
+*/
 
-void	sha256_final(t_sha256ctx *ctx, char **digest)
+void	            sha256_init(t_sha256ctx *ctx)
 {
-	if (!((*digest) = (char *)ft_malloc(SHA256_DIGEST_LENGTH + 1, '\0')))
-		EXIT(ft_printf("Error: %s{underlined}", strerror(errno)));
-	ctx->state[0] = 0x6a09e667;
-	ctx->state[1] = 0xbb67ae85;
+    ctx->len = 0;
+    ctx->state[0] = 0x6a09e667;
+    ctx->state[1] = 0xbb67ae85;
 	ctx->state[2] = 0x3c6ef372;
 	ctx->state[3] = 0xa54ff53a;
 	ctx->state[4] = 0x510e527f;
@@ -69,72 +70,119 @@ void	sha256_final(t_sha256ctx *ctx, char **digest)
 }
 
 /*
+**    DESCRIPTION
+**         Updates the context buffer & the pointer of where we
+**         are in the string/file ; also keeps track of the total
+**         length of the buffer/file.
+*/
 
-Note 1: All variables are 32 bit unsigned integers and addition is calculated modulo 232
-Note 2: For each round,  there is one round constant k[i] and one entry in the message schedule array w[i],  0 ≤ i ≤ 63
-Note 3: The compression function uses 8 working variables,  a through h
-Note 4: Big-endian convention is used when expressing the constants in this pseudocode,
-    and when parsing message block data from bytes to words,  for example,
-    the first word of the input message "abc" after padding is 0x61626380
+ssize_t			    sha256_update(t_sha256ctx *ctx, void **data, int flag)
+{
+	static bool	    bit_added;
+	ssize_t		    ret;
 
-Pre-processing (Padding):
-begin with the original message of length L bits
-append a single '1' bit
-append K '0' bits,  where K is the minimum number >= 0 such that L + 1 + K + 64 is a multiple of 512
-append L as a 64-bit big-endian integer,  making the total post-processed length a multiple of 512 bits
+	ft_bzero(ctx->chunk, 64);
+	if (flag & O_FD)
+		ret = read(*((int *)(*data)), ctx->chunk, 64);
+	if (flag & O_BUF)
+	{
+		ret = (ssize_t)ft_strlen(ft_strncpy(ctx->chunk, (char *)(*data), 64));
+		*((char **)data) += ret;
+	}
+	ctx->len += ret;
+	if (0 <= ret && ret < 64 && bit_added == false)
+	{
+		ctx->chunk[ret] = (char)(1 << 7);
+		bit_added = true;
+	}
+	if (0 <= ret && ret < 56)
+	{
+        ft_to_big_endian(&ctx->len, sizeof(uint32_t));
+        *(uint64_t *)&ctx->chunk[56] = (ctx->len * 8);
+        bit_added = false;
+		return (0);
+	}
+	return (ret);
+}
 
-Process the message in successive 512-bit chunks:
-break message into 512-bit chunks
-for each chunk
-    create a 64-entry message schedule array w[0..63] of 32-bit words
-    (The initial values in w[0..63] don't matter,  so many implementations zero them here)
-    copy chunk into first 16 words w[0..15] of the message schedule array
+/*
+**    DESCRIPTION
+**         Denotes the transformation (64 operations) that each message chunk
+**         goes through.
+*/
 
-    Extend the first 16 words into the remaining 48 words w[16..63] of the message schedule array:
-    for i from 16 to 63
-        s0 := (w[i-15] rightrotate 7) xor (w[i-15] rightrotate 18) xor (w[i-15] rightshift 3)
-        s1 := (w[i-2] rightrotate 17) xor (w[i-2] rightrotate 19) xor (w[i-2] rightshift 10)
-        w[i] := w[i-16] + s0 + w[i-7] + s1
+void	            sha256_transform(t_sha256ctx *ctx, char **digest)
+{
+    t_sha256ctx     ctx_prime;
+    int             i;
 
-    Initialize working variables to current hash value:
-    a := h0
-    b := h1
-    c := h2
-    d := h3
-    e := h4
-    f := h5
-    g := h6
-    h := h7
+    sha256_schedule(ctx);
+    i = 0;
+    while (i < 64)
+    {
+        s0 := (w[i-15] rightrotate 7) xor (w[i-15] rightrotate 18) xor (w[i-15] rightshift 3);
+        s1 := (w[i-2] rightrotate 17) xor (w[i-2] rightrotate 19) xor (w[i-2] rightshift 10);
+        w[i] := w[i-16] + s0 + w[i-7] + s1;
+    }
 
-    Compression function main loop:
-    for i from 0 to 63
-        S1 := (e rightrotate 6) xor (e rightrotate 11) xor (e rightrotate 25)
-        ch := (e and f) xor ((not e) and g)
-        temp1 := h + S1 + ch + k[i] + w[i]
-        S0 := (a rightrotate 2) xor (a rightrotate 13) xor (a rightrotate 22)
-        maj := (a and b) xor (a and c) xor (b and c)
-        temp2 := S0 + maj
+    A_ = A;
+    B_ = B;
+    C_ = C;
+    D_ = D;
+    E_ = E;
+    F_ = F;
+    G_ = G;
+    H_ = H;
 
-        h := g
-        g := f
-        f := e
-        e := d + temp1
-        d := c
-        c := b
-        b := a
-        a := temp1 + temp2
+    i = 0;
+    while (i < 64)
+    {
+        S1 := (e rightrotate 6) xor (e rightrotate 11) xor (e rightrotate 25);
+        ch := (e and f) xor ((not e) and g);
+        temp1 := h + S1 + ch + k[i] + w[i];
+        S0 := (a rightrotate 2) xor (a rightrotate 13) xor (a rightrotate 22);
+        maj := (a and b) xor (a and c) xor (b and c);
+        temp2 := S0 + maj;
 
-    Add the compressed chunk to the current hash value:
-    h0 := h0 + a
-    h1 := h1 + b
-    h2 := h2 + c
-    h3 := h3 + d
-    h4 := h4 + e
-    h5 := h5 + f
-    h6 := h6 + g
-    h7 := h7 + h
+        H_ = G_;
+        G_ = F_;
+        F_ = E_;
+        E_ = D_ + temp1;
+        D_ = C_;
+        C_ = B_;
+        B_ = A_;
+        A_ = temp1 + temp2;
+    }
 
-Produce the final hash value (big-endian):
-digest := hash := h0 append h1 append h2 append h3 append h4 append h5 append h6 append h7
+    A += A_;
+    B += B_;
+    C += C_;
+    D += D_;
+    E += E_;
+    F += F_;
+    G += G_;
+    H += H_;
+    return ;
+}
 
- */
+/*
+**    DESCRIPTION
+**         Appends the 32 bit words to each other
+**         (denoted as A, B, C, D, E, F, G & H)
+**         to construct the final digest.
+*/
+
+void	            sha256_final(t_sha256ctx *ctx, char **digest)
+{
+	if (!((*digest) = (char *)ft_malloc(SHA256_DIGEST_LENGTH + 1, '\0')))
+		EXIT(ft_printf("Error: %s{underlined}", strerror(errno)));
+	*(uint32_t *)&(*digest)[0 * 4] = *(uint32_t *)ft_to_big_endian(&A, 4);
+	*(uint32_t *)&(*digest)[1 * 4] = *(uint32_t *)ft_to_big_endian(&B, 4);
+	*(uint32_t *)&(*digest)[2 * 4] = *(uint32_t *)ft_to_big_endian(&C, 4);
+	*(uint32_t *)&(*digest)[3 * 4] = *(uint32_t *)ft_to_big_endian(&D, 4);
+	*(uint32_t *)&(*digest)[4 * 4] = *(uint32_t *)ft_to_big_endian(&E, 4);
+	*(uint32_t *)&(*digest)[5 * 4] = *(uint32_t *)ft_to_big_endian(&F, 4);
+	*(uint32_t *)&(*digest)[6 * 4] = *(uint32_t *)ft_to_big_endian(&G, 4);
+	*(uint32_t *)&(*digest)[7 * 4] = *(uint32_t *)ft_to_big_endian(&H, 4);
+	return ;
+}

@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 12:14:48 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/14 12:27:21 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/14 17:55:48 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ char			*ft_md5(void *data, int flag)
 	int			ret;
 
 	md5_init(&ctx);
-	if (!(ctx.buffer = (char *)malloc(MD5_CHUNK_LENGTH + 1)))
-		EXIT(ft_printf("Error: %s{underlined}", strerror(errno)));
 	ret = 1;
 	while (ret > 0)
 	{
@@ -61,7 +59,6 @@ char			*ft_md5(void *data, int flag)
 		if (ret >= 0)
 			md5_transform(&ctx);
 	}
-	free(ctx.buffer);
 	if (ret < 0)
 	{
 		ft_printf("Error: %s{underlined}", strerror(errno));

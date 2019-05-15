@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 10:49:59 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/14 11:16:35 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/14 16:28:26 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,29 +131,28 @@ void			md5_init(t_md5ctx *ctx)
 
 ssize_t			md5_update(t_md5ctx *ctx, void **data, int flag)
 {
-	static bool			bit_added;
-	static uint64_t		len;
-	ssize_t				ret;
+	static bool		bit_added;
+	ssize_t			ret;
 
-	ft_bzero(ctx->buffer, 64);
+	ft_bzero(ctx->chunk, 64);
 	if (flag & O_FD)
-		ret = read(*((int *)(*data)), ctx->buffer, 64);
+		ret = read(*((int *)(*data)), ctx->chunk, 64);
 	if (flag & O_BUF)
 	{
-		ret = ft_strlen(ft_strncpy(ctx->buffer, (const char *)(*data), 64));
+		ret = (ssize_t)ft_strlen(ft_strncpy(ctx->chunk, (char *)(*data), 64));
 		*((char **)data) += ret;
 	}
-	len += ret;
+	ctx->len += ret;
 	if (0 <= ret && ret < 64 && bit_added == false)
 	{
-		ctx->buffer[ret] = (char)(1 << 7);
+		ctx->chunk[ret] = (char)(1 << 7);
 		bit_added = true;
 	}
 	if (0 <= ret && ret < 56)
 	{
-		*(uint64_t *)&ctx->buffer[56] = (len * 8);
+		*(uint64_t *)&ctx->chunk[56] = (ctx->len * 8);
 		bit_added = false;
-		return ((len = 0));
+		return (0);
 	}
 	return (ret);
 }
@@ -203,10 +202,10 @@ void			md5_final(t_md5ctx *ctx, char **digest)
 {
 	if (!((*digest) = (char *)ft_malloc(MD5_DIGEST_LENGTH + 1, '\0')))
 		EXIT(ft_printf("Error: %s{underlined}", strerror(errno)));
-	*(uint32_t *)&(*digest)[0] = A;
-	*(uint32_t *)&(*digest)[4] = B;
-	*(uint32_t *)&(*digest)[8] = C;
-	*(uint32_t *)&(*digest)[12] = D;
+	*(uint32_t *)&(*digest)[0 * 4] = A;
+	*(uint32_t *)&(*digest)[1 * 4] = B;
+	*(uint32_t *)&(*digest)[2 * 4] = C;
+	*(uint32_t *)&(*digest)[3 * 4] = D;
 	(*digest)[16] = '\0';
 	return ;
 }

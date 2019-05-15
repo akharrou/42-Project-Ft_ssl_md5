@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 10:59:04 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/14 12:27:37 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/14 18:14:23 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ char			*ft_sha256(void *data, int flag)
 	int			ret;
 
 	sha256_init(&ctx);
-	if (!(ctx.buffer = (char *)malloc(SHA256_CHUNK_LENGTH + 1)))
-		EXIT(ft_printf("Error: %s{underlined}", strerror(errno)));
 	ret = 1;
 	while (ret > 0)
 	{
@@ -61,7 +59,6 @@ char			*ft_sha256(void *data, int flag)
 		if (ret >= 0)
 			sha256_transform(&ctx);
 	}
-	free(ctx.buffer);
 	if (ret < 0)
 	{
 		ft_printf("Error: %s{underlined}", strerror(errno));

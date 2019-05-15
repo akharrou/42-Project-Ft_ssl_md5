@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 18:16:15 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/14 11:09:54 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/14 16:25:23 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,17 @@
 # define MD5_CHUNK_LENGTH   (64)
 # define MD5_DIGEST_LENGTH  (16)
 
-# define A                  (ctx->word[0])
-# define B                  (ctx->word[1])
-# define C                  (ctx->word[2])
-# define D                  (ctx->word[3])
+# define A                  (ctx->state[0])
+# define B                  (ctx->state[1])
+# define C                  (ctx->state[2])
+# define D                  (ctx->state[3])
 
-# define A_                 (ctx_prime.word[0])
-# define B_                 (ctx_prime.word[1])
-# define C_                 (ctx_prime.word[2])
-# define D_                 (ctx_prime.word[3])
+# define A_                 (ctx_prime.state[0])
+# define B_                 (ctx_prime.state[1])
+# define C_                 (ctx_prime.state[2])
+# define D_                 (ctx_prime.state[3])
 
-# define M(g)               ((*(uint32_t *)&(ctx->buffer)[g * 4]))
+# define M(g)               ((*(uint32_t *)&(ctx->chunk)[g * 4]))
 
 # define ROUND_1            (0 <= i && i <= 15)
 # define ROUND_2            (16 <= i && i <= 31)
@@ -73,8 +73,9 @@
 
 typedef struct	s_md5_context
 {
-	uint32_t	word[4];
-	char		*buffer;
+	uint32_t	len;
+	uint32_t	state[4];
+	char		chunk[64];
 }				t_md5ctx;
 
 /*
