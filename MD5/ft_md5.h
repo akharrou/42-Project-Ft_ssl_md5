@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 18:16:15 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/14 16:25:23 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/14 18:22:14 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@
 # define C                  (ctx->state[2])
 # define D                  (ctx->state[3])
 
-# define A_                 (ctx_prime.state[0])
-# define B_                 (ctx_prime.state[1])
-# define C_                 (ctx_prime.state[2])
-# define D_                 (ctx_prime.state[3])
+# define A1                 (ctx_prime.state[0])
+# define B1                 (ctx_prime.state[1])
+# define C1                 (ctx_prime.state[2])
+# define D1                 (ctx_prime.state[3])
 
 # define M(g)               ((*(uint32_t *)&(ctx->chunk)[g * 4]))
 

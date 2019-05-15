@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 08:30:29 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/10 18:36:24 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/14 18:21:25 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ char			**get_messages(const char **argv, int32_t options)
 	{
 		while (!ft_readline(STDIN, *message))
 		{
-			ft_strtab_appendfre(messages, 1, tmp);
+			ft_strtaB1appendfre(messages, 1, tmp);
 			free(tmp);
 		}
 	}

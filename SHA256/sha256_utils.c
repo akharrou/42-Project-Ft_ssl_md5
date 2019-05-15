@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 10:25:53 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/14 18:14:15 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/14 18:23:30 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,14 +125,14 @@ void	            sha256_transform(t_sha256ctx *ctx, char **digest)
         w[i] := w[i-16] + s0 + w[i-7] + s1;
     }
 
-    A_ = A;
-    B_ = B;
-    C_ = C;
-    D_ = D;
-    E_ = E;
-    F_ = F;
-    G_ = G;
-    H_ = H;
+    A1 = A;
+    B1 = B;
+    C1 = C;
+    D1 = D;
+    E1 = E;
+    F1 = F;
+    G1 = G;
+    H1 = H;
 
     i = 0;
     while (i < 64)
@@ -144,24 +144,24 @@ void	            sha256_transform(t_sha256ctx *ctx, char **digest)
         maj := (a and b) xor (a and c) xor (b and c);
         temp2 := S0 + maj;
 
-        H_ = G_;
-        G_ = F_;
-        F_ = E_;
-        E_ = D_ + temp1;
-        D_ = C_;
-        C_ = B_;
-        B_ = A_;
-        A_ = temp1 + temp2;
+        H1 = G1;
+        G1 = F1;
+        F1 = E1;
+        E1 = D1 + temp1;
+        D1 = C1;
+        C1 = B1;
+        B1 = A1;
+        A1 = temp1 + temp2;
     }
 
-    A += A_;
-    B += B_;
-    C += C_;
-    D += D_;
-    E += E_;
-    F += F_;
-    G += G_;
-    H += H_;
+    A += A1;
+    B += B1;
+    C += C1;
+    D += D1;
+    E += E1;
+    F += F1;
+    G += G1;
+    H += H1;
     return ;
 }
 

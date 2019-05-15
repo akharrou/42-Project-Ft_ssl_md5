@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 18:36:53 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/14 18:08:01 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/14 18:23:26 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,14 @@
 # define G                         (ctx->state[6])
 # define H                         (ctx->state[7])
 
-# define A_                        (ctx_prime.state[0])
-# define B_                        (ctx_prime.state[1])
-# define C_                        (ctx_prime.state[2])
-# define D_                        (ctx_prime.state[3])
-# define E_                        (ctx_prime.state[4])
-# define F_                        (ctx_prime.state[5])
-# define G_                        (ctx_prime.state[6])
-# define H_                        (ctx_prime.state[7])
+# define A1                        (ctx_prime.state[0])
+# define B1                        (ctx_prime.state[1])
+# define C1                        (ctx_prime.state[2])
+# define D1                        (ctx_prime.state[3])
+# define E1                        (ctx_prime.state[4])
+# define F1                        (ctx_prime.state[5])
+# define G1                        (ctx_prime.state[6])
+# define H1                        (ctx_prime.state[7])
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
