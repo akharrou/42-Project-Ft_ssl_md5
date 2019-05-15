@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 12:14:48 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/14 17:55:48 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/15 10:56:53 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@
 char			*ft_md5(void *data, int flag)
 {
 	t_md5ctx	ctx;
+	ssize_t		ret;
 	char		*digest;
-	int			ret;
 
 	md5_init(&ctx);
 	ret = 1;
