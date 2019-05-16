@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 10:49:59 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/14 18:22:14 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/15 17:42:25 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 **
 **        • https://www.ietf.org/rfc/rfc1321.txt
 **        • https://en.wikipedia.org/wiki/MD5#Algorithm
+**        • https://openwall.info/wiki/people/solar/software/public-domain-
+**          source-code/md5
 **
 **
 **  [DEFINITIONS] :

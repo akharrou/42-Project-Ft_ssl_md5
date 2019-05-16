@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 10:59:04 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/14 18:14:23 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/15 10:56:50 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@
 char			*ft_sha256(void *data, int flag)
 {
 	t_sha256ctx	ctx;
+	ssize_t		ret;
 	char		*digest;
-	int			ret;
 
 	sha256_init(&ctx);
 	ret = 1;
