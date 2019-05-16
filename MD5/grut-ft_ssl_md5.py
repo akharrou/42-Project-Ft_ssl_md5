@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    grut-ft_ssl_md5.py                                 :+:      :+:    :+:    #
+#    grut.template                                      :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/14 09:55:22 by akharrou          #+#    #+#              #
-#    Updated: 2019/05/15 14:39:47 by akharrou         ###   ########.fr        #
+#    Updated: 2019/05/15 18:38:02 by akharrou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,104 +15,31 @@ try:
 	import os
 	import sys
 
-	# COLORIZATION — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — #
+	# COLORIZATION — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — #
 
 	RED        = '\033[31m'
 	GREEN      = '\033[32m'
-	BLUE       = '\033[94m'
+	YELLOW     = '\033[38;2;247;249;94m'
+	GOLD       = '\033[38;2;218;171;119m'
 
 	DEFAULT    = '\033[0m'
 	ITALTIC    = '\033[3m'
 	UNDELRINED = '\033[4m'
 	BACKGROUND = '\033[0m'
-	STRIPS     = BLUE
+	STRIPS     = GOLD
 
-	# TITLES — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — #
+	RED_BACKGROUND    = '\033[41m'
+
+	# TITLES — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — #
+
+	TITLE    = 'GENERALIZED RAMBO UNIT-TESTER ™️'
 
 	FILENAME='grut-ft_ssl_md5.py'
 	EDITION='ft_ssl_md5 Edition'
 
-	# USAGE & MANUAL — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — #
+	# EXTENSION — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — #
 
-	def usage():
-		print(f'usage: python3 {FILENAME} [-f {UNDELRINED}file{DEFAULT} ... | {UNDELRINED}input_argument{DEFAULT} ...]')
-		sys.exit(1)
-
-	def manual():
-		print(f'{UNDELRINED}Coming soon...{DEFAULT}')
-		sys.exit(1)
-
-	# FLAG HANDLING — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — #
-
-	if (len(sys.argv) < 2        or
-		sys.argv[1] == '-h'      or
-		sys.argv[1] == '--help'  or
-		sys.argv[1] == ''):
-
-		usage()
-
-	elif (sys.argv[1] == '-m'        or
-		sys.argv[1] == '-man'      or
-		sys.argv[1] == '-manual'   or
-		sys.argv[1] == '--manual'):
-
-		manual()
-
-	elif (sys.argv[1] == '-f'):
-
-		if (len(sys.argv[2:]) < 1):
-			usage()
-
-		try:
-
-			arguments = []
-			sys.argv = sys.argv[2:]
-			for argsFile in sys.argv:
-
-				try:
-
-					with open(argsFile, 'r') as fd:
-						arguments.extend(fd.readlines())
-
-				except Exception:
-					print('Invalid Input File')
-
-		except Exception as e:
-			usage()
-
-	else:
-		arguments = sys.argv[1:]
-
-	# DYNAMIC INPUT — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — #
-
-	try:
-		launch_command_programA = os.environ["LAUNCH_PROGRAM_A"]
-	except Exception:
-		launch_command_programA = str(input("[LAUNCH COMMAND -- Program_A] (w/out arguments): "))
-		print(f"\nSet variable:\nexport LAUNCH_PROGRAM_A='{launch_command_programA}'")
-		print('\n')
-
-	try:
-		launch_command_programB = os.environ["LAUNCH_PROGRAM_B"]
-	except Exception:
-		launch_command_programB = str(input("[LAUNCH COMMAND -- Program_B] (w/out arguments): "))
-		print(f"\nSet variable:\nexport LAUNCH_PROGRAM_B='{launch_command_programB}'")
-		print('\n')
-
-	# HEADER — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — #
-
-	print(f'{STRIPS}{f"=" * (199)}')
-	print(f'|{DEFAULT}{BACKGROUND}{f" " * (197)}{DEFAULT}{STRIPS}|')
-	print(f'|{DEFAULT}{BACKGROUND}{f" " * (80)}⚜️  {DEFAULT}GENERALIZED RAMBO UNIT-TESTER ™️{DEFAULT}{BACKGROUND}  ⚜️{f" " * (80)}{DEFAULT}{STRIPS}|')
-	print(f'|{DEFAULT}{BACKGROUND}{f" " * int(194 / 2 - int(len(EDITION) / 2))}~ {ITALTIC}{EDITION}{DEFAULT}{BACKGROUND} ~{f" " * (int(194 / 2 - int(len(EDITION) / 2)) - 1 - (len(EDITION) % 2))}{DEFAULT}{STRIPS}|')
-	print(f'|{DEFAULT}{BACKGROUND}{f" " * (197)}{DEFAULT}{STRIPS}|')
-	print(f'{STRIPS}{f"=" * (199)}{DEFAULT}')
-
-	print(f'\nProgram A Launch Command: {launch_command_programA}')
-	print(f'Program B Launch Command: {launch_command_programB}')
-	print('')
-
-	# BODY — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — #
+	BAR_LEN  = 197
 
 	FILE_A='__output_A__'
 	FILE_B='__output_B__'
@@ -160,14 +87,99 @@ try:
 		os.remove(f'{FILE_B}')
 
 
+	# USAGE & MANUAL — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — #
+
+	def usage():
+		print(f'usage: python3 {FILENAME} [-f {UNDELRINED}file{DEFAULT} ... | {UNDELRINED}input_argument{DEFAULT} ...]')
+		sys.exit(1)
+
+	def manual():
+		print(f'{UNDELRINED}Coming soon...{DEFAULT}')
+		sys.exit(1)
+
+	# FLAG HANDLING — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — #
+
+	if (len(sys.argv) < 2        or
+		sys.argv[1] == '-h'      or
+		sys.argv[1] == '--help'  or
+		sys.argv[1] == ''):
+
+		usage()
+
+	elif (sys.argv[1] == '-m'        or
+		sys.argv[1] == '-man'      or
+		sys.argv[1] == '-manual'   or
+		sys.argv[1] == '--manual'):
+
+		manual()
+
+	elif (sys.argv[1] == '-f'):
+
+		if (len(sys.argv[2:]) < 1):
+			usage()
+
+		try:
+
+			arguments = []
+			sys.argv = sys.argv[2:]
+			for argsFile in sys.argv:
+
+				try:
+
+					with open(argsFile, 'r') as fd:
+						arguments.extend(fd.readlines())
+
+				except Exception:
+					print('Invalid Input File')
+
+		except Exception as e:
+			usage()
+
+	else:
+		arguments = sys.argv[1:]
+
+	# # DYNAMIC INPUT — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — #
+
+	try:
+		launch_command_programA = os.environ["LAUNCH_PROGRAM_A"]
+	except Exception:
+		launch_command_programA = str(input("[LAUNCH COMMAND -- Program_A] (w/out arguments): "))
+		print(f"\nSet variable:\nexport LAUNCH_PROGRAM_A='{launch_command_programA}'")
+		print('\n')
+
+	try:
+		launch_command_programB = os.environ["LAUNCH_PROGRAM_B"]
+	except Exception:
+		launch_command_programB = str(input("[LAUNCH COMMAND -- Program_B] (w/out arguments): "))
+		print(f"\nSet variable:\nexport LAUNCH_PROGRAM_B='{launch_command_programB}'")
+		print('\n')
+
+	# # HEADER — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — #
+
+	print(f'{STRIPS}{f"=" * (BAR_LEN + 2)}')
+	print(f'|{DEFAULT}{BACKGROUND}{f" " * (BAR_LEN)}{DEFAULT}{STRIPS}|')
+	print(f'|{DEFAULT}{BACKGROUND}{f" " * (int((BAR_LEN - 3) / 2) - int(len(TITLE) / 2))}⚜️  {DEFAULT}{TITLE}{DEFAULT}{BACKGROUND}  ⚜️{f" " * (int((BAR_LEN - 3) / 2) - int(len(TITLE) / 2) - 2)}{DEFAULT}{STRIPS}|')
+	print(f'|{DEFAULT}{BACKGROUND}{f" " * int((BAR_LEN - 3) / 2 - int(len(EDITION) / 2))}~ {ITALTIC}{EDITION}{DEFAULT}{BACKGROUND} ~{f" " * (int((BAR_LEN - 3) / 2 - int(len(EDITION) / 2)) - 1 - (len(EDITION) % 2))}{DEFAULT}{STRIPS}|')
+	print(f'|{DEFAULT}{BACKGROUND}{f" " * (BAR_LEN)}{DEFAULT}{STRIPS}|')
+	print(f'{STRIPS}{f"=" * (BAR_LEN + 2)}{DEFAULT}')
+
+	print(f'\nProgram A Launch Command: {launch_command_programA}')
+	print(f'Program B Launch Command: {launch_command_programB}')
+	print('')
+
+	# BODY — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — #
+
 	GRUTBody__ft_ssl_md5(launch_command_programA, launch_command_programB)
 
-	# FOOTER — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — #
+# 	# FOOTER — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — #
 
-	print(f'️\n{UNDELRINED}Share if you found it useful !{DEFAULT} :: G.R.U.T -- © 2019 akharrou 🤩')
+	print(f'️\n{UNDELRINED}Share if you found it useful !{DEFAULT} :: G.R.U.T -- © 2019 {UNDELRINED}kmira{DEFAULT} & {UNDELRINED}akharrou{DEFAULT} 🤩')
 	print('')
 
 except Exception as e:
-	print(f'{UNDELRINED}\n\n🚨  Please Report the Issue ! 🚨{DEFAULT}  :: G.R.U.T -- © 2019 akharrou 😓\n\n')
-	print(f'{UNDELRINED}GRUT ISSUE:{DEFAULT} (copy paste and report (or dm me @akharrou) the issue)\n{ITALTIC}')
+	print(f' {f"—" * (BAR_LEN)}\n')
+	print(f'{RED_BACKGROUND}{YELLOW}💣  G.R.U.T CRASHED 💣{DEFAULT}\n')
+	print(f'{UNDELRINED}\n🚨  Please Report the Issue ! 🚨{DEFAULT}  :: G.R.U.T -- © 2019 {UNDELRINED}kmira{DEFAULT} & {UNDELRINED}akharrou{DEFAULT} 😓')
+	print(f'{DEFAULT}Copy paste the following and {YELLOW}report or dm{DEFAULT} us @akharrou / @kmira the issue\n\n')
+	print(f'{UNDELRINED}GRUT ISSUE:\n{DEFAULT}{RED_BACKGROUND}{ITALTIC}')
 	raise e
