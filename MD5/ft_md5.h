@@ -6,26 +6,23 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 18:16:15 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/16 13:51:45 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/16 16:53:32 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/*
-**  'ft_md5.h' - header file for 'ft_md5.c'
-*/
 
 #ifndef FT_MD5_H
 # define FT_MD5_H
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
+** Header File(s).
 */
 
 # include "../Libft/Includes/libft.h"
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-**  MD5 'flag' argument macros.
+** Flag(s).
 */
 
 # define O_FD   (1)
@@ -33,7 +30,7 @@
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-**  The macros/aliases are for more readability.
+** Macro(s).
 */
 
 # define MD5_CHUNK_LENGTH   (64)
@@ -88,19 +85,20 @@ extern uint32_t	g_k[64];
 **  Main Functions.
 */
 
-char		*ft_md5(void *data, int flag);
+char			*ft_md5(void *data, int flag);
 
-void		md5_init(t_md5ctx *ctx);
-ssize_t		md5_update(t_md5ctx *ctx, void **data, int flag);
-void		md5_transform(t_md5ctx *ctx);
-void		md5_final(t_md5ctx *ctx, char **digest);
+void			md5_init(t_md5ctx *ctx);
+ssize_t			md5_update(t_md5ctx *ctx, void **data, int flag);
+void			md5_transform(t_md5ctx *ctx);
+void			md5_final(t_md5ctx *ctx, char **digest);
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 **  Utility Functions.
 */
 
-void		md5_operation(t_md5ctx *ctx, uint32_t i, uint32_t *f, uint32_t *g);
+void			md5_operation(t_md5ctx *ctx, uint32_t i, uint32_t *f,
+					uint32_t *g);
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **

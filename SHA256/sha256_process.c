@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 10:25:53 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/16 14:07:37 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/16 16:45:39 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,32 +19,29 @@
 **  [DEFINITIONS] :
 **
 **     •  All variables are unsigned 32 bit and wrap modulo 2^32 when
-**        calculating
+**        calculating.
 **
-**     •  The digest a 128-bit ctx is divided into four 32-bit words,
-**        denoted a, b, c, and d; these 4 variables will be held in the
-**        't_md5ctx' structure.
+**     •  The digest a 256-bit string is divided into eight 32-bit words,
+**        denoted a, b, c, d, e, f, g and h; these 8 variables will be
+**        held in the 't_sha256ctx' structure and used in the compression
+**        function.
 **
-**        They are initialized to certain fixed constants (given by the MD5
+**        They are initialized to certain fixed constants (given by the
+**        SHA256 specification).
+**
+**     •  'ctx->schedule' specifies the per-round message schedule array
+**        [0..63] of 32 bit words, different with every chunk.
+**
+**     •  'g_k' specifies the per-round constants (given by the SHA256
 **        specification).
 **
-**     •  's' specifies the per-round shift amounts (given by the MD5
-**        specification).
+**     •  For each round, there is one round constant k[i] and one entry
+**        in the message schedule array ctx->schedule[i], 0 ≤ i ≤ 63
 **
-**     •  'k' specifies the per-operation constants (given by the MD5
-**        specification).
-**
-**     •  'm' specifies an array of 32-bit blocks that a message chunk gets
-**        sub-divided in.
-**
-**     •  'f' is a placeholder for the padded_message of the ctx variables
-**        passed to a non-linear function (the function is differs every 16
-**        operations)
-**
-**     •  'i' denotes the i'th operation we are at.
-**
-**     •  'g' serves as an index to grab a certain 32-bit block in a chunk.
-**        'm'. 'm[g]' denotes one 32-bit block of the message input.
+**     •  Big-endian convention is used when expressing the constants in
+**        this pseudocode, and when parsing message block data from bytes
+**        to words, for example, the first word of the input message "abc"
+**        after padding is 0x61626380
 */
 
 #include "ft_sha256.h"
@@ -87,7 +84,7 @@ const uint32_t g_k[64] =
 **         G & H.
 */
 
-void	            sha256_init(t_sha256ctx *ctx)
+void				sha256_init(t_sha256ctx *ctx)
 {
 	ctx->bitlen = 0;
 	A = 0x6a09e667;
@@ -103,15 +100,15 @@ void	            sha256_init(t_sha256ctx *ctx)
 
 /*
 **    DESCRIPTION
-**         Updates the context buffer & the pointer of where we
-**         are in the string/file ; also keeps track of the total
-**         length of the buffer/file.
+**         Updates the context chunk & the pointer of where we
+**         are in the message ; also keeps track of the total
+**         length of the message.
 */
 
-ssize_t			    sha256_update(t_sha256ctx *ctx, void **data, int flag)
+ssize_t				sha256_update(t_sha256ctx *ctx, void **data, int flag)
 {
-	static bool	    bit_added;
-	ssize_t		    ret;
+	static bool		bit_added;
+	ssize_t			ret;
 
 	ft_bzero(ctx->chunk, 64);
 	if (flag & O_FD)
@@ -143,43 +140,42 @@ ssize_t			    sha256_update(t_sha256ctx *ctx, void **data, int flag)
 **         goes through.
 */
 
-void	            sha256_transform(t_sha256ctx *ctx)
+void				sha256_transform(t_sha256ctx *ctx)
 {
-    t_sha256ctx     ctx_prime;
+	t_sha256ctx		ctx_prime;
 	uint32_t		tmp1;
 	uint32_t		tmp2;
 	uint32_t		i;
 
-    sha256_schedule(ctx);
+	sha256_schedule(ctx);
 	sha256_transform_init(ctx, &ctx_prime);
-    i = 0;
-    while (i < 64)
-    {
-        tmp1 = (H1 + EP1(E1) + Ch(E1, F1, G1) + g_k[i] + ctx->schedule[i])
+	i = 0;
+	while (i < 64)
+	{
+		tmp1 = (H1 + EP1(E1) + CH(E1, F1, G1) + g_k[i] + ctx->schedule[i])
 				% UINT_MAX;
-        tmp2 = (EP0(A1) + Maj(A1, B1, C1)) % UINT_MAX;
-        H1 = G1;
-        G1 = F1;
-        F1 = E1;
-        E1 = (D1 + tmp1) % UINT_MAX;
-        D1 = C1;
-        C1 = B1;
-        B1 = A1;
-        A1 = (tmp1 + tmp2) % UINT_MAX;
+		tmp2 = (EP0(A1) + MAJ(A1, B1, C1)) % UINT_MAX;
+		H1 = G1;
+		G1 = F1;
+		F1 = E1;
+		E1 = (D1 + tmp1) % UINT_MAX;
+		D1 = C1;
+		C1 = B1;
+		B1 = A1;
+		A1 = (tmp1 + tmp2) % UINT_MAX;
 		++i;
 	}
 	sha256_transform_final(ctx, &ctx_prime);
-    return ;
+	return ;
 }
 
 /*
 **    DESCRIPTION
-**         Appends the 32 bit words to each other
-**         (denoted as A, B, C, D, E, F, G & H)
-**         to construct the final digest.
+**         Appends the 32 bit words to each other (denoted as A, B, C, D,
+**         E, F, G & H) to construct the final digest.
 */
 
-void	            sha256_final(t_sha256ctx *ctx, char **digest)
+void				sha256_final(t_sha256ctx *ctx, char **digest)
 {
 	if (!((*digest) = (char *)ft_malloc(SHA256_DIGEST_LENGTH + 1, '\0')))
 		EXIT(ft_printf("Error: %s{underlined}", strerror(errno)));
