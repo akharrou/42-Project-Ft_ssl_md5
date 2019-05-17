@@ -21,14 +21,6 @@ In this project we were introduced to cryptographic hashing algorithms and were 
     <td>32 chars<br>(128 bits / 4)</td>
   </tr>
   <tr>
-    <td>SHA-1</td>
-    <td>160 bits<br>(5 * 32-bits)</td>
-    <td>512 bits</td>
-    <td>80 (32-bits each)</td>
-    <td>80</td>
-    <td>40 chars<br>(160 bits / 4)</td>
-  </tr>
-  <tr>
     <td>SHA-256</td>
     <td rowspan=2>256 bits<br>(8 * 32-bits)</td>
     <td rowspan=2>512 bits</td>
