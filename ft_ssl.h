@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 08:31:14 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/11 16:31:09 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/17 16:44:55 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,9 @@
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 */
 
-typedef struct	s_ssl_message
-{
-	const char	*content;
-	size_t		msg_length;
-}				t_ssl_msg;
-
 typedef struct	s_input_information
 {
 	const char	*command;
-	t_ssl_msg	*messages;
 	int32_t		options;
 }				t_input;
 
@@ -79,19 +72,18 @@ typedef struct	s_ssl_option
 {
 	const char	*name;
 	const char	*descripton;
-	void		(*ftptr)(t_input, t_ssl_msg);
 }				t_option;
 
 extern t_option g_option[];
 
 t_option g_option[] =
 {
-	{"p", "print the message followed by the digest"},
+	{"p", "echo STDIN to STDOUT and append the checksum to STDOUT"},
 	{"q", "quiet mode"},
 	{"r", "reverse the format of the output"},
 	{"s", "print the sum of the given string"},
 	\
-	NULL
+	{NULL, NULL}
 };
 
 #  define LONGEST_OPTION 1
@@ -116,12 +108,6 @@ int8_t			parse_options(const char **argv);
 
 bool			valid_command(const char *command);
 bool			known_options(const char *option);
-
-t_ssl_msg		*get_messages(const char **argv, int32_t options);
-const char		**get_digests(const char *command, t_ssl_msg *messages,
-					int32_t options);
-
-void			ft_ssl_formatted_output();
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **

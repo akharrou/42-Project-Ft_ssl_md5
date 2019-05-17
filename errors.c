@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 09:07:16 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/10 06:47:30 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/17 16:36:50 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void		unknown_options(const char **argv)
 	width = LONGEST_OPTION;
 	i = -1;
 	while (g_option[++i].name)
-		ft_printf("-%-*s %s\n", width, g_option[i].name, g_option[i].descripton);
+		ft_printf("-%-*s %s\n",
+			width, g_option[i].name, g_option[i].descripton);
 	return ;
 }
