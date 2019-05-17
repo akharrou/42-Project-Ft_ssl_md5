@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 10:25:53 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/16 20:08:26 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/17 16:26:02 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 **        SHA512 specification).
 **
 **     •  'ctx->schedule' specifies the per-round message schedule array
-**        [0..80] of 64 bit words, different with every chunk.
+**        [0..79] of 64 bit words, different with every chunk.
 **
 **     •  'g_k' specifies the per-round constants (given by the SHA512
 **        specification).
@@ -126,24 +126,24 @@ ssize_t				sha512_update(t_sha512ctx *ctx, void **data, int flag)
 	static bool		bit_added;
 	ssize_t			ret;
 
-	ft_bzero(ctx->chunk, 64);
+	ft_bzero(ctx->chunk, 128);
 	if (flag & O_FD)
-		ret = read(*((int *)(*data)), ctx->chunk, 64);
+		ret = read(*((int *)(*data)), ctx->chunk, 128);
 	if (flag & O_BUF)
 	{
-		ret = (ssize_t)ft_strlen(ft_strncpy(ctx->chunk, (char *)(*data), 64));
+		ret = (ssize_t)ft_strlen(ft_strncpy(ctx->chunk, (char *)(*data), 128));
 		*((char **)data) += ret;
 	}
-	ctx->bitlen = (ctx->bitlen + (ret * 8)) % UINT64_MAX;
-	if (0 <= ret && ret < 64 && bit_added == false)
+	ctx->bitlen = (ctx->bitlen + (ret * 8));
+	if (0 <= ret && ret < 128 && bit_added == false)
 	{
 		ctx->chunk[ret] = (char)(1 << 7);
 		bit_added = true;
 	}
-	if (0 <= ret && ret < 56)
+	if (0 <= ret && ret < 112)
 	{
-		ctx->bitlen = *(uint64_t *)ft_to_big_endian(&ctx->bitlen, 8);   /* TODO ADD A 128 BIT BIG ENDIAN HERE */
-		*(uint64_t *)&ctx->chunk[56] = ctx->bitlen;
+		ctx->bitlen = *(__uint128_t *)ft_to_big_endian(&ctx->bitlen, 16);
+		*(__uint128_t *)&ctx->chunk[112] = ctx->bitlen;
 		bit_added = false;
 		return (0);
 	}
@@ -195,14 +195,14 @@ void				sha512_final(t_sha512ctx *ctx, char **digest)
 {
 	if (!((*digest) = (char *)ft_malloc(SHA512_DIGEST_LENGTH + 1, '\0')))
 		EXIT(ft_printf("Error: %s{underlined}", strerror(errno)));
-	*(uint64_t *)&(*digest)[0] = *(uint64_t *)ft_to_big_endian(&A, 4);
-	*(uint64_t *)&(*digest)[8] = *(uint64_t *)ft_to_big_endian(&B, 4);
-	*(uint64_t *)&(*digest)[16] = *(uint64_t *)ft_to_big_endian(&C, 4);
-	*(uint64_t *)&(*digest)[24] = *(uint64_t *)ft_to_big_endian(&D, 4);
-	*(uint64_t *)&(*digest)[32] = *(uint64_t *)ft_to_big_endian(&E, 4);
-	*(uint64_t *)&(*digest)[40] = *(uint64_t *)ft_to_big_endian(&F, 4);
-	*(uint64_t *)&(*digest)[48] = *(uint64_t *)ft_to_big_endian(&G, 4);
-	*(uint64_t *)&(*digest)[56] = *(uint64_t *)ft_to_big_endian(&H, 4);
+	*(uint64_t *)&(*digest)[0] = *(uint64_t *)ft_to_big_endian(&A, 8);
+	*(uint64_t *)&(*digest)[8] = *(uint64_t *)ft_to_big_endian(&B, 8);
+	*(uint64_t *)&(*digest)[16] = *(uint64_t *)ft_to_big_endian(&C, 8);
+	*(uint64_t *)&(*digest)[24] = *(uint64_t *)ft_to_big_endian(&D, 8);
+	*(uint64_t *)&(*digest)[32] = *(uint64_t *)ft_to_big_endian(&E, 8);
+	*(uint64_t *)&(*digest)[40] = *(uint64_t *)ft_to_big_endian(&F, 8);
+	*(uint64_t *)&(*digest)[48] = *(uint64_t *)ft_to_big_endian(&G, 8);
+	*(uint64_t *)&(*digest)[56] = *(uint64_t *)ft_to_big_endian(&H, 8);
 	(*digest)[64] = '\0';
 	return ;
 }

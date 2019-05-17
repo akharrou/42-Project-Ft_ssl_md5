@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 18:36:53 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/16 20:02:43 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/17 16:17:56 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@
 
 typedef struct	s_sha512_context
 {
-	uint64_t	bitlen;
+	__uint128_t	bitlen;
 	char		chunk[128];
 	uint64_t	schedule[80];
 	uint64_t	state[8];

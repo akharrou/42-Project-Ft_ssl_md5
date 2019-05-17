@@ -13,10 +13,6 @@
 
 #include "ft_sha512.h"
 
-#ifndef SHA512_DIGEST_LENGTH
-# define SHA512_DIGEST_LENGTH 64
-#endif
-
 int		main(int ac, char **av)
 {
 	char	*hexstr;

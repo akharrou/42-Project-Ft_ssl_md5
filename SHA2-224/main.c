@@ -13,10 +13,6 @@
 
 #include "ft_sha224.h"
 
-#ifndef SHA224_DIGEST_LENGTH
-# define SHA224_DIGEST_LENGTH 28
-#endif
-
 int		main(int ac, char **av)
 {
 	char	*hexstr;

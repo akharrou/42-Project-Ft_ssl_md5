@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:33:23 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/16 20:02:45 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/17 16:26:20 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	sha512_transform_init(t_sha512ctx *ctx, t_sha512ctx *ctx_prime)
 
 /*
 **    DESCRIPTION
-**         Obtaining the 64-entry message schedule array w[0..63]
-**         of 32-bit words
+**         Obtaining the 80-entry message schedule array w[0..79]
+**         of 64-bit words
 */
 
 void	sha512_schedule(t_sha512ctx *ctx)
@@ -42,8 +42,8 @@ void	sha512_schedule(t_sha512ctx *ctx)
 	i = 0;
 	while (i < 16)
 	{
-		ctx->schedule[i] = *(uint64_t *)&ctx->chunk[i * 4];
-		ctx->schedule[i] = *(uint64_t *)ft_to_big_endian(&ctx->schedule[i], 4);
+		ctx->schedule[i] = *(uint64_t *)&ctx->chunk[i * 8];
+		ctx->schedule[i] = *(uint64_t *)ft_to_big_endian(&ctx->schedule[i], 8);
 		++i;
 	}
 	while (i < SHA512_TOTAL_ROUNDS)

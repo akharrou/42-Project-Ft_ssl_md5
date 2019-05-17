@@ -13,10 +13,6 @@
 
 #include "ft_sha256.h"
 
-#ifndef SHA256_DIGEST_LENGTH
-# define SHA256_DIGEST_LENGTH 32
-#endif
-
 int		main(int ac, char **av)
 {
 	char	*hexstr;
