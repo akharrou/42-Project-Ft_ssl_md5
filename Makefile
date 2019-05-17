@@ -6,7 +6,7 @@
 #    By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/07 18:55:23 by akharrou          #+#    #+#              #
-#    Updated: 2019/05/16 18:51:03 by akharrou         ###   ########.fr        #
+#    Updated: 2019/05/17 16:34:27 by akharrou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ LIBRARY     =   Libft/libft.a
 HEADERS     =   ft_ssl.h                                                      \
                                                                               \
                 ft_md5.h                                                      \
-                ft_sha1.h                                                     \
+                                                                              \
                 ft_sha224.h                                                   \
                 ft_sha256.h                                                   \
                 ft_sha384.h                                                   \
@@ -40,7 +40,7 @@ SOURCES     =   main.c                                                        \
                 utils.c                                                       \
                                                                               \
                 $(MD5)                                                        \
-                $(SHA1)                                                       \
+                                                                              \
                 $(SHA224)                                                     \
                 $(SHA256)                                                     \
                 $(SHA384)                                                     \
@@ -52,13 +52,6 @@ MD5         =   ft_md5.c                                                      \
                                                                               \
                 md5_process.h                                                 \
                 md5_utils.h                                                   \
-
-# — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
-
-SHA1      =     ft_sha1.c                                                     \
-                                                                              \
-                sha1_process.h                                                \
-                sha1_utils.h                                                  \
 
 # — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
