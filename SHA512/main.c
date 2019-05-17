@@ -11,10 +11,10 @@
 #include <math.h>
 #include <fcntl.h>
 
-#include "ft_md5.h"
+#include "ft_sha512.h"
 
-#ifndef MD5_DIGEST_LENGTH
-# define MD5_DIGEST_LENGTH 16
+#ifndef SHA512_DIGEST_LENGTH
+# define SHA512_DIGEST_LENGTH 32
 #endif
 
 int		main(int ac, char **av)
@@ -26,10 +26,10 @@ int		main(int ac, char **av)
 	/* STRING TESTS                            -- FLAG: '-s' */
 	if (ft_strcmp(av[1], "-s") == 0)
 	{
-		hexstr = ft_md5(av[2], O_BUF);
+		hexstr = ft_sha512(av[2], O_BUF);
 		if (hexstr != NULL)
 		{
-			printf("%s\n", ft_strhex(hexstr, MD5_DIGEST_LENGTH));
+			printf("%s\n", ft_strhex(hexstr, SHA512_DIGEST_LENGTH));
 			free(hexstr);
 		}
 	}
@@ -38,10 +38,10 @@ int		main(int ac, char **av)
 	else if (ft_strcmp(av[1], "-i") == 0)
 	{
 		fd = 0;
-		hexstr = ft_md5(&fd, O_FD);
+		hexstr = ft_sha512(&fd, O_FD);
 		if (hexstr != NULL)
 		{
-			printf("%s\n", ft_strhex(hexstr, MD5_DIGEST_LENGTH));
+			printf("%s\n", ft_strhex(hexstr, SHA512_DIGEST_LENGTH));
 			free(hexstr);
 		}
 	}
@@ -53,10 +53,10 @@ int		main(int ac, char **av)
 		while (i < ac)
 		{
 			fd = open(av[i++], O_RDONLY);
-			hexstr = ft_md5(&fd, O_FD);
+			hexstr = ft_sha512(&fd, O_FD);
 			if (hexstr != NULL)
 			{
-				printf("%s\n", ft_strhex(hexstr, MD5_DIGEST_LENGTH));
+				printf("%s\n", ft_strhex(hexstr, SHA512_DIGEST_LENGTH));
 				free(hexstr);
 			}
 		}

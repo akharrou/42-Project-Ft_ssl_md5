@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_md5.h                                           :+:      :+:    :+:   */
+/*   ft_sha512.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/10 18:16:15 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/16 19:05:35 by akharrou         ###   ########.fr       */
+/*   Created: 2019/05/10 18:36:53 by akharrou          #+#    #+#             */
+/*   Updated: 2019/05/16 19:21:32 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_MD5_H
-# define FT_MD5_H
+#ifndef FT_SHA512_H
+# define FT_SHA512_H
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
@@ -22,7 +22,7 @@
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-** Flag(s).
+**  Flag(s).
 */
 
 # define O_FD   (1)
@@ -33,73 +33,82 @@
 ** Macro(s).
 */
 
-# define MD5_CHUNK_LENGTH      (64)
-# define MD5_DIGEST_LENGTH     (16)
-# define MD5_TOTAL_OPERATIONS  (64)
+# define SHA512_DIGEST_LENGTH   (64)
+# define SHA512_CHUNK_LENGTH    (128)
+# define SHA512_TOTAL_ROUNDS    (80)
+
+# ifdef E
+#  undef E
+# endif
 
 # define A   (ctx->state[0])
 # define B   (ctx->state[1])
 # define C   (ctx->state[2])
 # define D   (ctx->state[3])
+# define E   (ctx->state[4])
+# define F   (ctx->state[5])
+# define G   (ctx->state[6])
+# define H   (ctx->state[7])
 
 # define A1  (ctx_prime.state[0])
 # define B1  (ctx_prime.state[1])
 # define C1  (ctx_prime.state[2])
 # define D1  (ctx_prime.state[3])
+# define E1  (ctx_prime.state[4])
+# define F1  (ctx_prime.state[5])
+# define G1  (ctx_prime.state[6])
+# define H1  (ctx_prime.state[7])
 
-# define M(g)  ((*(uint32_t *)&(ctx->chunk)[g * 4]))
+# define CH(e, f, g)   ((e & f) ^ ((~e) & g))
+# define MAJ(a, b, c)  ((a & b) ^ (a & c) ^ (b & c))
 
-# define ROUND_1  (0 <= i && i <= 15)
-# define ROUND_2  (16 <= i && i <= 31)
-# define ROUND_3  (32 <= i && i <= 47)
-# define ROUND_4  (48 <= i && i <= 63)
+# define SUM0(a) ROTATE_RIGHT(a, 28) ^ ROTATE_RIGHT(a, 34) ^ ROTATE_RIGHT(a, 39)
+# define SUM1(e) ROTATE_RIGHT(e, 14) ^ ROTATE_RIGHT(e, 18) ^ ROTATE_RIGHT(e, 41)
 
-/*
-** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-*/
-
-# define F(b, c, d)  (((b) & (c)) | ((~b) & (d)))
-# define G(b, c, d)  (((b) & (d)) | ((c) & (~d)))
-# define H(b, c, d)  ((b) ^ (c) ^ (d))
-# define I(b, c, d)  ((c) ^ ((b) | (~d)))
+# define SIG0(w) (ROTATE_RIGHT(w, 1) ^ ROTATE_RIGHT(w, 8) ^ (w >> 7))
+# define SIG1(w) (ROTATE_RIGHT(w, 19) ^ ROTATE_RIGHT(w, 61) ^ (w >> 6))
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
+** Structure(s).
 */
 
-typedef struct	s_md5_context
+typedef struct	s_sha512_context
 {
 	uint64_t	bitlen;
-	uint32_t	state[4];
-	char		chunk[64];
-}				t_md5ctx;
+	char		chunk[128];
+	uint64_t	schedule[80];
+	uint64_t	state[8];
+}				t_sha512ctx;
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
+** Global(s).
 */
 
-extern uint32_t	g_s[64];
-extern uint32_t	g_k[64];
+extern const uint64_t g_k[80];
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-**  Main Functions.
+** Main Function(s).
 */
 
-char			*ft_md5(void *data, int flag);
+char			*ft_sha512(void *data, int flag);
 
-void			md5_init(t_md5ctx *ctx);
-ssize_t			md5_update(t_md5ctx *ctx, void **data, int flag);
-void			md5_transform(t_md5ctx *ctx);
-void			md5_final(t_md5ctx *ctx, char **digest);
+void			sha512_init(t_sha512ctx *ctx);
+ssize_t			sha512_update(t_sha512ctx *ctx, void **data, int flag);
+void			sha512_transform(t_sha512ctx *ctx);
+void			sha512_final(t_sha512ctx *ctx, char **digest);
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-**  Utility Functions.
+** Utility Function(s).
 */
 
-void			md5_operation(t_md5ctx *ctx, uint32_t i, uint32_t *f,
-					uint32_t *g);
+void			sha512_transform_init(t_sha512ctx *ctx, t_sha512ctx *ctx_prime);
+void			sha512_schedule(t_sha512ctx *ctx);
+void			sha512_transform_final(t_sha512ctx *ctx,
+					t_sha512ctx *ctx_prime);
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **

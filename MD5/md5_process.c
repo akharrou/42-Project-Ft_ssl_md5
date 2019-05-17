@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 10:49:59 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/16 13:50:58 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/16 19:10:25 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ ssize_t			md5_update(t_md5ctx *ctx, void **data, int flag)
 		ret = (ssize_t)ft_strlen(ft_strncpy(ctx->chunk, (char *)(*data), 64));
 		*((char **)data) += ret;
 	}
-	ctx->bitlen = (ctx->bitlen + (ret * 8)) % UINT_MAX;
+	ctx->bitlen = (ctx->bitlen + (ret * 8)) % UINT32_MAX;
 	if (0 <= ret && ret < 64 && bit_added == false)
 	{
 		ctx->chunk[ret] = (char)(1 << 7);
@@ -148,20 +148,20 @@ void			md5_transform(t_md5ctx *ctx)
 	C1 = C;
 	D1 = D;
 	i = 0;
-	while (i < 64)
+	while (i < MD5_TOTAL_OPERATIONS)
 	{
 		md5_operation(&ctx_prime, i, &f, &g);
-		f = (f + A1 + g_k[i] + M(g)) % UINT_MAX;
+		f = (f + A1 + g_k[i] + M(g)) % UINT32_MAX;
 		A1 = D1;
 		D1 = C1;
 		C1 = B1;
-		B1 = (B1 + ROTATE_LEFT(f, g_s[i])) % UINT_MAX;
+		B1 = (B1 + ROTATE_LEFT(f, g_s[i])) % UINT32_MAX;
 		++i;
 	}
-	A = (A + A1) % UINT_MAX;
-	B = (B + B1) % UINT_MAX;
-	C = (C + C1) % UINT_MAX;
-	D = (D + D1) % UINT_MAX;
+	A = (A + A1) % UINT32_MAX;
+	B = (B + B1) % UINT32_MAX;
+	C = (C + C1) % UINT32_MAX;
+	D = (D + D1) % UINT32_MAX;
 	return ;
 }
 

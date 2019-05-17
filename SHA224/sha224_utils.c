@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sha256_utils.c                                     :+:      :+:    :+:   */
+/*   sha224_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:33:23 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/16 19:17:54 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/16 19:16:50 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_sha256.h"
+#include "ft_sha224.h"
 
 /*
 **    DESCRIPTION
 **         Initialization of the auxilary context.
 */
 
-void	sha256_transform_init(t_sha256ctx *ctx, t_sha256ctx *ctx_prime)
+void	sha224_transform_init(t_sha224ctx *ctx, t_sha224ctx *ctx_prime)
 {
 	ctx_prime->state[0] = A;
 	ctx_prime->state[1] = B;
@@ -35,7 +35,7 @@ void	sha256_transform_init(t_sha256ctx *ctx, t_sha256ctx *ctx_prime)
 **         of 32-bit words
 */
 
-void	sha256_schedule(t_sha256ctx *ctx)
+void	sha224_schedule(t_sha224ctx *ctx)
 {
 	uint32_t	i;
 
@@ -46,7 +46,7 @@ void	sha256_schedule(t_sha256ctx *ctx)
 		ctx->schedule[i] = *(uint32_t *)ft_to_big_endian(&ctx->schedule[i], 4);
 		++i;
 	}
-	while (i < SHA256_TOTAL_ROUNDS)
+	while (i < SHA224_TOTAL_ROUNDS)
 	{
 		ctx->schedule[i] = (ctx->schedule[i - 16] + SIG0(ctx->schedule[i - 15])
 							+
@@ -63,7 +63,7 @@ void	sha256_schedule(t_sha256ctx *ctx)
 **         Updating the context to the transformed context.
 */
 
-void	sha256_transform_final(t_sha256ctx *ctx, t_sha256ctx *ctx_prime)
+void	sha224_transform_final(t_sha224ctx *ctx, t_sha224ctx *ctx_prime)
 {
 	A = (A + ctx_prime->state[0]) % UINT32_MAX;
 	B = (B + ctx_prime->state[1]) % UINT32_MAX;

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sha256_process.c                                   :+:      :+:    :+:   */
+/*   sha224_process.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -21,18 +21,18 @@
 **     •  All variables are unsigned 32 bit and wrap modulo 2^32 when
 **        calculating.
 **
-**     •  The digest a 256-bit string is divided into eight 32-bit words,
-**        denoted a, b, c, d, e, f, g and h; these 8 variables will be
-**        held in the 't_sha256ctx' structure and used in the compression
-**        function.
+**     •  The digest a 224-bit string is divided into seven 32-bit words,
+**        denoted a, b, c, d, e, f and g; these 7 variables plus an extra
+**        32-bit word will be held in the 't_sha224ctx' structure and used
+**        in the compression function.
 **
 **        They are initialized to certain fixed constants (given by the
-**        SHA256 specification).
+**        SHA224 specification).
 **
 **     •  'ctx->schedule' specifies the per-round message schedule array
 **        [0..63] of 32 bit words, different with every chunk.
 **
-**     •  'g_k' specifies the per-round constants (given by the SHA256
+**     •  'g_k' specifies the per-round constants (given by the SHA224
 **        specification).
 **
 **     •  For each round, there is one round constant k[i] and one entry
@@ -44,7 +44,7 @@
 **        after padding is 0x61626380
 */
 
-#include "ft_sha256.h"
+#include "ft_sha224.h"
 
 /*
 **    DESCRIPTION
@@ -84,17 +84,17 @@ const uint32_t g_k[64] =
 **         G & H.
 */
 
-void				sha256_init(t_sha256ctx *ctx)
+void				sha224_init(t_sha224ctx *ctx)
 {
 	ctx->bitlen = 0;
-	A = 0x6a09e667;
-	B = 0xbb67ae85;
-	C = 0x3c6ef372;
-	D = 0xa54ff53a;
-	E = 0x510e527f;
-	F = 0x9b05688c;
-	G = 0x1f83d9ab;
-	H = 0x5be0cd19;
+	A = 0xc1059ed8;
+	B = 0x367cd507;
+	C = 0x3070dd17;
+	D = 0xf70e5939;
+	E = 0xffc00b31;
+	F = 0x68581511;
+	G = 0x64f98fa7;
+	H = 0xbefa4fa4;
 	return ;
 }
 
@@ -105,7 +105,7 @@ void				sha256_init(t_sha256ctx *ctx)
 **         length of the message.
 */
 
-ssize_t				sha256_update(t_sha256ctx *ctx, void **data, int flag)
+ssize_t				sha224_update(t_sha224ctx *ctx, void **data, int flag)
 {
 	static bool		bit_added;
 	ssize_t			ret;
@@ -140,17 +140,17 @@ ssize_t				sha256_update(t_sha256ctx *ctx, void **data, int flag)
 **         goes through.
 */
 
-void				sha256_transform(t_sha256ctx *ctx)
+void				sha224_transform(t_sha224ctx *ctx)
 {
-	t_sha256ctx		ctx_prime;
+	t_sha224ctx		ctx_prime;
 	uint32_t		tmp1;
 	uint32_t		tmp2;
 	uint32_t		i;
 
-	sha256_schedule(ctx);
-	sha256_transform_init(ctx, &ctx_prime);
+	sha224_schedule(ctx);
+	sha224_transform_init(ctx, &ctx_prime);
 	i = 0;
-	while (i < SHA256_TOTAL_ROUNDS)
+	while (i < SHA224_TOTAL_ROUNDS)
 	{
 		tmp1 = (H1 + SUM1(E1) + CH(E1, F1, G1) + g_k[i] + ctx->schedule[i])
 				% UINT32_MAX;
@@ -165,7 +165,7 @@ void				sha256_transform(t_sha256ctx *ctx)
 		A1 = (tmp1 + tmp2) % UINT32_MAX;
 		++i;
 	}
-	sha256_transform_final(ctx, &ctx_prime);
+	sha224_transform_final(ctx, &ctx_prime);
 	return ;
 }
 
@@ -175,9 +175,9 @@ void				sha256_transform(t_sha256ctx *ctx)
 **         E, F, G & H) to construct the final digest.
 */
 
-void				sha256_final(t_sha256ctx *ctx, char **digest)
+void				sha224_final(t_sha224ctx *ctx, char **digest)
 {
-	if (!((*digest) = (char *)ft_malloc(SHA256_DIGEST_LENGTH + 1, '\0')))
+	if (!((*digest) = (char *)ft_malloc(SHA224_DIGEST_LENGTH + 1, '\0')))
 		EXIT(ft_printf("Error: %s{underlined}", strerror(errno)));
 	*(uint32_t *)&(*digest)[0] = *(uint32_t *)ft_to_big_endian(&A, 4);
 	*(uint32_t *)&(*digest)[4] = *(uint32_t *)ft_to_big_endian(&B, 4);
@@ -186,7 +186,6 @@ void				sha256_final(t_sha256ctx *ctx, char **digest)
 	*(uint32_t *)&(*digest)[16] = *(uint32_t *)ft_to_big_endian(&E, 4);
 	*(uint32_t *)&(*digest)[20] = *(uint32_t *)ft_to_big_endian(&F, 4);
 	*(uint32_t *)&(*digest)[24] = *(uint32_t *)ft_to_big_endian(&G, 4);
-	*(uint32_t *)&(*digest)[28] = *(uint32_t *)ft_to_big_endian(&H, 4);
-	(*digest)[32] = '\0';
+	(*digest)[28] = '\0';
 	return ;
 }

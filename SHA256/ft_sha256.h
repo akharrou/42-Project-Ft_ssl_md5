@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 18:36:53 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/16 16:51:48 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/16 19:18:09 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 
 # define SHA256_DIGEST_LENGTH   (32)
 # define SHA256_CHUNK_LENGTH    (64)
+# define SHA256_TOTAL_ROUNDS    (64)
 
 # ifdef E
 #  undef E
@@ -60,8 +61,12 @@
 
 # define CH(e, f, g)   ((e & f) ^ ((~e) & g))
 # define MAJ(a, b, c)  ((a & b) ^ (a & c) ^ (b & c))
-# define EP0(a) (ROTATE_RIGHT(a, 2) ^ ROTATE_RIGHT(a, 13) ^ ROTATE_RIGHT(a, 22))
-# define EP1(e) (ROTATE_RIGHT(e, 6) ^ ROTATE_RIGHT(e, 11) ^ ROTATE_RIGHT(e, 25))
+
+# define SUM0(a) ROTATE_RIGHT(a, 2) ^ ROTATE_RIGHT(a, 13) ^ ROTATE_RIGHT(a, 22)
+# define SUM1(e) ROTATE_RIGHT(e, 6) ^ ROTATE_RIGHT(e, 11) ^ ROTATE_RIGHT(e, 25)
+
+# define SIG0(w) ROTATE_RIGHT(w, 7) ^ ROTATE_RIGHT(w, 18) ^ (w >> 3)
+# define SIG1(w) ROTATE_RIGHT(w, 17) ^ ROTATE_RIGHT(w, 19) ^ (w >> 10)
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
