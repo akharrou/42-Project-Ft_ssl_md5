@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 18:36:53 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/16 19:21:32 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/16 20:02:43 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,11 @@
 # define CH(e, f, g)   ((e & f) ^ ((~e) & g))
 # define MAJ(a, b, c)  ((a & b) ^ (a & c) ^ (b & c))
 
-# define SUM0(a) ROTATE_RIGHT(a, 28) ^ ROTATE_RIGHT(a, 34) ^ ROTATE_RIGHT(a, 39)
-# define SUM1(e) ROTATE_RIGHT(e, 14) ^ ROTATE_RIGHT(e, 18) ^ ROTATE_RIGHT(e, 41)
+# define SUM0(a) (ROTR_64BITS(a, 28) ^ ROTR_64BITS(a, 34) ^ ROTR_64BITS(a, 39))
+# define SUM1(e) (ROTR_64BITS(e, 14) ^ ROTR_64BITS(e, 18) ^ ROTR_64BITS(e, 41))
 
-# define SIG0(w) (ROTATE_RIGHT(w, 1) ^ ROTATE_RIGHT(w, 8) ^ (w >> 7))
-# define SIG1(w) (ROTATE_RIGHT(w, 19) ^ ROTATE_RIGHT(w, 61) ^ (w >> 6))
+# define SIG0(w) (ROTR_64BITS(w, 1) ^ ROTR_64BITS(w, 8) ^ (w >> 7))
+# define SIG1(w) (ROTR_64BITS(w, 19) ^ ROTR_64BITS(w, 61) ^ (w >> 6))
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **

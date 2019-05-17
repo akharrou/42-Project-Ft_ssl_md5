@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 10:25:53 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/16 19:13:15 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/16 20:08:56 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ ssize_t				sha224_update(t_sha224ctx *ctx, void **data, int flag)
 
 /*
 **    DESCRIPTION
-**         Denotes the transformation (64 operations) that each message chunk
+**         Denotes the transformation that each message chunk
 **         goes through.
 */
 
@@ -172,7 +172,7 @@ void				sha224_transform(t_sha224ctx *ctx)
 /*
 **    DESCRIPTION
 **         Appends the 32 bit words to each other (denoted as A, B, C, D,
-**         E, F, G & H) to construct the final digest.
+**         E, F & G) to construct the final digest.
 */
 
 void				sha224_final(t_sha224ctx *ctx, char **digest)

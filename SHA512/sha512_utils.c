@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:33:23 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/16 19:22:17 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/16 20:02:45 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	sha512_schedule(t_sha512ctx *ctx)
 	{
 		ctx->schedule[i] = (ctx->schedule[i - 16] + SIG0(ctx->schedule[i - 15])
 							+
-							ctx->schedule[i - 7] + SIG1(ctx->schedule[i - 2]))  /* FIXME DUNNO JUST FIX IT */
+							ctx->schedule[i - 7] + SIG1(ctx->schedule[i - 2]))
 							%
 							UINT64_MAX;
 		++i;

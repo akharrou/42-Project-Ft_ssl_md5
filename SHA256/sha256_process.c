@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 10:25:53 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/16 19:13:15 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/16 20:07:32 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ ssize_t				sha256_update(t_sha256ctx *ctx, void **data, int flag)
 
 /*
 **    DESCRIPTION
-**         Denotes the transformation (64 operations) that each message chunk
+**         Denotes the transformation that each message chunk
 **         goes through.
 */
 

@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 10:25:53 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/16 19:22:06 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/16 20:08:26 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
 **
 **  [DEFINITIONS] :
 **
-**     •  All variables are unsigned 32 bit and wrap modulo 2^32 when
+**     •  All variables are unsigned 64 bit and wrap modulo 2^64 when
 **        calculating.
 **
-**     •  The digest a 512-bit string is divided into eight 32-bit words,
+**     •  The digest a 512-bit string is divided into eight 64-bit words,
 **        denoted a, b, c, d, e, f, g and h; these 8 variables will be
 **        held in the 't_sha512ctx' structure and used in the compression
 **        function.
@@ -30,18 +30,17 @@
 **        SHA512 specification).
 **
 **     •  'ctx->schedule' specifies the per-round message schedule array
-**        [0..63] of 32 bit words, different with every chunk.
+**        [0..80] of 64 bit words, different with every chunk.
 **
 **     •  'g_k' specifies the per-round constants (given by the SHA512
 **        specification).
 **
 **     •  For each round, there is one round constant k[i] and one entry
-**        in the message schedule array ctx->schedule[i], 0 ≤ i ≤ 63
+**        in the message schedule array ctx->schedule[i], 0 ≤ i ≤ 79
 **
 **     •  Big-endian convention is used when expressing the constants in
 **        this pseudocode, and when parsing message block data from bytes
-**        to words, for example, the first word of the input message "abc"
-**        after padding is 0x61626380
+**        to words.
 */
 
 #include "ft_sha512.h"
@@ -97,7 +96,7 @@ const uint64_t g_k[80] =
 
 /*
 **    DESCRIPTION
-**         Initialization of the 32 bit words denoted A, B, C, D, E, F,
+**         Initialization of the 64 bit words denoted A, B, C, D, E, F,
 **         G & H.
 */
 
@@ -153,7 +152,7 @@ ssize_t				sha512_update(t_sha512ctx *ctx, void **data, int flag)
 
 /*
 **    DESCRIPTION
-**         Denotes the transformation (64 operations) that each message chunk
+**         Denotes the transformation that each message chunk
 **         goes through.
 */
 
@@ -188,7 +187,7 @@ void				sha512_transform(t_sha512ctx *ctx)
 
 /*
 **    DESCRIPTION
-**         Appends the 32 bit words to each other (denoted as A, B, C, D,
+**         Appends the 64 bit words to each other (denoted as A, B, C, D,
 **         E, F, G & H) to construct the final digest.
 */
 
@@ -197,13 +196,13 @@ void				sha512_final(t_sha512ctx *ctx, char **digest)
 	if (!((*digest) = (char *)ft_malloc(SHA512_DIGEST_LENGTH + 1, '\0')))
 		EXIT(ft_printf("Error: %s{underlined}", strerror(errno)));
 	*(uint64_t *)&(*digest)[0] = *(uint64_t *)ft_to_big_endian(&A, 4);
-	*(uint64_t *)&(*digest)[4] = *(uint64_t *)ft_to_big_endian(&B, 4);
-	*(uint64_t *)&(*digest)[8] = *(uint64_t *)ft_to_big_endian(&C, 4);
-	*(uint64_t *)&(*digest)[12] = *(uint64_t *)ft_to_big_endian(&D, 4);
-	*(uint64_t *)&(*digest)[16] = *(uint64_t *)ft_to_big_endian(&E, 4);
-	*(uint64_t *)&(*digest)[20] = *(uint64_t *)ft_to_big_endian(&F, 4);
-	*(uint64_t *)&(*digest)[24] = *(uint64_t *)ft_to_big_endian(&G, 4);
-	*(uint64_t *)&(*digest)[28] = *(uint64_t *)ft_to_big_endian(&H, 4);
-	(*digest)[32] = '\0';
+	*(uint64_t *)&(*digest)[8] = *(uint64_t *)ft_to_big_endian(&B, 4);
+	*(uint64_t *)&(*digest)[16] = *(uint64_t *)ft_to_big_endian(&C, 4);
+	*(uint64_t *)&(*digest)[24] = *(uint64_t *)ft_to_big_endian(&D, 4);
+	*(uint64_t *)&(*digest)[32] = *(uint64_t *)ft_to_big_endian(&E, 4);
+	*(uint64_t *)&(*digest)[40] = *(uint64_t *)ft_to_big_endian(&F, 4);
+	*(uint64_t *)&(*digest)[48] = *(uint64_t *)ft_to_big_endian(&G, 4);
+	*(uint64_t *)&(*digest)[56] = *(uint64_t *)ft_to_big_endian(&H, 4);
+	(*digest)[64] = '\0';
 	return ;
 }

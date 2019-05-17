@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 18:36:53 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/16 19:17:27 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/16 20:03:32 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,11 @@
 # define CH(e, f, g)   ((e & f) ^ ((~e) & g))
 # define MAJ(a, b, c)  ((a & b) ^ (a & c) ^ (b & c))
 
-# define SUM0(a) ROTATE_RIGHT(a, 2) ^ ROTATE_RIGHT(a, 13) ^ ROTATE_RIGHT(a, 22)
-# define SUM1(e) ROTATE_RIGHT(e, 6) ^ ROTATE_RIGHT(e, 11) ^ ROTATE_RIGHT(e, 25)
+# define SUM0(a) (ROTR_32BITS(a, 2) ^ ROTR_32BITS(a, 13) ^ ROTR_32BITS(a, 22))
+# define SUM1(e) (ROTR_32BITS(e, 6) ^ ROTR_32BITS(e, 11) ^ ROTR_32BITS(e, 25))
 
-# define SIG0(w) ROTATE_RIGHT(w, 7) ^ ROTATE_RIGHT(w, 18) ^ (w >> 3)
-# define SIG1(w) ROTATE_RIGHT(w, 17) ^ ROTATE_RIGHT(w, 19) ^ (w >> 10)
+# define SIG0(w) (ROTR_32BITS(w, 7) ^ ROTR_32BITS(w, 18) ^ (w >> 3))
+# define SIG1(w) (ROTR_32BITS(w, 17) ^ ROTR_32BITS(w, 19) ^ (w >> 10))
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **

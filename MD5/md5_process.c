@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 10:49:59 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/16 19:10:25 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/16 20:01:52 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ void			md5_transform(t_md5ctx *ctx)
 		A1 = D1;
 		D1 = C1;
 		C1 = B1;
-		B1 = (B1 + ROTATE_LEFT(f, g_s[i])) % UINT32_MAX;
+		B1 = (B1 + ROTATE_32BITS_LEFT(f, g_s[i])) % UINT32_MAX;
 		++i;
 	}
 	A = (A + A1) % UINT32_MAX;
