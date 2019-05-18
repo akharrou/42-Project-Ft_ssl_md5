@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:33:23 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/16 20:00:38 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/18 11:18:54 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,13 @@ void	sha224_schedule(t_sha224ctx *ctx)
 	}
 	while (i < SHA224_TOTAL_ROUNDS)
 	{
-		ctx->schedule[i] = (ctx->schedule[i - 16] + SIG0(ctx->schedule[i - 15])
+		ctx->schedule[i] = (ctx->schedule[i - 16]
 							+
-							ctx->schedule[i - 7] + SIG1(ctx->schedule[i - 2]))
+							SHA2_224_SIG0(ctx->schedule[i - 15])
+							+
+							ctx->schedule[i - 7]
+							+
+							SHA2_224_SIG1(ctx->schedule[i - 2]))
 							%
 							UINT32_MAX;
 		++i;

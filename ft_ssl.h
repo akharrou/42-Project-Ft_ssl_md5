@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 08:31:14 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/18 10:48:32 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/18 11:05:46 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@
 
 # include "Libft/Includes/libft.h"
 
-# include "MD5/ft_md5.h"
-# include "SHA2-224/ft_sha224.h"
-# include "SHA2-256/ft_sha256.h"
-# include "SHA2-384/ft_sha384.h"
-# include "SHA2-512/ft_sha512.h"
+# include "Commands/MD5/ft_md5.h"
+# include "Commands/SHA2-224/ft_sha224.h"
+# include "Commands/SHA2-256/ft_sha256.h"
+# include "Commands/SHA2-384/ft_sha384.h"
+# include "Commands/SHA2-512/ft_sha512.h"
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **

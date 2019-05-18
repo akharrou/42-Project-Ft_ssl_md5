@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 10:25:53 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/18 10:56:25 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/18 11:16:36 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,10 +152,10 @@ void				sha256_transform(t_sha256ctx *ctx)
 	i = -1;
 	while (++i < SHA256_TOTAL_ROUNDS)
 	{
-		tmp1 = (H1 + SUM1(E1) + CH(E1, F1, G1) + g_sha256_k[i]
+		tmp1 = (H1 + SHA2_256_SUM1(E1) + CH(E1, F1, G1) + g_sha256_k[i]
 				+ ctx->schedule[i])
 				% UINT64_MAX;
-		tmp2 = (SUM0(A1) + MAJ(A1, B1, C1)) % UINT64_MAX;
+		tmp2 = (SHA2_256_SUM0(A1) + MAJ(A1, B1, C1)) % UINT64_MAX;
 		H1 = G1;
 		G1 = F1;
 		F1 = E1;

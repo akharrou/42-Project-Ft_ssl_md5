@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 18:36:53 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/18 10:56:29 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/18 11:14:38 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,11 @@
 # define SHA256_CHUNK_LENGTH    (64)
 # define SHA256_TOTAL_ROUNDS    (64)
 
-# define CH(e, f, g)   ((e & f) ^ ((~e) & g))
-# define MAJ(a, b, c)  ((a & b) ^ (a & c) ^ (b & c))
+# define SHA2_256_SUM0(a) (ROTR_32B(a, 2) ^ ROTR_32B(a, 13) ^ ROTR_32B(a, 22))
+# define SHA2_256_SUM1(e) (ROTR_32B(e, 6) ^ ROTR_32B(e, 11) ^ ROTR_32B(e, 25))
 
-# define SUM0(a) (ROTR_32BITS(a, 2) ^ ROTR_32BITS(a, 13) ^ ROTR_32BITS(a, 22))
-# define SUM1(e) (ROTR_32BITS(e, 6) ^ ROTR_32BITS(e, 11) ^ ROTR_32BITS(e, 25))
-
-# define SIG0(w) (ROTR_32BITS(w, 7) ^ ROTR_32BITS(w, 18) ^ (w >> 3))
-# define SIG1(w) (ROTR_32BITS(w, 17) ^ ROTR_32BITS(w, 19) ^ (w >> 10))
+# define SHA2_256_SIG0(w) (ROTR_32B(w, 7) ^ ROTR_32B(w, 18) ^ (w >> 3))
+# define SHA2_256_SIG1(w) (ROTR_32B(w, 17) ^ ROTR_32B(w, 19) ^ (w >> 10))
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **

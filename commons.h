@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 10:46:46 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/18 10:59:35 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/18 11:07:34 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,8 @@
 # define F1  (ctx_prime.state[5])
 # define G1  (ctx_prime.state[6])
 # define H1  (ctx_prime.state[7])
+
+# define CH(e, f, g)   ((e & f) ^ ((~e) & g))
+# define MAJ(a, b, c)  ((a & b) ^ (a & c) ^ (b & c))
 
 #endif

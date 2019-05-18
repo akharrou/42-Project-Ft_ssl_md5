@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:33:23 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/16 19:17:54 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/18 11:18:49 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,13 @@ void	sha256_schedule(t_sha256ctx *ctx)
 	}
 	while (i < SHA256_TOTAL_ROUNDS)
 	{
-		ctx->schedule[i] = (ctx->schedule[i - 16] + SIG0(ctx->schedule[i - 15])
+		ctx->schedule[i] = (ctx->schedule[i - 16]
 							+
-							ctx->schedule[i - 7] + SIG1(ctx->schedule[i - 2]))
+							SHA2_256_SIG0(ctx->schedule[i - 15])
+							+
+							ctx->schedule[i - 7]
+							+
+							SHA2_256_SIG1(ctx->schedule[i - 2]))
 							%
 							UINT32_MAX;
 		++i;

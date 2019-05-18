@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 18:36:53 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/18 10:52:48 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/18 11:15:29 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,11 @@
 # define SHA512_CHUNK_LENGTH    (128)
 # define SHA512_TOTAL_ROUNDS    (80)
 
-# define CH(e, f, g)   ((e & f) ^ ((~e) & g))
-# define MAJ(a, b, c)  ((a & b) ^ (a & c) ^ (b & c))
+# define SHA2_512_SUM0(a) (ROTR_64B(a, 28) ^ ROTR_64B(a, 34) ^ ROTR_64B(a, 39))
+# define SHA2_512_SUM1(e) (ROTR_64B(e, 14) ^ ROTR_64B(e, 18) ^ ROTR_64B(e, 41))
 
-# define SUM0(a) (ROTR_64BITS(a, 28) ^ ROTR_64BITS(a, 34) ^ ROTR_64BITS(a, 39))
-# define SUM1(e) (ROTR_64BITS(e, 14) ^ ROTR_64BITS(e, 18) ^ ROTR_64BITS(e, 41))
-
-# define SIG0(w) (ROTR_64BITS(w, 1) ^ ROTR_64BITS(w, 8) ^ (w >> 7))
-# define SIG1(w) (ROTR_64BITS(w, 19) ^ ROTR_64BITS(w, 61) ^ (w >> 6))
+# define SHA2_512_SIG0(w) (ROTR_64B(w, 1) ^ ROTR_64B(w, 8) ^ (w >> 7))
+# define SHA2_512_SIG1(w) (ROTR_64B(w, 19) ^ ROTR_64B(w, 61) ^ (w >> 6))
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
