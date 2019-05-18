@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 08:31:14 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/18 10:32:53 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/18 10:48:32 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 ** Macro(s).
 */
 
-# define LONGEST_OPTION 1
+# define LONGEST_OPTION (1)
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
@@ -103,11 +103,11 @@ void			s_option(t_ssl_command cmd, void *data, int8_t *options);
 
 t_ssl_command	g_ssl_commands[] =
 {
-	{ "md5", &ft_md5 },
-	{ "sha224", &ft_sha224 },
-	{ "sha256", &ft_sha256 },
-	{ "sha384", &ft_sha384 },
-	{ "sha512", &ft_sha512 },
+	{ "md5", &ft_md5, 16},
+	{ "sha224", &ft_sha224, 28},
+	{ "sha256", &ft_sha256, 32},
+	{ "sha384", &ft_sha384, 48},
+	{ "sha512", &ft_sha512, 64},
 	\
 	{ NULL, NULL }
 };

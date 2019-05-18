@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 10:25:53 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/17 16:29:56 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/18 10:54:20 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,14 +161,15 @@ void				sha384_transform(t_sha384ctx *ctx)
 	t_sha384ctx		ctx_prime;
 	uint64_t		tmp1;
 	uint64_t		tmp2;
-	uint64_t		i;
+	int8_t			i;
 
 	sha384_schedule(ctx);
 	sha384_transform_init(ctx, &ctx_prime);
-	i = 0;
-	while (i < SHA384_TOTAL_ROUNDS)
+	i = -1;
+	while (++i < SHA384_TOTAL_ROUNDS)
 	{
-		tmp1 = (H1 + SUM1(E1) + CH(E1, F1, G1) + g_k[i] + ctx->schedule[i])
+		tmp1 = (H1 + SUM1(E1) + CH(E1, F1, G1) + g_sha384_k[i]
+				+ ctx->schedule[i])
 				% UINT64_MAX;
 		tmp2 = (SUM0(A1) + MAJ(A1, B1, C1)) % UINT64_MAX;
 		H1 = G1;
@@ -179,7 +180,6 @@ void				sha384_transform(t_sha384ctx *ctx)
 		C1 = B1;
 		B1 = A1;
 		A1 = (tmp1 + tmp2) % UINT64_MAX;
-		++i;
 	}
 	sha384_transform_final(ctx, &ctx_prime);
 	return ;

@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 10:25:53 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/17 16:26:02 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/18 10:53:46 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 **     •  'ctx->schedule' specifies the per-round message schedule array
 **        [0..79] of 64 bit words, different with every chunk.
 **
-**     •  'g_k' specifies the per-round constants (given by the SHA512
+**     •  'g_sha512_k' specifies the per-round constants (given by the SHA512
 **        specification).
 **
 **     •  For each round, there is one round constant k[i] and one entry
@@ -50,7 +50,7 @@
 **         Pre-round constants.
 */
 
-const uint64_t g_k[80] =
+const uint64_t g_sha512_k[80] =
 {
 	0x428a2f98d728ae22, 0x7137449123ef65cd,
 	0xb5c0fbcfec4d3b2f, 0xe9b5dba58189dbbc,
@@ -161,14 +161,15 @@ void				sha512_transform(t_sha512ctx *ctx)
 	t_sha512ctx		ctx_prime;
 	uint64_t		tmp1;
 	uint64_t		tmp2;
-	uint64_t		i;
+	int8_t			i;
 
 	sha512_schedule(ctx);
 	sha512_transform_init(ctx, &ctx_prime);
-	i = 0;
-	while (i < SHA512_TOTAL_ROUNDS)
+	i = -1;
+	while (++i < SHA512_TOTAL_ROUNDS)
 	{
-		tmp1 = (H1 + SUM1(E1) + CH(E1, F1, G1) + g_k[i] + ctx->schedule[i])
+		tmp1 = (H1 + SUM1(E1) + CH(E1, F1, G1) + g_sha512_k[i]
+				+ ctx->schedule[i])
 				% UINT64_MAX;
 		tmp2 = (SUM0(A1) + MAJ(A1, B1, C1)) % UINT64_MAX;
 		H1 = G1;
@@ -179,7 +180,6 @@ void				sha512_transform(t_sha512ctx *ctx)
 		C1 = B1;
 		B1 = A1;
 		A1 = (tmp1 + tmp2) % UINT64_MAX;
-		++i;
 	}
 	sha512_transform_final(ctx, &ctx_prime);
 	return ;

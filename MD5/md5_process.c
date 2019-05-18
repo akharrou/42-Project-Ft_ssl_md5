@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 10:49:59 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/16 20:01:52 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/18 11:03:47 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@
 
 #include "ft_md5.h"
 
-uint32_t g_s[64] =
+uint32_t g_md5_s[64] =
 {
 	7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,
 	5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20,
@@ -60,7 +60,7 @@ uint32_t g_s[64] =
 	6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21
 };
 
-uint32_t g_k[64] =
+uint32_t g_md5_k[64] =
 {
 	0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
 	0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
@@ -151,11 +151,11 @@ void			md5_transform(t_md5ctx *ctx)
 	while (i < MD5_TOTAL_OPERATIONS)
 	{
 		md5_operation(&ctx_prime, i, &f, &g);
-		f = (f + A1 + g_k[i] + M(g)) % UINT32_MAX;
+		f = (f + A1 + g_md5_k[i] + MD5_M(g)) % UINT32_MAX;
 		A1 = D1;
 		D1 = C1;
 		C1 = B1;
-		B1 = (B1 + ROTATE_32BITS_LEFT(f, g_s[i])) % UINT32_MAX;
+		B1 = (B1 + ROTATE_32BITS_LEFT(f, g_md5_s[i])) % UINT32_MAX;
 		++i;
 	}
 	A = (A + A1) % UINT32_MAX;

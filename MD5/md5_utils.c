@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:50:22 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/16 13:50:42 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/18 11:03:49 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,24 @@
 
 void	md5_operation(t_md5ctx *ctx, uint32_t i, uint32_t *f, uint32_t *g)
 {
-	if (ROUND_1)
+	if (MD5_ROUND_1)
 	{
-		(*f) = F(B, C, D);
+		(*f) = MD5_F(B, C, D);
 		(*g) = i;
 	}
-	else if (ROUND_2)
+	else if (MD5_ROUND_2)
 	{
-		(*f) = G(B, C, D);
+		(*f) = MD5_G(B, C, D);
 		(*g) = (5 * i + 1) % 16;
 	}
-	else if (ROUND_3)
+	else if (MD5_ROUND_3)
 	{
-		(*f) = H(B, C, D);
+		(*f) = MD5_H(B, C, D);
 		(*g) = (3 * i + 5) % 16;
 	}
-	else if (ROUND_4)
+	else if (MD5_ROUND_4)
 	{
-		(*f) = I(B, C, D);
+		(*f) = MD5_I(B, C, D);
 		(*g) = (7 * i) % 16;
 	}
 	return ;

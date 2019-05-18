@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 18:16:15 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/16 19:05:35 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/18 11:04:12 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,49 +19,28 @@
 */
 
 # include "../Libft/Includes/libft.h"
-
-/*
-** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-** Flag(s).
-*/
-
-# define O_FD   (1)
-# define O_BUF  (2)
+# include "../commons.h"
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 ** Macro(s).
 */
 
-# define MD5_CHUNK_LENGTH      (64)
 # define MD5_DIGEST_LENGTH     (16)
+# define MD5_CHUNK_LENGTH      (64)
 # define MD5_TOTAL_OPERATIONS  (64)
 
-# define A   (ctx->state[0])
-# define B   (ctx->state[1])
-# define C   (ctx->state[2])
-# define D   (ctx->state[3])
+# define MD5_ROUND_1     (0 <= i && i <= 15)
+# define MD5_ROUND_2     (16 <= i && i <= 31)
+# define MD5_ROUND_3     (32 <= i && i <= 47)
+# define MD5_ROUND_4     (48 <= i && i <= 63)
 
-# define A1  (ctx_prime.state[0])
-# define B1  (ctx_prime.state[1])
-# define C1  (ctx_prime.state[2])
-# define D1  (ctx_prime.state[3])
+# define MD5_M(g)        ((*(uint32_t *)&(ctx->chunk)[g * 4]))
 
-# define M(g)  ((*(uint32_t *)&(ctx->chunk)[g * 4]))
-
-# define ROUND_1  (0 <= i && i <= 15)
-# define ROUND_2  (16 <= i && i <= 31)
-# define ROUND_3  (32 <= i && i <= 47)
-# define ROUND_4  (48 <= i && i <= 63)
-
-/*
-** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-*/
-
-# define F(b, c, d)  (((b) & (c)) | ((~b) & (d)))
-# define G(b, c, d)  (((b) & (d)) | ((c) & (~d)))
-# define H(b, c, d)  ((b) ^ (c) ^ (d))
-# define I(b, c, d)  ((c) ^ ((b) | (~d)))
+# define MD5_F(b, c, d)  (((b) & (c)) | ((~b) & (d)))
+# define MD5_G(b, c, d)  (((b) & (d)) | ((c) & (~d)))
+# define MD5_H(b, c, d)  ((b) ^ (c) ^ (d))
+# define MD5_I(b, c, d)  ((c) ^ ((b) | (~d)))
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
@@ -78,8 +57,8 @@ typedef struct	s_md5_context
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
 */
 
-extern uint32_t	g_s[64];
-extern uint32_t	g_k[64];
+extern uint32_t	g_md5_s[64];
+extern uint32_t	g_md5_k[64];
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **

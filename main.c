@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 08:30:29 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/18 09:49:14 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/18 10:35:17 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int		main(int ac, const char *av[])
 {
 	int	i;
-	int	j;
 
 	if (ac < 2)
 	{
