@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 09:07:16 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/17 16:36:50 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/17 17:29:15 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void		usage(void)
 {
-	ft_printf("Usage: ./ft_ssl command [command opts] [command args]");
+	ft_printf("Usage: ./ft_ssl [-pqr] [[-s string] ...] [files ...]");
 	return ;
 }
 
