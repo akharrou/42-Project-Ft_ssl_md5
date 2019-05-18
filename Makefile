@@ -6,7 +6,7 @@
 #    By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/07 18:55:23 by akharrou          #+#    #+#              #
-#    Updated: 2019/05/18 10:32:48 by akharrou         ###   ########.fr        #
+#    Updated: 2019/05/18 11:29:13 by akharrou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,12 +27,12 @@ LIBRARY     =   Libft/libft.a
 
 HEADERS     =   ft_ssl.h                                                      \
                                                                               \
-                ft_md5.h                                                      \
+                Commands/MD5/ft_md5.h                                         \
                                                                               \
-                ft_sha224.h                                                   \
-                ft_sha256.h                                                   \
-                ft_sha384.h                                                   \
-                ft_sha512.h                                                   \
+                Commands/SHA2-224/ft_sha224.h                                 \
+                Commands/SHA2-256/ft_sha256.h                                 \
+                Commands/SHA2-384/ft_sha384.h                                 \
+                Commands/SHA2-512/ft_sha512.h                                 \
 
 # — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
@@ -49,38 +49,38 @@ SOURCES     =   main.c                                                        \
 
 # — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
-MD5         =   ft_md5.c                                                      \
+MD5         =   Commands/ft_md5.c                                             \
                                                                               \
-                md5_process.h                                                 \
-                md5_utils.h                                                   \
+                Commands/md5_process.h                                        \
+                Commands/md5_utils.h                                          \
 
 # — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
-SHA224      =   ft_sha224.c                                                   \
+SHA224      =   Commands/SHA2-224/ft_sha224.c                                 \
                                                                               \
-                sha224_process.h                                              \
-                sha224_utils.h                                                \
+                Commands/SHA2-224/sha224_process.h                            \
+                Commands/SHA2-224/sha224_utils.h                              \
 
 # — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
-SHA256      =   ft_sha256.c                                                   \
+SHA256      =   Commands/SHA2-256/ft_sha256.c                                 \
                                                                               \
-                sha256_process.h                                              \
-                sha256_utils.h                                                \
+                Commands/SHA2-256/sha256_process.h                            \
+                Commands/SHA2-256/sha256_utils.h                              \
 
 # — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
-SHA256      =   ft_sha384.c                                                   \
+SHA256      =   Commands/SHA2-384/ft_sha384.c                                 \
                                                                               \
-                sha384_process.h                                              \
-                sha384_utils.h                                                \
+                Commands/SHA2-384/sha384_process.h                            \
+                Commands/SHA2-384/sha384_utils.h                              \
 
 # — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
-SHA256      =   ft_sha512.c                                                   \
+SHA256      =   Commands/SHA2-512/ft_sha512.c                                 \
                                                                               \
-                sha512_process.h                                              \
-                sha512_utils.h                                                \
+                Commands/SHA2-512/sha512_process.h                            \
+                Commands/SHA2-512/sha512_utils.h                              \
 
 # — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
