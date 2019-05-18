@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 10:59:04 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/16 19:05:58 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/18 07:58:20 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,15 @@ char			*ft_sha512(void *data, int flag)
 	t_sha512ctx	ctx;
 	ssize_t		ret;
 	char		*digest;
+	int			fd;
 
+	if (flag & O_FD)
+	{
+		fd = ft_open((char *)data, O_RDONLY);
+		data = &fd;
+		if (fd == -1)
+			return (NULL);
+	}
 	sha512_init(&ctx);
 	ret = 1;
 	while (ret > 0)

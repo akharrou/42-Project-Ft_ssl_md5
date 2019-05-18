@@ -6,13 +6,13 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:42:24 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/17 19:38:45 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/18 08:14:30 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ssl.h"
 
-int8_t			parse_options(const char **argv)
+void			compute_digests(t_ssl_command cmd, const char **argv)
 {
 	int8_t		options;
 	int			i;
@@ -20,15 +20,75 @@ int8_t			parse_options(const char **argv)
 
 	while (argv && (*argv)[0] == '-')
 	{
-		while ((*argv)[i])
+		i = -1;
+		while ((*argv)[++i])
 		{
-			while (g_option[j].name != NULL)
-			{
+			j = -1;
+			while (g_option[++j].name != NULL)
 				if ((*argv)[i] == g_option[j].name[0])
-					g_option[j].command(STDIN, options);
-			}
+					g_options[j].handler(STDIN, &options);
 		}
 	}
+	while (argv)
+	{
+		if (ft_strcmp(*argv, "-s"))
+			g_options[3].handler(cmd.function, &options);
+		else
+			cmd.function(*argv, O_FILE);
+	}
+}
+
+void		r_option(t_ssl_command cmd, void *data, int8_t *options)
+{
+	(*options) |= R_OPTION;
+	return ;
+}
+
+void		q_option(t_ssl_command cmd, void *data, int8_t *options)
+{
+	(*options) |= Q_OPTION;
+	return ;
+}
+
+void		p_option(t_ssl_command cmd, void *data, int8_t *options)
+{
+	char		*digest;
+	char		*buf;
+	int			ret;
+
+	ret = ft_readline(STDIN, &buf);
+	if (ret < 0)
+	{
+		ft_printf("Error: %s{underlined}", strerror(errno));
+		return ;
+	}
+	digest = cmd.function(STDIN, O_FD);
+	if (digest)
+		ft_printf("%s\n%s", buf, ft_strhex(digest, digest_length));
+	return ;
+}
+
+void		s_option(t_ssl_command cmd, void *data, int8_t *options)
+{
+	char	*digest;
+
+	if (data)
+	{
+		digest = cmd.function(data, O_BUF);
+		if ((*options) & Q_OPTION)
+		{
+			if (digest != NULL)
+				ft_print("%s\n", ft_strhex(digest, cmd.output_len));
+		}
+		else if ((*options) & R_OPTION)
+		{
+			if (digest != NULL)
+				ft_print("%s \"%s\"\n",
+					ft_strhex(digest, cmd.output_len), (char *)data);
+		}
+	}
+	return ;
+}
 
 			if ((*argv)[i] == 'p')
 				ft_printf("%s\n%s",
