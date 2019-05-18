@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 08:31:14 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/17 16:44:55 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/17 19:38:28 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct	s_ssl_option
 {
 	const char	*name;
 	const char	*descripton;
+	void (*command)(void *message, int8_t options);
 }				t_option;
 
 extern t_option g_option[];
