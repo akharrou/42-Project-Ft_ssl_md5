@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 10:14:19 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/18 10:32:19 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/18 11:32:45 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void		p_option(t_ssl_command cmd, void *data, int8_t *options)
 	char		*buf;
 	int			ret;
 
+	(void)options;
+	(void)data;
 	ret = ft_readline(STDIN, &buf);
 	if (ret < 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 09:07:16 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/18 10:07:18 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/18 11:33:01 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void		invalid_command(const char *invalid_command)
 
 void		unknown_option(const char *argv)
 {
-	bool	unknown;
 	int8_t	width;
 	int32_t	i;
 

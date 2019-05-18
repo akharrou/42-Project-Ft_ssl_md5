@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 08:31:14 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/18 11:20:17 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/18 11:38:23 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,10 @@
 */
 
 # define LONGEST_OPTION (1)
+
+# define STANDARD_COMMANDS_COUNT  (0)
+# define DIGEST_COMMANDS_COUNT    (5)
+# define CIPHER_COMMANDS_COUNT    (0)
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
@@ -88,44 +92,5 @@ void			p_option(t_ssl_command cmd, void *data, int8_t *options);
 void			q_option(t_ssl_command cmd, void *data, int8_t *options);
 void			r_option(t_ssl_command cmd, void *data, int8_t *options);
 void			s_option(t_ssl_command cmd, void *data, int8_t *options);
-
-/*
-** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-** Global Definition(s).
-*/
-
-# ifndef FT_SSL_GLOBALS
-#  define FT_SSL_GLOBALS
-
-#  define STANDARD_COMMANDS_COUNT 0
-#  define DIGEST_COMMANDS_COUNT 5
-#  define CIPHER_COMMANDS_COUNT 0
-
-t_ssl_command	g_ssl_commands[] =
-{
-	{ "md5", &ft_md5, 16},
-	{ "sha224", &ft_sha224, 28},
-	{ "sha256", &ft_sha256, 32},
-	{ "sha384", &ft_sha384, 48},
-	{ "sha512", &ft_sha512, 64},
-	\
-	{ NULL, NULL }
-};
-
-t_ssl_option	g_ssl_options[] =
-{
-	{ "p", &p_option, "echo STDIN to STDOUT and append the checksum to STDOUT"},
-	{ "q", &q_option, "quiet mode" },
-	{ "r", &r_option, "reverse the format of the output" },
-	{ "s", &s_option, "print the sum of the given string" },
-	\
-	{ NULL, NULL }
-};
-
-# endif
-
-/*
-** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-*/
 
 #endif

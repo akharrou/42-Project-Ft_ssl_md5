@@ -6,14 +6,29 @@
 #    By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/07 18:55:23 by akharrou          #+#    #+#              #
-#    Updated: 2019/05/18 11:29:13 by akharrou         ###   ########.fr        #
+#    Updated: 2019/05/18 11:45:30 by akharrou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
 CC          =   gcc
-CFLAGS      =   -Wall -Wextra -Werror
+CFLAGS      =   -Wall -Wextra -Werror $(DEBUG_FLAGS)
+
+# — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
+
+DEBUG_FLAGS = -O0 -g                                                          \
+                                                                              \
+              -fsanitize=address                                              \
+              -fsanitize=undefined                                            \
+              -fsanitize=bounds                                               \
+              -fsanitize=integer                                              \
+              -fsanitize=nullability-arg                                      \
+              -fsanitize=nullability-return                                   \
+              -fsanitize=nullability-assign                                   \
+              -fsanitize=undefined                                            \
+              -fsanitize-address-use-after-scope                              \
+            #   -fsanitize=object-size                                        \
 
 # — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
@@ -39,6 +54,7 @@ HEADERS     =   ft_ssl.h                                                      \
 SOURCES     =   main.c                                                        \
                 compute.c                                                     \
                 error.c                                                       \
+                globals.c                                                     \
                                                                               \
                 $(MD5)                                                        \
                                                                               \
@@ -49,38 +65,38 @@ SOURCES     =   main.c                                                        \
 
 # — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
-MD5         =   Commands/ft_md5.c                                             \
+MD5         =   Commands/MD5/ft_md5.c                                         \
                                                                               \
-                Commands/md5_process.h                                        \
-                Commands/md5_utils.h                                          \
+                Commands/MD5/md5_process.c                                    \
+                Commands/MD5/md5_utils.c                                      \
 
 # — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
 SHA224      =   Commands/SHA2-224/ft_sha224.c                                 \
                                                                               \
-                Commands/SHA2-224/sha224_process.h                            \
-                Commands/SHA2-224/sha224_utils.h                              \
+                Commands/SHA2-224/sha224_process.c                            \
+                Commands/SHA2-224/sha224_utils.c                              \
 
 # — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
 SHA256      =   Commands/SHA2-256/ft_sha256.c                                 \
                                                                               \
-                Commands/SHA2-256/sha256_process.h                            \
-                Commands/SHA2-256/sha256_utils.h                              \
+                Commands/SHA2-256/sha256_process.c                            \
+                Commands/SHA2-256/sha256_utils.c                              \
 
 # — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
-SHA256      =   Commands/SHA2-384/ft_sha384.c                                 \
+SHA384      =   Commands/SHA2-384/ft_sha384.c                                 \
                                                                               \
-                Commands/SHA2-384/sha384_process.h                            \
-                Commands/SHA2-384/sha384_utils.h                              \
+                Commands/SHA2-384/sha384_process.c                            \
+                Commands/SHA2-384/sha384_utils.c                              \
 
 # — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
-SHA256      =   Commands/SHA2-512/ft_sha512.c                                 \
+SHA512      =   Commands/SHA2-512/ft_sha512.c                                 \
                                                                               \
-                Commands/SHA2-512/sha512_process.h                            \
-                Commands/SHA2-512/sha512_utils.h                              \
+                Commands/SHA2-512/sha512_process.c                            \
+                Commands/SHA2-512/sha512_utils.c                              \
 
 # — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
@@ -108,11 +124,9 @@ DEL = /bin/rm -rf
 
 clean:
 	@$(DEL) $(shell find . -name '*.o')
-	@make clean -C Libft/
 
 fclean: clean
 	@$(DEL) $(NAME)
-	@make fclean -C Libft/
 
 re: fclean all
 
