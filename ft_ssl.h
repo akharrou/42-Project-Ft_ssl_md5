@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 08:31:14 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/18 10:04:46 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/18 10:32:53 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,7 @@ enum			e_option_values
 	P_OPTION = (1 << 0),
 	Q_OPTION = (1 << 1),
 	R_OPTION = (1 << 2),
-	S_OPTION = (1 << 3),
-	\
-	UNKNOWN_OPTION = (1 << 31)
+	S_OPTION = (1 << 3)
 };
 
 /*
@@ -68,7 +66,7 @@ enum			e_option_values
 */
 
 extern t_ssl_command g_ssl_commands[];
-extern t_ssl_option	g_ssl_options[];
+extern t_ssl_option g_ssl_options[];
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
@@ -84,7 +82,7 @@ void			compute_digests(t_ssl_command ftptr, const char **argv);
 
 void			usage(void);
 void			invalid_command(const char *invalid_command);
-void			unknown_options(const char *argv);
+void			unknown_option(const char *argv);
 
 void			p_option(t_ssl_command cmd, void *data, int8_t *options);
 void			q_option(t_ssl_command cmd, void *data, int8_t *options);

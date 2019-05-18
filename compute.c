@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/09 12:42:24 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/18 10:04:29 by akharrou         ###   ########.fr       */
+/*   Created: 2019/05/18 10:14:19 by akharrou          #+#    #+#             */
+/*   Updated: 2019/05/18 10:32:19 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,28 +75,24 @@ void			compute_digests(t_ssl_command cmd, const char **argv)
 	int			i;
 	int			j;
 
-	if (!argv)
-		return ;
-	while ((*argv) && (*argv)[0] == '-')
+	while ((*(++argv)) && (*argv)[0] == '-')
 	{
 		i = -1;
-		while ((*argv)[++i])
-		{
-			j = -1;
-			while (g_ssl_options[++j].name != NULL && g_ssl_options[j].name[0] != 's')
-				if ((*argv)[i] == g_ssl_options[j].name[0])
-					g_ssl_options[j].handler(cmd, NULL, &options);
-			if (g_ssl_options[++j].name == NULL)
-				EXIT(unknown_option(*argv));
-		}
-	}
-	if (g_ssl_options[j].name[0] == 's')
-		/* print the argument after it */
-	while (*argv)
-	{
 		if (ft_strcmp(*argv, "-s"))
-			g_ssl_options[3].handler(cmd, (void *)(*argv), &options);
+			g_ssl_options[3].handler(cmd, (void *)(*(++argv)), &options);
 		else
-			cmd.function((void *)(*argv), O_FD);
+			while ((*argv)[++i])
+			{
+				j = -1;
+				while (g_ssl_options[++j].name != NULL)
+					if ((*argv)[i] == g_ssl_options[j].name[0])
+						g_ssl_options[j].handler(
+							cmd, (void *)&(*argv)[i + 1], &options);
+				if (g_ssl_options[j].name == NULL)
+					EXIT(unknown_option(*argv));
+			}
 	}
+	while (*argv)
+		if ((fd = ft_open((char *)(*argv), O_RDONLY)) != -1)
+			cmd.function((void *)&fd, O_FD);
 }
