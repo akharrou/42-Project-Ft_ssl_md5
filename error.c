@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 09:07:16 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/19 12:35:16 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/19 15:39:26 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ void		invalid_command(const char *invalid_command)
 	return ;
 }
 
-void		unknown_option(const char *argv)
+void		unknown_option(const char *unknown_option)
 {
 	int8_t	width;
 	int32_t	i;
 
-	ft_printf("unknown option '%s'\n", *argv);
+	ft_printf("unknown option '%s'\n", unknown_option);
 	ft_printf("options are\n");
 	width = LONGEST_OPTION;
 	i = -1;

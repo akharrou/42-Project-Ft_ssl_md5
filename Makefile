@@ -6,7 +6,7 @@
 #    By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/07 18:55:23 by akharrou          #+#    #+#              #
-#    Updated: 2019/05/19 09:38:24 by akharrou         ###   ########.fr        #
+#    Updated: 2019/05/19 14:42:19 by akharrou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,6 +52,7 @@ HEADERS     =   ft_ssl.h                                                      \
 
 SOURCES     =   main.c                                                        \
                 compute.c                                                     \
+                options.c                                                     \
                 error.c                                                       \
                 globals.c                                                     \
                                                                               \

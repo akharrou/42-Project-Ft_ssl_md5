@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 08:30:29 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/18 11:49:28 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/19 14:49:21 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ int		main(int ac, const char *av[])
 	{
 		if (ft_strcmp(av[1], g_ssl_commands[i].name) == 0)
 		{
-			compute_digests(g_ssl_commands[i], av + 1);
+			g_ssl_commands[i].name = ft_strdup(g_ssl_commands[i].name);
+			compute_digests(g_ssl_commands[i], av + 2);
+			free(g_ssl_commands[i].name);
 			break ;
 		}
 		++i;
