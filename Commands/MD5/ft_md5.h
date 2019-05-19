@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 18:16:15 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/18 11:43:43 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/19 09:30:38 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define MD5_ROUND_3     (32 <= i && i <= 47)
 # define MD5_ROUND_4     (48 <= i && i <= 63)
 
-# define MD5_M(g)        ((*(uint32_t *)&(ctx->chunk)[g * 4]))
+# define MD5_M(g)        (*(uint32_t *)&ctx->chunk[g * 4])
 
 # define MD5_F(b, c, d)  (((b) & (c)) | ((~b) & (d)))
 # define MD5_G(b, c, d)  (((b) & (d)) | ((c) & (~d)))

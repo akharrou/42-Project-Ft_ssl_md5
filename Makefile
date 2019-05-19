@@ -6,7 +6,7 @@
 #    By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/07 18:55:23 by akharrou          #+#    #+#              #
-#    Updated: 2019/05/18 11:45:30 by akharrou         ###   ########.fr        #
+#    Updated: 2019/05/19 09:38:24 by akharrou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,17 +17,16 @@ CFLAGS      =   -Wall -Wextra -Werror $(DEBUG_FLAGS)
 
 # — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
-DEBUG_FLAGS = -O0 -g                                                          \
-                                                                              \
-              -fsanitize=address                                              \
-              -fsanitize=undefined                                            \
-              -fsanitize=bounds                                               \
-              -fsanitize=integer                                              \
-              -fsanitize=nullability-arg                                      \
-              -fsanitize=nullability-return                                   \
-              -fsanitize=nullability-assign                                   \
-              -fsanitize=undefined                                            \
-              -fsanitize-address-use-after-scope                              \
+DEBUG_FLAGS = -O0 -g                                                        \
+                                                                            \
+              -fsanitize=address                                            \
+              -fsanitize=undefined                                          \
+            #   -fsanitize=bounds                                             \
+            #   -fsanitize=integer                                            \
+            #   -fsanitize=nullability-arg                                    \
+            #   -fsanitize=nullability-return                                 \
+            #   -fsanitize=nullability-assign                                 \
+            #   -fsanitize-address-use-after-scope                            \
             #   -fsanitize=object-size                                        \
 
 # — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —

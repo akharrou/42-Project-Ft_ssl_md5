@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:33:23 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/18 11:18:43 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/19 09:54:22 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	sha384_schedule(t_sha384ctx *ctx)
 	}
 	while (i < SHA384_TOTAL_ROUNDS)
 	{
-		ctx->schedule[i] = (ctx->schedule[i - 16]
+		ctx->schedule[i] = ((ctx->schedule[i - 16]
 							+
 							SHA2_384_SIG0(ctx->schedule[i - 15])
 							+
@@ -56,7 +56,7 @@ void	sha384_schedule(t_sha384ctx *ctx)
 							+
 							SHA2_384_SIG1(ctx->schedule[i - 2]))
 							%
-							UINT64_MAX;
+							UINT64_MAX);
 		++i;
 	}
 	return ;
@@ -69,12 +69,12 @@ void	sha384_schedule(t_sha384ctx *ctx)
 
 void	sha384_transform_final(t_sha384ctx *ctx, t_sha384ctx *ctx_prime)
 {
-	A = (A + ctx_prime->state[0]) % UINT64_MAX;
-	B = (B + ctx_prime->state[1]) % UINT64_MAX;
-	C = (C + ctx_prime->state[2]) % UINT64_MAX;
-	D = (D + ctx_prime->state[3]) % UINT64_MAX;
-	E = (E + ctx_prime->state[4]) % UINT64_MAX;
-	F = (F + ctx_prime->state[5]) % UINT64_MAX;
-	G = (G + ctx_prime->state[6]) % UINT64_MAX;
-	H = (H + ctx_prime->state[7]) % UINT64_MAX;
+	A = ((A + ctx_prime->state[0]) % UINT64_MAX);
+	B = ((B + ctx_prime->state[1]) % UINT64_MAX);
+	C = ((C + ctx_prime->state[2]) % UINT64_MAX);
+	D = ((D + ctx_prime->state[3]) % UINT64_MAX);
+	E = ((E + ctx_prime->state[4]) % UINT64_MAX);
+	F = ((F + ctx_prime->state[5]) % UINT64_MAX);
+	G = ((G + ctx_prime->state[6]) % UINT64_MAX);
+	H = ((H + ctx_prime->state[7]) % UINT64_MAX);
 }

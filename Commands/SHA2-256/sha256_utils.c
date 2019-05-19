@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/16 13:33:23 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/18 11:18:49 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/19 09:53:32 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	sha256_schedule(t_sha256ctx *ctx)
 	}
 	while (i < SHA256_TOTAL_ROUNDS)
 	{
-		ctx->schedule[i] = (ctx->schedule[i - 16]
+		ctx->schedule[i] = ((ctx->schedule[i - 16]
 							+
 							SHA2_256_SIG0(ctx->schedule[i - 15])
 							+
@@ -56,7 +56,7 @@ void	sha256_schedule(t_sha256ctx *ctx)
 							+
 							SHA2_256_SIG1(ctx->schedule[i - 2]))
 							%
-							UINT32_MAX;
+							UINT32_MAX);
 		++i;
 	}
 	return ;
@@ -69,12 +69,12 @@ void	sha256_schedule(t_sha256ctx *ctx)
 
 void	sha256_transform_final(t_sha256ctx *ctx, t_sha256ctx *ctx_prime)
 {
-	A = (A + ctx_prime->state[0]) % UINT32_MAX;
-	B = (B + ctx_prime->state[1]) % UINT32_MAX;
-	C = (C + ctx_prime->state[2]) % UINT32_MAX;
-	D = (D + ctx_prime->state[3]) % UINT32_MAX;
-	E = (E + ctx_prime->state[4]) % UINT32_MAX;
-	F = (F + ctx_prime->state[5]) % UINT32_MAX;
-	G = (G + ctx_prime->state[6]) % UINT32_MAX;
-	H = (H + ctx_prime->state[7]) % UINT32_MAX;
+	A = ((A + ctx_prime->state[0]) % UINT32_MAX);
+	B = ((B + ctx_prime->state[1]) % UINT32_MAX);
+	C = ((C + ctx_prime->state[2]) % UINT32_MAX);
+	D = ((D + ctx_prime->state[3]) % UINT32_MAX);
+	E = ((E + ctx_prime->state[4]) % UINT32_MAX);
+	F = ((F + ctx_prime->state[5]) % UINT32_MAX);
+	G = ((G + ctx_prime->state[6]) % UINT32_MAX);
+	H = ((H + ctx_prime->state[7]) % UINT32_MAX);
 }

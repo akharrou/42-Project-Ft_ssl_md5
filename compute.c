@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 10:14:19 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/18 11:32:45 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/18 11:50:21 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void			compute_digests(t_ssl_command cmd, const char **argv)
 	while ((*(++argv)) && (*argv)[0] == '-')
 	{
 		i = -1;
-		if (ft_strcmp(*argv, "-s"))
+		if (ft_strcmp(*argv, "-s") == 0)
 			g_ssl_options[3].handler(cmd, (void *)(*(++argv)), &options);
 		else
 			while ((*argv)[++i])

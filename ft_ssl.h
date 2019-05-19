@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 08:31:14 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/18 11:38:23 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/19 09:19:58 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,9 @@ void			p_option(t_ssl_command cmd, void *data, int8_t *options);
 void			q_option(t_ssl_command cmd, void *data, int8_t *options);
 void			r_option(t_ssl_command cmd, void *data, int8_t *options);
 void			s_option(t_ssl_command cmd, void *data, int8_t *options);
+
+/*
+** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
+*/
 
 #endif
