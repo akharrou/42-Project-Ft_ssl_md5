@@ -1,0 +1,23 @@
+
+1
+*
+\\
+\\\\
+\0
+\\0
+\\0\\
+ \0
+ \\0
+just writing a bunch of test strings
+having so much fun doing this
+really.. having so much fun
+yay.. ?
+...
+.
+******
+ok i think im done ?
+but not sure maybe i should test a few more strings, cuz earlier i kept finding strings that didnt pass, like the empty string for example, and i had to fix that, i also found that a super long string kinda like this one, at least one that is greater in length than the length of a CHUNK that the hashing algorithms chunk the message in, breaks the function, it had to with the fact that ft_strncpy() doesn't terminate strings if the string passed in is equal or greator in length to the variable n. anyways i think this string is long enough to be a good test for md5 through to sha256 and then also for sha384 and sha512.. peace.
+ok im out of things to test i think
+ill just let you try your inputs i guess
+i hope i covered the edge cases possible
+alright done, cu

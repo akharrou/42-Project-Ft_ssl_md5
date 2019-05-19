@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 09:07:16 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/18 11:33:01 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/19 12:35:16 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void		usage(void)
 {
-	ft_printf("Usage: ./ft_ssl [-pqr] [[-s string] ...] [files ...]");
+	ft_printf("usage: ./ft_ssl [-pqr] [[-s string] ...] [files ...]\n");
 	return ;
 }
 

@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 10:25:53 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/19 09:54:45 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/19 12:13:34 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ ssize_t				sha512_update(t_sha512ctx *ctx, void **data, int flag)
 		ret = read(*((int *)(*data)), ctx->chunk, 128);
 	if (flag & O_BUF)
 	{
-		ret = (ssize_t)ft_strlen(ft_strncpy(ctx->chunk, (char *)(*data), 128));
+		ret = ft_strnlen(ft_strncpy(ctx->chunk, (char *)(*data), 128), 128);
 		*((char **)data) += ret;
 	}
 	ctx->bitlen = (ctx->bitlen + (ret * 8));

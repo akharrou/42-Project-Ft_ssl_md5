@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 08:31:14 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/19 09:19:58 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/19 11:54:10 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@
 
 typedef struct	s_ssl_command
 {
-	const char	*name;
+	char		*name;
 	char		*(*function)(void *data, int flag);
 	uint16_t	output_len;
 }				t_ssl_command;

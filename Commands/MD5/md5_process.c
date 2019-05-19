@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/13 10:49:59 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/19 09:58:25 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/19 12:13:00 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ ssize_t			md5_update(t_md5ctx *ctx, void **data, int flag)
 		ret = read(*((int *)(*data)), ctx->chunk, 64);
 	if (flag & O_BUF)
 	{
-		ret = (ssize_t)ft_strlen(ft_strncpy(ctx->chunk, (char *)(*data), 64));
+		ret = ft_strnlen(ft_strncpy(ctx->chunk, (char *)(*data), 64), 64);
 		*((char **)data) += ret;
 	}
 	ctx->bitlen = ((ctx->bitlen + (ret * 8)) % UINT32_MAX);
