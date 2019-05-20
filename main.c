@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 08:30:29 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/20 12:40:21 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/20 12:58:14 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,5 @@ int		main(int ac, const char *av[])
 	}
 	if (g_ssl_commands[i].name == NULL)
 		EXIT(invalid_command(av[1]));
-	sleep(1);
 	return (0);
 }
