@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/19 13:43:57 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/19 15:49:54 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/19 22:02:09 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ void			compute_digests(t_ssl_command cmd, const char **av)
 	{
 		if (ft_strcmp(*av, "-s") == 0)
 			break ;
-		i = 0;
+		i = -1;
 		while (g_ssl_options[++i].name != NULL)
 			if (ft_strcmp((*av), g_ssl_options[i].name) == 0)
 			{
-				FT_SSL_OPTION[i].handler(cmd, NULL, &options);
+				FT_SSL_OPTION[i].handler(cmd, (void *)*(av++), &options);
 				break ;
 			}
 		if (g_ssl_options[i].name == NULL)
@@ -38,5 +38,5 @@ void			compute_digests(t_ssl_command cmd, const char **av)
 			++av;
 	}
 	while (*av)
-		FT_SSL_DEFAULT.handler(cmd, (void *)(*(av++)), &options);
+		ft_ssl_file(cmd, (void *)(*(av++)), &options);
 }

@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 09:07:16 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/19 15:39:26 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/19 16:23:27 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void		usage(void)
 {
-	ft_printf("usage: ./ft_ssl [-pqr] [[-s string] ...] [files ...]\n");
+	ft_printf("usage: ./ft_ssl command [command opts] [command args]\n");
 	return ;
 }
 
@@ -23,23 +23,23 @@ void		invalid_command(const char *invalid_command)
 	int		i;
 	int		j;
 
-	i = 0;
 	ft_printf("ft_ssl: Error: '%s' is an invalid command.\n", invalid_command);
 	ft_printf("\n");
 	ft_printf("Standard commands:\n");
+	i = 0;
 	j = -1;
 	while (++j < STANDARD_COMMANDS_COUNT)
-		ft_printf("%s\n", g_ssl_commands[i++]);
+		ft_printf("%s\n", g_ssl_commands[i++].name);
 	ft_printf("\n");
 	ft_printf("Message Digest commands:\n");
 	j = -1;
 	while (++j < DIGEST_COMMANDS_COUNT)
-		ft_printf("%s\n", g_ssl_commands[i++]);
+		ft_printf("%s\n", g_ssl_commands[i++].name);
 	ft_printf("\n");
 	ft_printf("Cipher commands:\n");
 	j = -1;
 	while (++j < CIPHER_COMMANDS_COUNT)
-		ft_printf("%s\n", g_ssl_commands[i++]);
+		ft_printf("%s\n", g_ssl_commands[i++].name);
 	return ;
 }
 
@@ -53,7 +53,7 @@ void		unknown_option(const char *unknown_option)
 	width = LONGEST_OPTION;
 	i = -1;
 	while (g_ssl_options[++i].name)
-		ft_printf("-%-*s %s\n",
+		ft_printf("%-*s %s\n",
 			width, g_ssl_options[i].name, g_ssl_options[i].descripton);
 	return ;
 }

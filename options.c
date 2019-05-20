@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 10:14:19 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/19 15:11:22 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/19 22:11:51 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,26 +40,13 @@ void		ft_ssl_q_option(t_ssl_command cmd, void *data, int8_t *options)
 
 /*
 **    DESCRIPTION
-**         Handles '-p' flag.
+**         Turns on the '-p' flag and reads STDIN as input.
 */
 
 void		ft_ssl_p_option(t_ssl_command cmd, void *data, int8_t *options)
 {
-	char		*digest;
-	char		*buf;
-	int			ret;
-
-	(void)options;
-	(void)data;
-	ret = ft_readline(STDIN, &buf);
-	if (ret < 0)
-	{
-		ft_printf("Error: %s{underlined}", strerror(errno));
-		return ;
-	}
-	digest = cmd.function(STDIN, O_FD);
-	if (digest)
-		ft_printf("%s\n%s\n", buf, ft_strhex(digest, cmd.dgst_len));
+	(*options) |= FT_SSL_P_OPTION;
+	ft_ssl_stdin(cmd, data, options);
 	return ;
 }
 
@@ -93,15 +80,43 @@ void		ft_ssl_s_option(t_ssl_command cmd, void *data, int8_t *options)
 			ft_printf("%s (\"%s\") = %s\n", ft_strtoupper((char *)cmd.name),
 				(char *)data, ft_strhex(digest, cmd.dgst_len));
 	}
+	free(digest);
 	free(msg);
 }
 
 /*
 **    DESCRIPTION
-**         Handles the default input (i.e, files) given as argument.
+**         Handles inputs coming from standard input.
 */
 
-void		ft_ssl_default(t_ssl_command cmd, void *data, int8_t *options)
+void		ft_ssl_stdin(t_ssl_command cmd, void *data, int8_t *options)
+{
+	char	*digest;
+	char	*tmp;
+
+	tmp = ft_readfiledes(STDIN);
+	if (tmp != NULL)
+	{
+		digest = cmd.function(tmp, O_BUF);
+		if (options && FT_SSL_P_OPTION & (*options))
+			ft_printf("%s", tmp);
+		ft_printf("%s", ft_strhex(digest, cmd.dgst_len));
+		free(digest);
+		free(tmp);
+	}
+	else
+		ft_printf("Error: %s{underlined}", strerror(errno));
+	(void)data;
+	(void)options;
+	return ;
+}
+
+/*
+**    DESCRIPTION
+**         Handles file names given as arguments.
+*/
+
+void		ft_ssl_file(t_ssl_command cmd, void *data, int8_t *options)
 {
 	char	*digest;
 	int		fd;
@@ -117,8 +132,7 @@ void		ft_ssl_default(t_ssl_command cmd, void *data, int8_t *options)
 		if (digest != NULL)
 		{
 			if (FT_SSL_Q_OPTION & (*options))
-				ft_printf("%s\n",
-					ft_strhex(digest, cmd.dgst_len));
+				ft_printf("%s\n", ft_strhex(digest, cmd.dgst_len));
 			else if (FT_SSL_R_OPTION & (*options))
 				ft_printf("%s %s\n",
 					ft_strhex(digest, cmd.dgst_len), (char *)data);
@@ -126,6 +140,7 @@ void		ft_ssl_default(t_ssl_command cmd, void *data, int8_t *options)
 				ft_printf("%s (%s) = %s\n", ft_strtoupper((char *)cmd.name),
 					(char *)data, ft_strhex(digest, cmd.dgst_len));
 		}
+		free(digest);
 	}
 	(void)options;
 }

@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 08:31:14 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/19 15:44:38 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/19 22:02:05 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@
 
 # define FT_SSL_OPTION  (g_ssl_options)
 # define FT_SSL_STRING  (FT_SSL_OPTION[3])
-# define FT_SSL_DEFAULT (FT_SSL_OPTION[4])
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
@@ -81,7 +80,7 @@ extern t_ssl_option g_ssl_options[];
 ** Main Function(s).
 */
 
-void			compute_digests(t_ssl_command ftptr, const char **argv);
+void			compute_digests(t_ssl_command cmd, const char **av);
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
@@ -92,7 +91,8 @@ void			ft_ssl_p_option(t_ssl_command cmd, void *data, int8_t *options);
 void			ft_ssl_q_option(t_ssl_command cmd, void *data, int8_t *options);
 void			ft_ssl_r_option(t_ssl_command cmd, void *data, int8_t *options);
 void			ft_ssl_s_option(t_ssl_command cmd, void *data, int8_t *options);
-void			ft_ssl_default(t_ssl_command cmd, void *data, int8_t *options);
+void			ft_ssl_stdin(t_ssl_command cmd, void *data, int8_t *options);
+void			ft_ssl_file(t_ssl_command cmd, void *data, int8_t *options);
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
