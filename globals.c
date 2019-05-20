@@ -6,16 +6,11 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 11:37:50 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/19 22:01:04 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/20 12:15:47 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ssl.h"
-
-/*
-** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-** Global Variable Definition(s).
-*/
 
 t_ssl_command	g_ssl_commands[] =
 {
@@ -54,7 +49,3 @@ t_ssl_option	g_ssl_options[] =
 		NULL, NULL, NULL
 	},
 };
-
-/*
-** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-*/

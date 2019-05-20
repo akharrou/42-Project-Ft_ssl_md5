@@ -6,16 +6,16 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 10:52:36 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/20 10:53:40 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/20 12:15:16 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "../ft_ssl.h"
 
 /*
 **    DESCRIPTION
 **         Handles strings given as argument.
 */
+
+#include "../ft_ssl.h"
 
 void		ft_ssl_s_option(t_ssl_command cmd, void *data, int8_t *options)
 {

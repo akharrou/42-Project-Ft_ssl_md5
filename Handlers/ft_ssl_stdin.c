@@ -6,16 +6,16 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 10:52:36 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/20 10:53:53 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/20 12:15:13 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "../ft_ssl.h"
 
 /*
 **    DESCRIPTION
 **         Handles inputs coming from standard input.
 */
+
+#include "../ft_ssl.h"
 
 void		ft_ssl_stdin(t_ssl_command cmd, void *data, int8_t *options)
 {
@@ -35,6 +35,5 @@ void		ft_ssl_stdin(t_ssl_command cmd, void *data, int8_t *options)
 	else
 		ft_printf("Error: %s{underlined}\n", strerror(errno));
 	(void)data;
-	(void)options;
 	return ;
 }

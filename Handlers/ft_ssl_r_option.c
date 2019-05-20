@@ -6,16 +6,16 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 10:52:18 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/20 10:53:11 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/20 12:15:19 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "../ft_ssl.h"
 
 /*
 **    DESCRIPTION
 **         Turns on the '-r' flag.
 */
+
+#include "../ft_ssl.h"
 
 void		ft_ssl_r_option(t_ssl_command cmd, void *data, int8_t *options)
 {

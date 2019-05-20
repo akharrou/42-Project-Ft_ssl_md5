@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 08:31:14 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/20 12:10:28 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/20 12:13:25 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void			compute_digests(t_ssl_command cmd, const char **av);
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-** Utility Function(s).
+** Handler Function(s).
 */
 
 void			ft_ssl_p_option(t_ssl_command cmd, void *data, int8_t *options);
