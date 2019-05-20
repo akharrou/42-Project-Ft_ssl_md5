@@ -51,7 +51,7 @@ In this project we were introduced to cryptographic hashing algorithms and were 
 
 ## Installation
 ```bash
-git clone https://github.com/akharrou/42-Project-Ft_ssl_md5.git Ft_ssl_md5 && cd Ft_SSL
+git clone --recursive https://github.com/akharrou/42-Project-Ft_ssl_md5.git Ft_ssl_md5 && cd Ft_ssl_md5
 ```
 
 ```bash
