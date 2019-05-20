@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 10:52:36 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/20 12:15:16 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/20 12:49:05 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,18 @@ void		ft_ssl_s_option(t_ssl_command cmd, void *data, int8_t *options)
 		return ;
 	}
 	msg = ft_strdup((char *)data);
-	digest = cmd.function(msg, O_BUF);
+	digest = ft_strhexfre(cmd.function(msg, O_BUF), cmd.dgst_len);
 	if (digest != NULL)
 	{
 		if (FT_SSL_Q_OPTION & (*options))
 			ft_printf("%s\n",
-				ft_strhex(digest, cmd.dgst_len));
+				digest);
 		else if (FT_SSL_R_OPTION & (*options))
 			ft_printf("%s \"%s\"\n",
-				ft_strhex(digest, cmd.dgst_len), (char *)data);
+				digest, (char *)data);
 		else
 			ft_printf("%s (\"%s\") = %s\n", ft_strtoupper((char *)cmd.name),
-				(char *)data, ft_strhex(digest, cmd.dgst_len));
+				(char *)data, digest);
 	}
 	free(digest);
 	free(msg);

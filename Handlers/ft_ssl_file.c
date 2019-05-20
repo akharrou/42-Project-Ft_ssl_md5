@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 10:52:36 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/20 12:15:28 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/20 12:49:08 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,17 @@ void		ft_ssl_file(t_ssl_command cmd, void *data, int8_t *options)
 			ft_printf("ft_ssl: %s: %s: %s\n",
 				cmd.name, (char *)data, strerror(errno));
 		else
-			digest = cmd.function((void *)&fd, O_FD);
+			digest = ft_strhexfre(cmd.function(&fd, O_FD), cmd.dgst_len);
 		if (digest != NULL)
 		{
 			if (FT_SSL_Q_OPTION & (*options))
-				ft_printf("%s\n", ft_strhex(digest, cmd.dgst_len));
+				ft_printf("%s\n", digest);
 			else if (FT_SSL_R_OPTION & (*options))
 				ft_printf("%s %s\n",
-					ft_strhex(digest, cmd.dgst_len), (char *)data);
+					digest, (char *)data);
 			else
 				ft_printf("%s (%s) = %s\n", ft_strtoupper((char *)cmd.name),
-					(char *)data, ft_strhex(digest, cmd.dgst_len));
+					(char *)data, digest);
 		}
 		free(digest);
 	}

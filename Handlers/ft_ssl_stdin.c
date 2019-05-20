@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 10:52:36 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/20 12:15:13 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/20 12:49:02 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ void		ft_ssl_stdin(t_ssl_command cmd, void *data, int8_t *options)
 	tmp = ft_readfiledes(STDIN);
 	if (tmp != NULL)
 	{
-		digest = cmd.function(tmp, O_BUF);
+		digest = ft_strhexfre(cmd.function(tmp, O_BUF), cmd.dgst_len);
 		if (options && FT_SSL_P_OPTION & (*options))
 			ft_printf("%s", tmp);
-		ft_printf("%s\n", ft_strhex(digest, cmd.dgst_len));
+		ft_printf("%s\n", digest);
 		free(digest);
 		free(tmp);
 	}

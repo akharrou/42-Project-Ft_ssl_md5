@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 09:07:16 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/19 16:23:27 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/20 12:28:20 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void		usage(void)
 {
-	ft_printf("usage: ./ft_ssl command [command opts] [command args]\n");
+	ft_printf("usage: ./ft_ssl command [ -p | -q | -r ] [ -s string ]");
+	ft_printf(" [ file ... ]\n");
 	return ;
 }
 
@@ -40,6 +41,7 @@ void		invalid_command(const char *invalid_command)
 	j = -1;
 	while (++j < CIPHER_COMMANDS_COUNT)
 		ft_printf("%s\n", g_ssl_commands[i++].name);
+	ft_printf("\n");
 	return ;
 }
 
