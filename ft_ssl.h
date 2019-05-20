@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 08:31:14 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/19 22:02:05 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/20 12:10:28 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,6 @@
 # define STANDARD_COMMANDS_COUNT  (0)
 # define DIGEST_COMMANDS_COUNT    (5)
 # define CIPHER_COMMANDS_COUNT    (0)
-
-# define FT_SSL_OPTION  (g_ssl_options)
-# define FT_SSL_STRING  (FT_SSL_OPTION[3])
 
 /*
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **

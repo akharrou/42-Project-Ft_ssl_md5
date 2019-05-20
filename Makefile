@@ -6,28 +6,30 @@
 #    By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/07 18:55:23 by akharrou          #+#    #+#              #
-#    Updated: 2019/05/19 14:42:19 by akharrou         ###   ########.fr        #
+#    Updated: 2019/05/20 11:14:32 by akharrou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
 CC          =   gcc
-CFLAGS      =   -Wall -Wextra -Werror $(DEBUG_FLAGS)
+CFLAGS      =   -Wall -Wextra -Werror $(OPTIM_FLAGS)
 
 # — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
-DEBUG_FLAGS = -O0 -g                                                        \
-                                                                            \
-              -fsanitize=address                                            \
-              -fsanitize=undefined                                          \
-            #   -fsanitize=bounds                                             \
-            #   -fsanitize=integer                                            \
-            #   -fsanitize=nullability-arg                                    \
-            #   -fsanitize=nullability-return                                 \
-            #   -fsanitize=nullability-assign                                 \
-            #   -fsanitize-address-use-after-scope                            \
-            #   -fsanitize=object-size                                        \
+OPTIM_FLAGS = -O3 -march=native                                               \
+
+# — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
+
+DEBUG_FLAGS = -O0 -g                                                          \
+                                                                              \
+              -fsanitize=address                                              \
+              -fsanitize=undefined                                            \
+              -fsanitize=bounds                                               \
+              -fsanitize=nullability-arg                                      \
+              -fsanitize=nullability-return                                   \
+              -fsanitize=nullability-assign                                   \
+              -fsanitize-address-use-after-scope                              \
 
 # — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
 
@@ -41,8 +43,9 @@ LIBRARY     =   Libft/libft.a
 
 HEADERS     =   ft_ssl.h                                                      \
                                                                               \
-                Commands/MD5/ft_md5.h                                         \
+                Commands/commons.h                                            \
                                                                               \
+                Commands/MD5/ft_md5.h                                         \
                 Commands/SHA2-224/ft_sha224.h                                 \
                 Commands/SHA2-256/ft_sha256.h                                 \
                 Commands/SHA2-384/ft_sha384.h                                 \
@@ -52,12 +55,24 @@ HEADERS     =   ft_ssl.h                                                      \
 
 SOURCES     =   main.c                                                        \
                 compute.c                                                     \
-                options.c                                                     \
                 error.c                                                       \
                 globals.c                                                     \
                                                                               \
-                $(MD5)                                                        \
-                                                                              \
+                $(HANDLERS)                                                   \
+                $(COMMANDS)                                                   \
+
+# — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
+
+HANDLERS    =   Handlers/ft_ssl_p_option.c                                    \
+                Handlers/ft_ssl_q_option.c                                    \
+                Handlers/ft_ssl_r_option.c                                    \
+                Handlers/ft_ssl_s_option.c                                    \
+                Handlers/ft_ssl_stdin.c                                       \
+                Handlers/ft_ssl_file.c                                        \
+
+# — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — —
+
+COMMANDS    =   $(MD5)                                                        \
                 $(SHA224)                                                     \
                 $(SHA256)                                                     \
                 $(SHA384)                                                     \
