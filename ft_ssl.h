@@ -6,7 +6,7 @@
 /*   By: akharrou <akharrou@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 08:31:14 by akharrou          #+#    #+#             */
-/*   Updated: 2019/05/20 12:13:25 by akharrou         ###   ########.fr       */
+/*   Updated: 2019/05/23 19:40:15 by akharrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 ** Macro(s).
 */
 
-# define LONGEST_OPTION           (1)
+# define LONGEST_OPTION           (2)
 
 # define STANDARD_COMMANDS_COUNT  (0)
 # define DIGEST_COMMANDS_COUNT    (5)
